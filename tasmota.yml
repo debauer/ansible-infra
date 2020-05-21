@@ -1,0 +1,21 @@
+---
+- hosts: steckdose11
+  gather_facts: no
+  vars:
+    tasmota_commands:
+        - command: TelePeriod
+          value: 10
+        - command: FriendlyName
+          value: "{{ inventory_hostname }}"
+        - command: topic
+          value: "{{ inventory_hostname }}"
+        - command: Backlog
+          value: "mqttuser {{ mqtt_user }}; mqttpassword {{ mqtt_pass }};
+                  mqttport {{ mqtt_port }}; mqtthost {{ mqtt_host }};
+                  MqttClient {{ inventory_hostname }};
+                  FullTopic {{ full_topic }}"
+        - command: restart
+          value: 1
+
+  roles:
+    - ansible-tasmota

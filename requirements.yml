@@ -1,0 +1,5 @@
+# from GitHub, overriding the name and specifying a specific tag
+roles:
+  - name: ansible-tasmota
+    src: https://github.com/tobias-richter/ansible-tasmota
+    version: master
