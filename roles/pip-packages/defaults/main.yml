@@ -1,0 +1,9 @@
+---
+packages:
+  for_users:
+    - matplotlib
+    - numpy
+    - imutils
+    - requests 
+    - progressbar2
+  for_root: []
