@@ -1,0 +1,19 @@
+---
+apt_upgrade: "no"
+apt_autoremove: true
+copy_keys_to_hosts: true
+packages:
+  common:
+    - htop
+    - iotop
+    - gcc 
+    - make 
+    - wget
+    - curl 
+    - g++
+    - git
+    - gzip
+    - unzip
+
+  remove: []
+

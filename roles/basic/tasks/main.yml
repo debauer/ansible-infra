@@ -1,0 +1,39 @@
+---
+- name:  copy auth keys on host
+  copy:
+    src: files/authorized_keys
+    dest: "{{ item }}/.ssh/authorized_keys"
+  with_items:
+  - /root
+  - /home/pi
+  when: copy_keys_to_hosts
+
+- name: Update and upgrade apt packages
+  apt:
+    update_cache: yes
+    upgrade: "{{ apt_upgrade }}"
+    autoremove: yes
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Remove base packages
+  package:
+    name: "{{ packages.remove }}"
+    state: absent
+
+- name: Install common packages
+  package:
+    name: "{{ packages.common }}"
+    state: present
+
+- name: Disable Password Authentication
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^PasswordAuthentication'
+    line="PasswordAuthentication no"
+    state=present
+    backup=yes
+
+- name: restart ssh
+  service:
+    name=sshd
+    state=restarted
