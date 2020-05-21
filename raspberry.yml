@@ -1,0 +1,12 @@
+---
+- hosts: raspberry
+  become: yes
+
+  roles:
+    - basic
+    - packages
+    - role: ssh-key
+      vars:
+         users: [root, raspberry]
+         key_files: [public_keys/bauer-bauer, public_keys/bauer-zerbrechlich]
+

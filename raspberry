@@ -1,0 +1,16 @@
+[raspberry:children]
+print-server
+camera-outdoor
+octoprint
+
+[print-server]
+192.168.1.107 ansible_user=root
+
+[octopi]
+192.168.1.123 ansible_user=root
+
+[gardenpi]
+192.168.1.124 ansible_user=root
+
+[volumio]
+192.168.1.124 ansible_user=root
