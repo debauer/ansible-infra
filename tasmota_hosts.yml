@@ -63,7 +63,10 @@ all:
                   # "GPIO4":{"6":"I2C SDA"}
                   # "GPIO5":{"5":"I2C SCL"}
                 heizung-temperatur:
+                  full_topic: "ug/temperaturen/%prefix%/heizung/"
                   ip: 192.168.1.182
+                  gpio: [0,0,4,0,0, 0,0,0,0,0 ,0,0,0,0,0 ,0]
+                  # GPIO2":{"4":"DS18x20"}
                 strommessung01:
                   ip: 192.168.1.183
                 soil01:
@@ -75,6 +78,9 @@ all:
                 kueche:
                   ip: 192.168.1.187
                   mac: EC:FA:BC:C5:15:31
+                  gpio: [5,0,6,0,0, 0,0,0,0,0 ,0,0,0,0,0 ,0]
+                  # "GPIO0":{"5":"I2C SCL"}
+                  # "GPIO2":{"6":"I2C SDA"}
                 bad:
                   ip: 192.168.1.188
                 kammer:
