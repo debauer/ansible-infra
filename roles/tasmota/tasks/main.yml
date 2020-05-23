@@ -24,7 +24,7 @@
     name: ansible-tasmota
   vars:
     tasmota_commands:
-      - command: "Timer{{ timer_id }}"
+      - command: "Timer{{ timer_id + 1 }}"
         value: "{{ timer_value }}"
   loop: "{{ timer }}"
   loop_control:
@@ -62,7 +62,7 @@
         value: "Ssid1 {{ wlan1_ssid }}; Password1 {{ wlan1_password }};"
   when: set_wifi and wlan1_ssid is defined and wlan1_password is defined
 
-- name: set the wifi1 settings
+- name: set the wifi2 settings
   include_role:
     name: ansible-tasmota
   vars:

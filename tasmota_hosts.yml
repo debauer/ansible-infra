@@ -5,40 +5,55 @@ all:
         steckdosen:
           hosts:
             steckdose01:
+              friendly_name: Drucker
               ip: 192.168.1.170
               module: 45 #blitzwolf SHP / gosund SP111
               mac: 4C:11:AE:04:2B:D3
             steckdose02:
+              friendly_name: Kuehlschrank
               ip: 192.168.1.171
               module: 45 #blitzwolf SHP / gosund SP111
               mac: BC:DD:C2:30:2F:B1
             steckdose03:
+              friendly_name: Geschirrspueler
               ip: 192.168.1.172
               module: 45 #blitzwolf SHP / gosund SP111
             steckdose04:
+              friendly_name: Hundebrunnen
               ip: 192.168.1.173
               module: 45 #blitzwolf SHP / gosund SP111
               mac: CC:50:E3:37:62:0A
+              timer: ['{"Arm":1,"Mode":0,"Time":"08:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":1}',
+                      '{"Arm":1,"Mode":0,"Time":"00:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":0}',
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0]
             steckdose05:
+              friendly_name: "Nachttisch Nadine"
               ip: 192.168.1.174
               module: 55 #gosund SP1
               mac: 24:62:AB:30:A5:24
             steckdose06:
+              friendly_name: Fernseher
               ip: 192.168.1.175
               module: 55 #gosund SP1
               mac: D8:F1:5B:AB:44:BC
             steckdose07:
+              friendly_name: "Kueche Media"
               ip: 192.168.1.176
               module: 55 #gosund SP1
               mac: DC:4F:22:B6:B6:A5
             steckdose08:
+              friendly_name: "Nachtisch David"
               ip: 192.168.1.177
               module: 55 #gosund SP1
               mac: D8:F1:5B:C0:48:29
             steckdose09:
+              friendly_name: Terrarium
               ip: 192.168.1.178
               module: 52 #teckin
               mac: C4:4F:33:80:AA:B8
+              timer: ['{"Arm":1,"Mode":0,"Time":"08:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":1}',
+                      '{"Arm":1,"Mode":0,"Time":"20:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":0}',
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0]
             steckdose10:
               ip: 192.168.1.179
               module: 52 #teckin
