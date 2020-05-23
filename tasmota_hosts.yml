@@ -53,24 +53,32 @@ all:
             feinstaub:
               hosts:
                 feinstaub01:
+                  ip: 192.168.1.181
                   mac: EC:FA:BC:C5:15:FF
-                  # {"GPIO0":{"0":"None"},"GPIO1":{"101":"SDS0X1 Tx"},"GPIO2":{"0":"None"},"GPIO3":{"70":"SDS0X1 Rx"},"GPIO4":{"6":"I2C SDA"},"GPIO5":{"5":"I2C SCL"},"GPIO9":{"0":"None"},"GPIO10":{"0":"None"},"GPIO12":{"0":"None"},"GPIO13":{"0":"None"},"GPIO14":{"0":"None"},"GPIO15":{"0":"None"},"GPIO16":{"0":"None"}}
+                  gpio: [0,101,0,70,6, 5,0,0,0,0 ,0,0,0,0,0 ,0]
+                  # "GPIO0":{"0":"None"}
+                  # "GPIO1":{"101":"SDS0X1 Tx"}
+                  # "GPIO2":{"0":"None"}
+                  # "GPIO3":{"70":"SDS0X1 Rx"}
+                  # "GPIO4":{"6":"I2C SDA"}
+                  # "GPIO5":{"5":"I2C SCL"}
                 heizung-temperatur:
-                  mac: EC:FA:BC:C5:15:FF
+                  ip: 192.168.1.182
                 strommessung01:
-                  mac: EC:FA:BC:C5:15:FF
+                  ip: 192.168.1.183
                 soil01:
-                  mac: EC:FA:BC:C5:15:FF
+                  ip: 192.168.1.184
                 soil02:
-                  mac: EC:FA:BC:C5:15:FF
+                  ip: 192.168.1.185
                 schlafzimmer:
-                  mac: EC:FA:BC:C5:15:FF
+                  ip: 192.168.1.186
                 kueche:
+                  ip: 192.168.1.187
                   mac: EC:FA:BC:C5:15:31
                 bad:
-                  mac: EC:FA:BC:C5:15:FF
+                  ip: 192.168.1.188
                 kammer:
-                  mac: EC:FA:BC:C5:15:FF
+                  ip: 192.168.1.189
               vars:
                 full_topic: "ew/sensoren/%prefix%/%hostname%/"
       vars:
