@@ -3,47 +3,5 @@
   gather_facts: no
 
   roles:
-    - role: ansible-tasmota
-      vars:
-        tasmota_commands:
-          - command: TelePeriod
-            value: 10
+    - tasmota
 
-          - command: LedState
-            value: 0
-
-          - command: FriendlyName
-            value: "{{ inventory_hostname }}"
-
-          - command: Hostname
-            value: "{{ inventory_hostname }}"
-
-          - command: Backlog
-            value: "mqttuser {{ mqtt_user }}; mqttpassword {{ mqtt_pass }};
-                    mqttport {{ mqtt_port }}; mqtthost {{ mqtt_host }};
-                    MqttClient {{ inventory_hostname }};
-                    FullTopic {{ full_topic }}"
-
-          - command: Timers
-            value: "{{ timers_active }}"
-
-          - command: SetOption21 # Energy monitoring when power is off
-            value: 1
-
-          - command: SetOption53 # Display hostname and IP address in GUI
-            value: 1
-
-    - role: ansible-tasmota
-      vars:
-        tasmota_commands:
-          - command: "Timer{{ timer_id }}"
-            value: "{{ item }}"
-      loop: "{{ timer }}"
-      loop_control:
-        index_var: "timer_id"
-
-
-    - role: ansible-tasmota
-      vars:
-        - command: restart
-          value: 1

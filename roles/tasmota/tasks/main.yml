@@ -1,0 +1,82 @@
+---
+- name: set some basic settings
+  include_role:
+    name: ansible-tasmota
+  vars:
+    tasmota_commands:
+      - command: TelePeriod
+        value: 10
+      - command: LedState
+        value: 0
+      - command: FriendlyName
+        value: "{{ inventory_hostname }}"
+#      - command: Hostname
+#        value: "{{ inventory_hostname }}"
+      - command: SetOption21 # Energy monitoring when power is off
+        value: 1
+      - command: SetOption53 # Display hostname and IP address in GUI
+        value: 1
+      - command: Timers
+        value: "{{ timers_active }}"
+
+- name: set timer
+  include_role:
+    name: ansible-tasmota
+  vars:
+    tasmota_commands:
+      - command: "Timer{{ timer_id }}"
+        value: "{{ timer_value }}"
+  loop: "{{ timer }}"
+  loop_control:
+    index_var: timer_id
+    loop_var: timer_value
+
+- name: set the mqtt settings
+  include_role:
+    name: ansible-tasmota
+  vars:
+    tasmota_commands:
+      - command: Backlog
+        value: "mqttuser {{ mqtt_user }}; mqttpassword {{ mqtt_pass }};
+                mqttport {{ mqtt_port }}; mqtthost {{ mqtt_host }};
+                MqttClient {{ inventory_hostname }};
+                FullTopic {{ full_topic }}"
+  when: set_mqtt
+
+- name: set the network settings
+  include_role:
+    name: ansible-tasmota
+  vars:
+    tasmota_commands:
+      - command: Backlog
+        value: "IPAddress1 {{ ip }}; IPAddress2 {{ gateway }};
+                IPAddress2 {{ netmask }}; IPAddress4 {{ dns }};"
+  when: set_fixed_ip and ip is defined
+
+- name: set the wifi1 settings
+  include_role:
+    name: ansible-tasmota
+  vars:
+    tasmota_commands:
+      - command: Backlog
+        value: "Ssid1 {{ wlan1_ssid }}; Password1 {{ wlan1_password }};"
+  when: set_wifi and wlan1_ssid is defined and wlan1_password is defined
+
+- name: set the wifi1 settings
+  include_role:
+    name: ansible-tasmota
+  vars:
+    tasmota_commands:
+      - command: Backlog
+        value: "Ssid2 {{ wlan1_ssid }}; Password2 {{ wlan1_password }};"
+  when: set_wifi and wlan2_ssid is defined and wlan2_password is defined
+
+- name: restart the device
+  include_role:
+    name: ansible-tasmota
+  vars:
+    tasmota_commands:
+      - command: restart
+        value: 1
+  when: restart
+

@@ -7,36 +7,45 @@ all:
             steckdose01:
               ip: 192.168.1.170
               module: 45 #blitzwolf SHP / gosund SP111
+              mac: 4C:11:AE:04:2B:D3
             steckdose02:
               ip: 192.168.1.171
               module: 45 #blitzwolf SHP / gosund SP111
+              mac: BC:DD:C2:30:2F:B1
             steckdose03:
               ip: 192.168.1.172
               module: 45 #blitzwolf SHP / gosund SP111
             steckdose04:
               ip: 192.168.1.173
               module: 45 #blitzwolf SHP / gosund SP111
+              mac: CC:50:E3:37:62:0A
             steckdose05:
               ip: 192.168.1.174
               module: 55 #gosund SP1
+              mac: 24:62:AB:30:A5:24
             steckdose06:
               ip: 192.168.1.175
               module: 55 #gosund SP1
+              mac: D8:F1:5B:AB:44:BC
             steckdose07:
               ip: 192.168.1.176
               module: 55 #gosund SP1
+              mac: DC:4F:22:B6:B6:A5
             steckdose08:
               ip: 192.168.1.177
               module: 55 #gosund SP1
+              mac: D8:F1:5B:C0:48:29
             steckdose09:
               ip: 192.168.1.178
               module: 52 #teckin
+              mac: C4:4F:33:80:AA:B8
             steckdose10:
               ip: 192.168.1.179
               module: 52 #teckin
             steckdose11:
               ip: 192.168.1.180
               module: 52 #teckin
+              mac: 60:01:94:A4:CC:E3
           vars:
             full_topic: "ew/steckdosen/%prefix%/%hostname%/"
         sensoren:
@@ -44,22 +53,24 @@ all:
             feinstaub:
               hosts:
                 feinstaub01:
-                  ip: 192.168.1.181
+                  mac: EC:FA:BC:C5:15:FF
                   # {"GPIO0":{"0":"None"},"GPIO1":{"101":"SDS0X1 Tx"},"GPIO2":{"0":"None"},"GPIO3":{"70":"SDS0X1 Rx"},"GPIO4":{"6":"I2C SDA"},"GPIO5":{"5":"I2C SCL"},"GPIO9":{"0":"None"},"GPIO10":{"0":"None"},"GPIO12":{"0":"None"},"GPIO13":{"0":"None"},"GPIO14":{"0":"None"},"GPIO15":{"0":"None"},"GPIO16":{"0":"None"}}
+                heizung-temperatur:
+                  mac: EC:FA:BC:C5:15:FF
                 strommessung01:
-                  ip: 192.168.1.182
+                  mac: EC:FA:BC:C5:15:FF
                 soil01:
-                  ip: 192.168.1.183
+                  mac: EC:FA:BC:C5:15:FF
                 soil02:
-                  ip: 192.168.1.184
+                  mac: EC:FA:BC:C5:15:FF
                 schlafzimmer:
-                  ip: 192.168.1.185
+                  mac: EC:FA:BC:C5:15:FF
                 kueche:
-                  ip: 192.168.1.186
+                  mac: EC:FA:BC:C5:15:31
                 bad:
-                  ip: 192.168.1.187
+                  mac: EC:FA:BC:C5:15:FF
                 kammer:
-                  ip: 192.168.1.188
+                  mac: EC:FA:BC:C5:15:FF
               vars:
                 full_topic: "ew/sensoren/%prefix%/%hostname%/"
       vars:
@@ -70,5 +81,10 @@ all:
         timers_active: 0
         timer: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         module: 0 # generic
+        gateway: 192.168.1.1
+        netmask: 255.255.255.0
+        dns: 192.168.1.1
+        wlan1_ssid: bauer_2G
+        wlan2_ssid: bauer_iot
 
 

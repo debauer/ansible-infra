@@ -1,0 +1,5 @@
+---
+set_mqtt: false
+restart: false
+set_wifi: false
+set_fixed_ip: false
