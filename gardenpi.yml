@@ -1,0 +1,13 @@
+# ansible-playbook -v -i ~/ansible/raspberry /playbooks/setup-camera-motion.yml
+---
+- hosts: gardenpi
+  gather_facts: yes
+  vars:
+    boot_config_options:
+      # Disable Camera LED 1 is disabled, 0 is enabled
+      - regexp: "^#?disable_camera_led"
+        line: "disable_camera_led=0"
+
+  roles:
+    - basic
+    - picam
