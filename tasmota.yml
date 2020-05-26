@@ -1,6 +1,8 @@
 ---
 - hosts: steckdose11
   gather_facts: no
+  vars_files:
+    - ./vars/secrets.yml
 
   roles:
     - tasmota
