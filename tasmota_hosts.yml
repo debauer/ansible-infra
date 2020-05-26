@@ -1,5 +1,26 @@
 all:
   children:
+    linux:
+      children:
+        ubuntu:
+          hosts:
+            herbert:
+              ansible_user: root
+            nadine:
+              ansible_user: keya
+        arch:
+          hosts:
+            david:
+              ansible_user: debauer
+            synyx:
+              ansible_user: bauer
+    china_cams:
+      hosts:
+        192.168.1.108
+        192.168.1.126
+      vars:
+        telnet_user: root
+        telnet_pw: xmhdipc
     tasmota:
       children:
         steckdosen:
