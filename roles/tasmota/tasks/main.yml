@@ -9,7 +9,7 @@
       - command: LedState
         value: 0
       - command: FriendlyName
-        value: "{{ inventory_hostname }}"
+        value: "{{ friendly_name | default(inventory_hostname) }}"
 #      - command: Hostname
 #        value: "{{ inventory_hostname }}"
       - command: SetOption21 # Energy monitoring when power is off
