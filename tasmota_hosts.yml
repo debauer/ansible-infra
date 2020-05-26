@@ -77,6 +77,7 @@ all:
                   # "GPIO3":{"70":"SDS0X1 Rx"}
                   # "GPIO4":{"6":"I2C SDA"}
                   # "GPIO5":{"5":"I2C SCL"}
+
                 heizung-temperatur:
                   full_topic: "ug/temperaturen/%prefix%/heizung/"
                   ip: 192.168.1.182
@@ -100,6 +101,14 @@ all:
                   ip: 192.168.1.188
                 kammer:
                   ip: 192.168.1.189
+                co201:
+                  ip: 192.168.1.190
+                  mac: A4:CF:12:D9:0E:2C
+                  gpio: [0,60,0,61,6, 5,0,0,0,0 ,0,0,0,0,0 ,0]
+                  # "GPIO1":{"60":"MHZ Tx"}
+                  # "GPIO3":{"61":"MHZ Rx"}
+                  # "GPIO4":{"6":"I2C SDA"}
+                  # "GPIO5":{"5":"I2C SCL"
               vars:
                 full_topic: "ew/sensoren/%prefix%/%hostname%/"
       vars:
