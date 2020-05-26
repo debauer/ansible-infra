@@ -59,7 +59,7 @@
   vars:
     tasmota_commands:
       - command: Backlog
-        value: "Ssid1 {{ wlan1_ssid }}; Password1 {{ wlan1_password }};"
+        value: "Ssid1 {{ wlan1_ssid }}; Password1 {{ vault_wlan1_password }};"
   when: set_wifi and wlan1_ssid is defined and wlan1_password is defined
 
 - name: set the wifi2 settings
@@ -68,7 +68,7 @@
   vars:
     tasmota_commands:
       - command: Backlog
-        value: "Ssid2 {{ wlan1_ssid }}; Password2 {{ wlan1_password }};"
+        value: "Ssid2 {{ wlan1_ssid }}; Password2 {{ vault_wlan1_password }};"
   when: set_wifi and wlan2_ssid is defined and wlan2_password is defined
 
 - name: restart the device

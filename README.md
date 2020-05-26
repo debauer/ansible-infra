@@ -1,18 +1,36 @@
 # ansible-home
 
-## general
-
+## get dependencies
 ```` bash
-# get dependencies
 ansible-galaxy install -r requirements.yml -p roles --ignore-errors
-
-# Clone repo
+````
+## Clone repo
+```` bash
 git clone --recurse-submodules git@github.com:fablab-ka/ansible-flka.git
-
-# list all available facts for a host
+````
+## list all available facts for a host
+```` bash
 ansible -m setup hostname
+````
+## run an playbook
+```` bash
+ansible-playbook --vault-password-file .vault_pass raspberry.yml -i hosts.yml
+ansible-playbook --vault-password-file .vault_pass tasmota.yml -i hosts.yml
+````
+or use makefile
+```` bash
+make raspberry
+make tasmota
+````
 
-# run an playbook
-ansible-playbook gpu-system.yml -i hosts
-
+## shortcuts with vault passfile
+first add to bashrc
+```` bash
+function avault() { ansible-vault "$1" --vault-password-file .vault_pass "$2";}
+function aplaybook() { ansible-playbook --vault-password-file .vault_pass -i hosts.yml "$@";}
+````
+then just use
+```` bash
+avault edit secrets.yml
+aplaybook tasmota.yml
 ````
