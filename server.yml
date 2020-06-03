@@ -1,0 +1,15 @@
+---
+- hosts: herbert
+  become: yes
+
+  roles:
+    - role: ssh-key
+      vars:
+         users: [root]
+         key_files: [public_keys/bauer-bauer, public_keys/bauer-zerbrechlich]
+    - pip-packages
+    - role: grafana
+      vars:
+        grafana_admin_password: "{{ vault_grafana_admin_password }}"
+
+
