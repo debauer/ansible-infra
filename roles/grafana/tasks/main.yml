@@ -1,0 +1,12 @@
+---
+- name: Create influxdb datasource
+  grafana_datasource:
+    name: "{{ item }}"
+    grafana_url: "http://{{ inventory_hostname | d('localhost') }}:3000"
+    grafana_user: "admin"
+    grafana_password: "synyx123"
+    ds_type: "influxdb"
+    ds_url: "http://{{ inventory_hostname | d('localhost') }}:8086"
+    database: "{{ item }}"
+    time_interval: ">10s"
+  with_items: "{{ influx_databases }}
