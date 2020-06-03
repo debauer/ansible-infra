@@ -5,7 +5,7 @@
   vars:
     tasmota_commands:
       - command: TelePeriod
-        value: 10
+        value: "{{ tele_period }}"
       - command: LedState
         value: 0
       - command: FriendlyName
