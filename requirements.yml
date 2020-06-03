@@ -3,3 +3,6 @@ roles:
   - name: ansible-tasmota
     src: https://github.com/tobias-richter/ansible-tasmota
     version: master
+
+  - src: https://github.com/debauer/ansible-grafana
+    name: ansible-grafana

@@ -16,11 +16,13 @@ ansible -m setup hostname
 ```` bash
 ansible-playbook --vault-password-file .vault_pass raspberry.yml -i hosts.yml
 ansible-playbook --vault-password-file .vault_pass tasmota.yml -i hosts.yml
+ansible-playbook --vault-password-file .vault_pass x86.yml -i hosts.yml
 ````
 or use makefile
 ```` bash
 make raspberry
 make tasmota
+make herbert
 ````
 
 ## shortcuts with vault passfile

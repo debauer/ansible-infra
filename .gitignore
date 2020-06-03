@@ -1,3 +1,4 @@
 roles/ansible-tasmota
+roles/ansible-grafana
 .idea
 .vault_pass
