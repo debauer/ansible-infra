@@ -1,0 +1,3 @@
+---
+update_dhcp_leases: false
+update_dns: false
