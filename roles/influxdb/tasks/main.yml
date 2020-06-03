@@ -25,7 +25,7 @@
   uri:
     url: "http://{{ inventory_hostname }}:8086/query"
     method: POST
-    body: "q=CREATE USER automodal WITH PASSWORD 'supersecretpasswort' WITH ALL PRIVILEGES"
+    body: "q=CREATE USER admin WITH PASSWORD '{{ influx_admin_password }}' WITH ALL PRIVILEGES"
 
 - name: create datebases
   uri:

@@ -1,13 +1,21 @@
 ---
 - hosts: herbert
   become: yes
+  vars_files:
+    - ./vars/secrets.yml
 
   roles:
     - role: ssh-key
       vars:
          users: [root]
          key_files: [public_keys/bauer-bauer, public_keys/bauer-zerbrechlich]
-    - pip-packages
+#    - pip-packages
+    - role: influxdb
+      vars:
+        influx_admin_password: "{{ vault_influx_admin_password }}"
+#    - role: tasmota-grafana
+#      vars:
+#        grafana_admin_password: "{{ vault_grafana_admin_password }}"
     - role: grafana
       vars:
         grafana_admin_password: "{{ vault_grafana_admin_password }}"
