@@ -1,12 +1,34 @@
 ---
 - name: Create influxdb datasource
   grafana_datasource:
-    name: "{{ item }}"
-    grafana_url: "http://{{ inventory_hostname | d('localhost') }}:3000"
+    name: "{{ item.name }}"
+    grafana_url: "http://{{ inventory_hostname | d('localhost') }}:{{ grafana_http_port }}"
     grafana_user: "admin"
     grafana_password: "{{ grafana_admin_password}}"
     ds_type: "influxdb"
     ds_url: "http://{{ inventory_hostname | d('localhost') }}:8086"
-    database: "{{ item }}"
+    database: "{{ item.db }}"
     time_interval: ">10s"
-  with_items: "{{ influx_databases }}"
+    is_default: "{{ item.default | d('false') }}"
+  with_items: "{{ grafana_datasources }}"
+
+- name: enable anon access
+  block:
+    - ini_file:
+        path: /etc/grafana/grafana.ini
+        section: auth.anonymous
+        option: enabled
+        value: "true"
+        backup: yes
+    - ini_file:
+        path: /etc/grafana/grafana.ini
+        section: auth.anonymous
+        option: org_name
+        value: "Main Org."
+        backup: yes
+    - ini_file:
+        path: /etc/grafana/grafana.ini
+        section: auth.anonymous
+        option: org_role
+        value: "Viewer"
+        backup: yes
