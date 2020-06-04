@@ -5,17 +5,21 @@
     - ./vars/secrets.yml
 
   roles:
-    - role: ssh-key
+    - role: users
       vars:
-         users: [root]
-         key_files: [public_keys/bauer-bauer, public_keys/bauer-zerbrechlich]
-#    - pip-packages
+        users:
+          - { name: keya }
+          - { name: debauer }
+        key_files:
+          - public_keys/bauer-bauer
+          - public_keys/bauer-zerbrechlich
+    - role: packages
     - role: influxdb
       vars:
         influx_admin_password: "{{ vault_influx_admin_password }}"
-#    - role: tasmota-grafana
-#      vars:
-#        grafana_admin_password: "{{ vault_grafana_admin_password }}"
+    - role: ansible-grafana
+      vars:
+        grafana_admin_password: "{{ vault_grafana_admin_password }}"
     - role: grafana
       vars:
         grafana_admin_password: "{{ vault_grafana_admin_password }}"

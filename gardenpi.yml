@@ -9,5 +9,16 @@
         line: "disable_camera_led=0"
 
   roles:
-    - basic
-    - picam
+    - role: users
+      vars:
+        users:
+          - { name: root }
+          - { name: keya }
+          - { name: debauer }
+        key_files:
+          - public_keys/bauer-bauer
+          - public_keys/bauer-zerbrechlich
+    - role: packages
+      vars:
+        - update_apt: true
+    - role: picam
