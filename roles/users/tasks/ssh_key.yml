@@ -1,0 +1,9 @@
+---
+- name: Set up ssh keys
+  authorized_key:
+    user: "{{ user }}"
+    state: present
+    key: '{{ loop_file }}'
+  with_file: "{{ key_files}} "
+  loop_control:
+    loop_var: loop_file

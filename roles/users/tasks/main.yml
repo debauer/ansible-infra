@@ -1,0 +1,29 @@
+---
+
+- name: Adding users
+  user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell | d('/bin/bash') }}"
+    groups: "{{ item.groups | d('') }}"
+    append: yes
+  with_items: "{{ users }}"
+
+- name: Set up ssh keys for users
+  include: ssh_key.yml user="{{ item.name }}"
+  with_items: "{{ users }}"
+
+- name: Set up ssh keys for root
+  include: ssh_key.yml user=root
+
+- name: Disable Password Authentication
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp='^PasswordAuthentication'
+    line="PasswordAuthentication no"
+    state=present
+    backup=yes
+
+- name: restart ssh
+  service:
+    name=sshd
+    state=restarted
