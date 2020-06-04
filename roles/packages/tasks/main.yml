@@ -1,26 +1,52 @@
 ---
-- name:  copy auth keys on host
-  copy:
-    src: files/authorized_keys
-    dest: "{{ item }}/.ssh/authorized_keys"
-  with_items:
-  - /root
-  - /home/pi
-  when: copy_keys_to_hosts
+- name: APT Packages
+  block:
+    - name:  copy auth keys on host
+      copy:
+        src: files/authorized_keys
+        dest: "{{ item }}/.ssh/authorized_keys"
+      with_items:
+      - /root
+      - /home/pi
+      when: copy_keys_to_hosts
 
-- name: Update and upgrade apt packages
-  apt:
-    update_cache: yes
-    upgrade: "{{ apt_upgrade }}"
-    autoremove: yes
-  when: ansible_pkg_mgr == 'apt'
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: "{{ apt_upgrade }}"
+        autoremove: yes
+      when: ansible_pkg_mgr == 'apt'
 
-- name: Remove base packages
-  package:
-    name: "{{ packages.remove }}"
-    state: absent
+    - name: Remove base packages
+      package:
+        name: "{{ packages.remove }}"
+        state: absent
 
-- name: Install common packages
-  package:
-    name: "{{ packages.common }}"
-    state: present
+    - name: Install common packages
+      package:
+        name: "{{ packages.common + packages.additional }}"
+        state: present
+  when:
+    - update_apt
+    - ansible_facts['os_family'] == "Debian" or ansible_facts['os_family'] == "Ubuntu"
+
+- name: PIP Packages
+  block:
+    - name: install general pip dependencies
+      become: yes
+      become_user: '{{ item }}'
+      pip:
+        name: "{{ packages.for_users + packages.for_user_additional }}"
+        state: present
+        executable: /usr/bin/pip3
+      with_items: "{{ users }}"
+
+    - name: install general pip dependencies for default python3
+      become: yes
+      become_user: 'root'
+      pip:
+        name: "{{ packages.for_root + packages.for_root_additional }}"
+        state: present
+        executable: /usr/bin/pip3
+      with_items: "{{ users }}"
+  when: update_pip

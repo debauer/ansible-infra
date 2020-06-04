@@ -2,7 +2,11 @@
 apt_upgrade: "no"
 apt_autoremove: true
 copy_keys_to_hosts: true
-packages:
+
+update_apt: false
+update_pip: false
+
+apt_packages:
   common:
     - htop
     - iotop
@@ -15,6 +19,17 @@ packages:
     - gzip
     - unzip
     - python3-apt
+  additional: []
 
   remove: []
 
+pip_packages:
+  for_users:
+    - matplotlib
+    - numpy
+    - imutils
+    - requests
+    - progressbar2
+  for_user_additional: []
+  for_root: []
+  for_root_additional: []
