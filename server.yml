@@ -3,8 +3,13 @@
   become: yes
   vars_files:
     - ./vars/secrets.yml
+  vars:
+    influx_admin_password: "{{ vault_influx_admin_password }}"
+    grafana_admin_password: "{{ vault_grafana_admin_password }}"
 
   roles:
+    - role: projects
+    - role: hass
     - role: users
       vars:
         users:
@@ -14,14 +19,10 @@
           - public_keys/bauer-bauer
           - public_keys/bauer-zerbrechlich
     - role: packages
+      vars:
+        apt_additional:
+          - mosquitto
+          - mosquitto-clients
+        update_apt: false
     - role: influxdb
-      vars:
-        influx_admin_password: "{{ vault_influx_admin_password }}"
-    - role: ansible-grafana
-      vars:
-        grafana_admin_password: "{{ vault_grafana_admin_password }}"
     - role: grafana
-      vars:
-        grafana_admin_password: "{{ vault_grafana_admin_password }}"
-
-
