@@ -1,0 +1,40 @@
+---
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ project.apt_packages | d([]) }}"
+
+- name: create user
+  user:
+    name: "{{ project.name }}"
+    home: "/home/{{ project.name }}"
+    shell: /bin/false
+    system: yes
+    state: present
+
+- name: setup git repo
+  git:
+    repo: '{{ project.url }}'
+    dest: "/home/{{ project.name }}/{{ project.name }}"
+    version: '{{ project.branch | d("master") }}'
+  when: project.url is defined
+
+- name: install python packages
+  pip:
+    requirements: "/home/{{ project.name }}/{{ project.name }}/requirements.txt"
+    virtualenv: "/home/{{ project.name }}/venv"
+    virtualenv_python: python3
+
+- name: copy systemd service file
+  copy:
+    remote_src: yes
+    src: "/home/{{ project.name }}/{{ project.name }}/{{ project.name }}.service"
+    dest: "/etc/systemd/system/{{ project.name }}.service"
+
+- name: enable service and start it
+  systemd:
+    name: "{{ project.name }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

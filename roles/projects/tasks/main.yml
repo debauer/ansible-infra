@@ -1,0 +1,4 @@
+---
+- name: Set up project
+  include: setup.yml project="{{ item }}"
+  with_items: "{{ projects }}"
