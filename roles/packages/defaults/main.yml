@@ -6,8 +6,7 @@ copy_keys_to_hosts: true
 update_apt: false
 update_pip: false
 
-apt_packages:
-  common:
+apt_common:
     - htop
     - iotop
     - gcc 
@@ -19,17 +18,15 @@ apt_packages:
     - gzip
     - unzip
     - python3-apt
-  additional: []
+apt_additional: []
+apt_remove: []
 
-  remove: []
-
-pip_packages:
-  for_users:
+pip_for_users:
     - matplotlib
     - numpy
     - imutils
     - requests
     - progressbar2
-  for_user_additional: []
-  for_root: []
-  for_root_additional: []
+pip_for_user_additional: []
+pip_for_root: []
+pip_for_root_additional: []
