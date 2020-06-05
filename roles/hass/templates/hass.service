@@ -1,0 +1,11 @@
+[Unit]
+Description=Hass
+After=network.target
+
+[Service]
+User=hass
+ExecStart=/home/hass/venv/bin/hass
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
