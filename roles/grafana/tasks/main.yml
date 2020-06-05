@@ -1,7 +1,12 @@
 ---
+- name: install grafana
+  include_role:
+    name: ansible-grafana
+  when: install_grafana
+
 - name: Create influxdb datasource
   grafana_datasource:
-    name: "{{ item.name }}"
+    name: "{{ item.name | d( item.db ) }}"
     grafana_url: "http://{{ inventory_hostname | d('localhost') }}:{{ grafana_http_port }}"
     grafana_user: "admin"
     grafana_password: "{{ grafana_admin_password}}"
@@ -11,6 +16,7 @@
     time_interval: ">10s"
     is_default: "{{ item.default | d('false') }}"
   with_items: "{{ grafana_datasources }}"
+  changed_when: False
 
 - name: enable anon access
   block:
