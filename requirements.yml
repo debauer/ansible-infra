@@ -6,3 +6,12 @@ roles:
 
   - src: https://github.com/debauer/ansible-grafana
     name: ansible-grafana
+
+  - src: https://github.com/Oefenweb/ansible-duply
+    name: ansible-duply
+
+  - src: https://github.com/Oefenweb/ansible-duplicity
+    name: ansible-duplicity
+
+  - src: https://github.com/borgbase/ansible-role-borgbackup
+    name: ansible-borg
