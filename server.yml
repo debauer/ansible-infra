@@ -26,3 +26,19 @@
         update_apt: false
     - role: influxdb
     - role: grafana
+    - role: ansible-borg
+      borg_encryption_passphrase: "{{vault_borg_pass}}"
+      borg_repository: /media/ext_backup/herbert/borg
+      borg_source_directories:
+#        - /home
+        - /media/raid1
+#        - /media/raid5
+      borg_exclude_patterns:
+        - /media/raid5/medien
+        - /media/raid5/backups
+        - /media/raid1/kamera/Videos
+      borg_retention_policy:
+        keep_hourly: 3
+        keep_daily: 7
+        keep_weekly: 4
+        keep_monthly: 6
