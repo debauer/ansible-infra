@@ -1,0 +1,40 @@
+---
+- hosts: herbert
+  become: yes
+  vars_files:
+    - ./vars/secrets.yml
+  vars:
+    influx_admin_password: "{{ vault_influx_admin_password }}"
+    grafana_admin_password: "{{ vault_grafana_admin_password }}"
+    borg_encryption_passphrase: "{{vault_borg_pass}}"
+    apt_additional:
+      - mosquitto
+      - mosquitto-clients
+    update_apt: false
+    users:
+      - { name: keya }
+      - { name: debauer }
+
+  roles:
+    - role: basic/projects
+    - role: basic/users
+    - role: basic/packages
+
+    - role: monitoring/influxdb
+    - role: monitoring/grafana
+
+    - role: backup/rsync
+    - role: backup/ansible-borg
+      borg_repository: /media/ext_backup/herbert/borg
+      borgmatic_config_name: usb
+      borg_source_directories:
+        - /media/raid1
+      borg_exclude_patterns:
+        - /media/raid5/medien
+        - /media/raid5/backups
+        - /media/raid1/kamera/Videos
+    - role: backup/ansible-borg
+      borg_repository: ssh://u220998@u220998.your-storagebox.de:23/./backups/herbert
+      borgmatic_config_name: hetzner
+      borg_source_directories:
+        - /media/raid1/files

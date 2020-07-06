@@ -15,3 +15,7 @@ roles:
 
   - src: https://github.com/borgbase/ansible-role-borgbackup
     name: ansible-borg
+
+  - src: https://github.com/bithium/ansible-role-lighttpd
+    name: ansible-lighttpd
+

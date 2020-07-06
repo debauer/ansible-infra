@@ -1,0 +1,17 @@
+---
+- name: move file to host
+  copy:
+    src: "{{ backup_script }}"
+    dest: /root/backup_script.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: setup cron
+  cron:
+    name: backup
+    minute: "1"
+    hour: "2"
+    user: root
+    job: "/root/backup_script.sh"
+    cron_file: backup-script

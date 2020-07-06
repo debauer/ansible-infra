@@ -1,0 +1,42 @@
+---
+- name: Download gogs binary
+  become_user: "{{ gogs_user }}"
+  unarchive:
+    src: "{{ gogs_download_url }}"
+    dest: "/home/{{ gogs_user }}/"
+    remote_src: yes
+  when: "{{ gogs_install_binary }}"
+
+- name: copy systemd service file
+  copy:
+    src: "files/gogs.service"
+    dest: "/etc/systemd/system/gogs.service"
+    mode: '0755'
+
+- name: enable service and start it
+  systemd:
+    name: "gogs"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: copy lighty configs to server
+  copy:
+    src: "files/{{ item }}"
+    dest: "/etc/lighttpd/conf-available/{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - 10-gogs.conf
+
+- name: enable modules
+  command: "lighty-enable-mod {{ item }}"
+  with_items:
+    - gogs
+  ignore_errors: True
+
+- name: restart lighttpd
+  service:
+    name: lighttpd
+    state: restarted

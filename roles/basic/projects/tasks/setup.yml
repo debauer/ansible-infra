@@ -18,6 +18,7 @@
     repo: '{{ project.url }}'
     dest: "/home/{{ project.name }}/{{ project.name }}"
     version: '{{ project.branch | d("master") }}'
+    #update: '{{ project.update | d(true) }}'
   when: project.url is defined
 
 - name: install python packages

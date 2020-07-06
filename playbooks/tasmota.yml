@@ -5,5 +5,5 @@
     - ./vars/secrets.yml
 
   roles:
-    - tasmota
+    - iot/tasmota
 

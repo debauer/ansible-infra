@@ -1,0 +1,13 @@
+---
+- hosts: git
+  become: yes
+  vars_files:
+    - ./vars/secrets.yml
+
+  roles:
+#    - role: users
+#    - role: packages
+#      vars:
+#        - update_apt: true
+#    - role: ansible-lighttpd
+    - role: gogs
