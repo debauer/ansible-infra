@@ -1,6 +1,4 @@
-roles/vms/ansible-*
-roles/monitoring/ansible-*
-roles/iot/ansible-*
-roles/backup/ansible-*
+roles/*/ansible-*
+roles/ansible-*
 .idea
 .vault_pass

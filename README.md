@@ -36,3 +36,9 @@ then just use
 avault edit secrets.yml
 aplaybook tasmota.yml
 ````
+
+## todo
+
+minidlna (obsolete?)
+samba
+backup deployment

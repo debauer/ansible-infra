@@ -1,0 +1,9 @@
+---
+- hosts: storagebox
+  become: yes
+  vars_files:
+    - ../vars/secrets.yml
+
+ # roles:
+ #   - role: roles/basic/users
+      #ssh://u220998@u220998.your-storagebox.de:23/./backups/herbert

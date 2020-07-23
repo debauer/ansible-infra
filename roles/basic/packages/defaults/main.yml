@@ -3,8 +3,9 @@ apt_upgrade: "no"
 apt_autoremove: true
 copy_keys_to_hosts: true
 
-update_apt: false
-update_pip: false
+apt_install_common: false
+
+pip_install: false
 
 apt_common:
     - htop
@@ -17,7 +18,7 @@ apt_common:
     - git
     - gzip
     - unzip
-    - python3-apt
+    - rsync
 apt_additional: []
 apt_remove: []
 

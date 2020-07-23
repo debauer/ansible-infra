@@ -15,10 +15,15 @@
 
     - name: Install common packages
       package:
-        name: "{{ apt_common + apt_additional }}"
+        name: "{{ apt_common }}"
+        state: present
+      when: apt_install_common
+
+    - name: Install additinal packages
+      package:
+        name: "{{ apt_additional }}"
         state: present
   when:
-    - update_apt
     - ansible_facts['os_family'] == "Debian" or ansible_facts['os_family'] == "Ubuntu"
 
 - name: PIP Packages
@@ -40,4 +45,4 @@
         state: present
         executable: /usr/bin/pip3
       with_items: "{{ users }}"
-  when: update_pip
+  when: pip_install
