@@ -8,5 +8,5 @@
     - role: roles/basic/users
     - role: roles/basic/packages
       vars:
-        - apt_install_common: true
+        - apt_install_common: false
     - role: roles/backup/rsync

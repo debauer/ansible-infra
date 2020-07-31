@@ -1,4 +1,2 @@
 #!/bin/bash
-#rsync -axP --delete /home /media/ext_backup/herbert
-#rsync -axP --delete /media/raid1 /media/ext_backup/herbert
-#rsync -axP --delete /media/raid5 /media/ext_backup/herbert
+rsync --progress -ax -e 'ssh -p23' /var/vmail u220998@u220998.your-storagebox.de:./backups/mail/var/vmail
