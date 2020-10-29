@@ -13,3 +13,5 @@ roles:
   - src: https://github.com/morbidick/ansible-role-nginx-vhosts
     name: vms/ansible-nginx
 
+  - src: https://github.com/debauer/ansible-ssmtp
+    name: basic/ansible-ssmtp
