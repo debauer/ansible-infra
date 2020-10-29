@@ -1,9 +1,6 @@
 ---
-- hosts: storagebox
-  become: yes
-  vars_files:
-    - ../vars/secrets.yml
-
- # roles:
- #   - role: roles/basic/users
-      #ssh://u220998@u220998.your-storagebox.de:23/./backups/herbert
+- name: 'run local pre-deployment script'
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - local_action: script ../scripts/copy_keys_to_storagebox.sh
