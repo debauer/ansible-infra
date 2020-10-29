@@ -2,11 +2,18 @@
 - hosts: herbert
   become: yes
   vars_files:
-    - ./vars/secrets.yml
+    - ../vars/secrets.yml
   vars:
     influx_admin_password: "{{ vault_influx_admin_password }}"
     grafana_admin_password: "{{ vault_grafana_admin_password }}"
     borg_encryption_passphrase: "{{vault_borg_pass}}"
+    msmtp_accounts:
+      - account: "noreply"
+        host: mail.debauer.net
+        port: 587
+        auth: "on"
+        user: noreply@kaltmacher.de
+        password: "{{ vault_system_mail_pass }}"
     apt_additional:
       - mosquitto
       - mosquitto-clients
@@ -16,15 +23,15 @@
       - { name: debauer }
 
   roles:
-    - role: basic/projects
-    - role: basic/users
-    - role: basic/packages
+    - role: roles/basic/projects
+    - role: roles/basic/users
+    - role: roles/basic/packages
 
-    - role: monitoring/influxdb
-    - role: monitoring/grafana
+    - role: roles/monitoring/influxdb
+    - role: roles/monitoring/grafana
 
-    - role: backup/rsync
-    - role: backup/ansible-borg
+    - role: roles/backup/rsync
+    - role: roles/backup/ansible-borg
       borg_repository: /media/ext_backup/herbert/borg
       borgmatic_config_name: usb
       borg_source_directories:
@@ -33,8 +40,10 @@
         - /media/raid5/medien
         - /media/raid5/backups
         - /media/raid1/kamera/Videos
-    - role: backup/ansible-borg
+    - role: roles/backup/ansible-borg
       borg_repository: ssh://u220998@u220998.your-storagebox.de:23/./backups/herbert
       borgmatic_config_name: hetzner
       borg_source_directories:
-        - /media/raid1/files
+        - /media/raid1/templates
+    - role: roles/basic/msmtp
+
