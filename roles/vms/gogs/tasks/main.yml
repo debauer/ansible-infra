@@ -9,7 +9,7 @@
 
 - name: copy systemd service file
   copy:
-    src: "files/gogs.service"
+    src: "templates/gogs.service"
     dest: "/etc/systemd/system/gogs.service"
     mode: '0755'
 
@@ -22,7 +22,7 @@
 
 - name: copy lighty configs to server
   copy:
-    src: "files/{{ item }}"
+    src: "templates/{{ item }}"
     dest: "/etc/lighttpd/conf-available/{{ item }}"
     owner: root
     group: root
