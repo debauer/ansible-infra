@@ -7,11 +7,22 @@
     group: root
     mode: '0755'
 
+- name: move additional files to host
+  copy:
+    src: "{{ item }}"
+    dest: "/root/{{ item }}"
+    owner: root
+    group: root
+    mode: '0755'
+  with_items:
+    - "{{ backup_extra_files }}"
+  when: backup_extra_files is defined
+
 - name: setup cron
   cron:
     name: backup
-    minute: "1"
-    hour: "2"
+    minute: "{{ minute }}"
+    hour: "{{ hour }}"
     user: root
     job: "/root/backup_script.sh"
     cron_file: backup-script
