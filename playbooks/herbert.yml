@@ -21,6 +21,7 @@
     users:
       - { name: keya }
       - { name: debauer }
+      - { name: iobroker, groups: [docker] }
 
   roles:
     - role: roles/basic/projects
