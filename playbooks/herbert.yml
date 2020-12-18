@@ -33,7 +33,7 @@
     - role: roles/backup/rsync
     - role: roles/backup/ansible-borg
       borg_repository: /media/ext_backup/herbert/borg
-      borgmatic_config_name: usb
+      borgmatic_config_name: usb.yaml
       borg_source_directories:
         - /media/raid1
       borg_exclude_patterns:
@@ -42,8 +42,8 @@
         - /media/raid1/kamera/Videos
     - role: roles/backup/ansible-borg
       borg_repository: ssh://u220998@u220998.your-storagebox.de:23/./backups/herbert
-      borgmatic_config_name: hetzner
+      borgmatic_config_name: hetzner.yaml
       borg_source_directories:
-        - /media/raid1/templates
+        - /media/raid1/files
     - role: roles/basic/msmtp
 
