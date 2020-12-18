@@ -7,8 +7,9 @@ roles:
   - src: https://github.com/debauer/ansible-grafana
     name: monitoring/ansible-grafana
 
-  - src: https://github.com/borgbase/ansible-role-borgbackup
+  - src: https://github.com/debauer/ansible-role-borgbackup
     name: backup/ansible-borg
+    version: multiple-configs-and-crons
 
   - src: https://github.com/morbidick/ansible-role-nginx-vhosts
     name: vms/ansible-nginx
