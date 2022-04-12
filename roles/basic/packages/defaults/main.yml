@@ -19,15 +19,11 @@ apt_common:
     - gzip
     - unzip
     - rsync
+    - 
 apt_additional: []
 apt_remove: []
 
-pip_for_users:
-    - matplotlib
-    - numpy
-    - imutils
-    - requests
-    - progressbar2
+pip_for_users: []
 pip_for_user_additional: []
 pip_for_root: []
 pip_for_root_additional: []

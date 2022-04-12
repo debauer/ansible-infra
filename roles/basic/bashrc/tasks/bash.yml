@@ -1,0 +1,15 @@
+---
+
+- name: copy bashrc to system
+  copy:
+    src: files/bashrc
+    dest: /home/{{ user }}/.bashrc
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '0644'
+
+- name: set username in bashrc
+  replace:
+    path: /home/{{ user }}/.bashrc
+    regexp: REPLACE_THIS_USERNAME
+    replace: '{{ user }}'

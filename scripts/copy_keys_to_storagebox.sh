@@ -10,3 +10,4 @@ do
   fi
 done;
 rsync --progress -ax -e 'ssh -p23' "$FOLDER/$FILE" u220998@u220998.your-storagebox.de:./.ssh/authorized_keys
+rm "$FOLDER/$FILE"

@@ -12,7 +12,7 @@
         host: mail.debauer.net
         port: 587
         auth: "on"
-        user: noreply@kaltmacher.de
+        user: "{{ vault_system_mail_address }}"
         password: "{{ vault_system_mail_pass }}"
     apt_additional:
       - mosquitto
@@ -24,27 +24,25 @@
       - { name: iobroker, groups: [docker] }
 
   roles:
-    - role: roles/basic/projects
-    - role: roles/basic/users
-    - role: roles/basic/packages
+#   - role: roles/basic/projects
+#   - role: roles/basic/users
+#   - role: roles/basic/packages
 
-    - role: roles/monitoring/influxdb
-    - role: roles/monitoring/grafana
+#   - role: roles/monitoring/influxdb
+#   - role: roles/monitoring/grafana
 
-    - role: roles/backup/rsync
+#   - role: roles/backup/rsync
     - role: roles/backup/ansible-borg
       borg_repository: /media/ext_backup/herbert/borg
       borgmatic_config_name: usb.yaml
       borg_source_directories:
         - /media/raid1
-      borg_exclude_patterns:
-        - /media/raid5/medien
-        - /media/raid5/backups
-        - /media/raid1/kamera/Videos
     - role: roles/backup/ansible-borg
       borg_repository: ssh://u220998@u220998.your-storagebox.de:23/./backups/herbert
       borgmatic_config_name: hetzner.yaml
       borg_source_directories:
-        - /media/raid1/files
-    - role: roles/basic/msmtp
+        - /media/raid1
+      borg_exclude_patterns:
+        - /media/raid1/debauer/Videos David
+#    - role: roles/basic/msmtp
 

@@ -13,6 +13,6 @@ msmtp_from           : "default"
 msmtp_log           : "file" # oder "syslog"
 msmtp_logfile       : /var/log/msmtp.log
 
-msmtp_alias_default : root@
-msmtp_alias_root    : server.default@debauer.net
-msmtp_alias_cron    : root@
+msmtp_alias_default : server.herbert@debauer.net
+msmtp_alias_root    : server.herbert@debauer.net
+msmtp_alias_cron    : server.herbert@debauer.net

@@ -1,19 +1,11 @@
 ---
 
-- name: Adding users
-  user:
-    name: "{{ item.name }}"
-    shell: "{{ item.shell | d('/bin/bash') }}"
-    groups: "{{ item.groups | d('') }}"
-    append: yes
-  with_items: "{{ users }}"
-
-- name: Set up ssh keys for users
-  include: ssh_key.yml user="{{ item.name }}"
-  with_items: "{{ users }}"
-
-- name: Set up ssh keys for root
-  include: ssh_key.yml user=root
+- name: add users
+  include: user.yml user="{{ loop_user }}"
+  with_items: '{{ users }}'
+  loop_control:
+    loop_var: loop_user
+  when: not "{{ loop_user }}" == "root"
 
 - name: Disable Password Authentication
   lineinfile:

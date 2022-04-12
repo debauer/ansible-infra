@@ -1,2 +1,5 @@
 ---
 users: []
+user_groups: []
+user_default_groups: []
+copy_keys: no

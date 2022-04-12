@@ -1,0 +1,14 @@
+---
+- hosts: herbert
+  become: yes
+  vars_files:
+    - ../vars/secrets.yml
+  vars:
+    influx_admin_password: "{{ vault_influx_admin_password }}"
+    grafana_admin_password: "{{ vault_grafana_admin_password }}"
+    update_apt: false
+
+  roles:
+    - role: roles/monitoring/influxdb
+    - role: roles/monitoring/grafana
+

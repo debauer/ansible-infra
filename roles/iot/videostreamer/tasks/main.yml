@@ -1,0 +1,20 @@
+---
+- name: clone git repo
+  become_user: "videostreamer"
+  git:
+    repo: https://github.com/horgh/videostreamer
+    dest: "/home/videostreamer/videostreamer"
+    force: yes
+
+- name: copy compose file to system
+  copy:
+    src: files/docker-compose.yml
+    dest: "/home/videostreamer/videostreamer/docker-compose.yml"
+    owner: "videostreamer"
+    group: "videostreamer"
+    mode: '0644'
+
+- name: start the dockers!!!
+  become_user: "videostreamer"
+  docker_compose:
+    project_src: "/home/videostreamer/videostreamer/"

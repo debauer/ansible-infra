@@ -1,0 +1,8 @@
+---
+
+- name: copy bash config to users home
+  include: bash.yml user="{{ loop_user }}"
+  with_items: '{{ users }}'
+  loop_control:
+    loop_var: loop_user
+  when: not "{{ loop_user }}" == "root"
