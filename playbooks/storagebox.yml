@@ -1,6 +1,0 @@
----
-- name: 'run local pre-deployment script'
-  hosts: localhost
-  gather_facts: no
-  tasks:
-    - local_action: script ../scripts/copy_keys_to_storagebox.sh

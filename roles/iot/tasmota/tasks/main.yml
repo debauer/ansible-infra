@@ -1,7 +1,12 @@
 ---
+- name: set tasmota_host to ip
+  set_fact:
+    tasmota_host: "{{ ip }}"
+
+
 - name: set some basic settings
   include_role:
-    name: ansible-tasmota
+    name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands:
       - command: TelePeriod
@@ -10,8 +15,10 @@
         value: 0
       - command: FriendlyName
         value: "{{ friendly_name | default(inventory_hostname) }}"
-#      - command: Hostname
-#        value: "{{ inventory_hostname }}"
+      - command: DeviceName
+        value: "{{ friendly_name | default(inventory_hostname) }}"
+      - command: Hostname
+        value: "{{ inventory_hostname }}"
       - command: SetOption21 # Energy monitoring when power is off
         value: 1
       - command: SetOption53 # Display hostname and IP address in GUI
@@ -19,9 +26,15 @@
       - command: Timers
         value: "{{ timers_active }}"
 
+- name: set some more settings
+  include_role:
+    name: roles/iot/ansible-tasmota
+  vars:
+    tasmota_commands: "{{ commands }}"
+
 - name: set timer
   include_role:
-    name: ansible-tasmota
+    name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands:
       - command: "Timer{{ timer_id + 1 }}"
@@ -33,7 +46,7 @@
 
 - name: set the mqtt settings
   include_role:
-    name: ansible-tasmota
+    name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands:
       - command: Backlog
@@ -45,7 +58,7 @@
 
 - name: set the network settings
   include_role:
-    name: ansible-tasmota
+    name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands:
       - command: Backlog
@@ -55,7 +68,7 @@
 
 - name: set the wifi1 settings
   include_role:
-    name: ansible-tasmota
+    name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands:
       - command: Backlog
@@ -64,7 +77,7 @@
 
 - name: set the wifi2 settings
   include_role:
-    name: ansible-tasmota
+    name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands:
       - command: Backlog
@@ -73,7 +86,7 @@
 
 - name: restart the device
   include_role:
-    name: ansible-tasmota
+    name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands:
       - command: restart

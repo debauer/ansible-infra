@@ -1,0 +1,7 @@
+dhcp-host=host,{{ hostvars["herman"].lxc_host }}
+{% for item in container_list %}
+dhcp-host={{ item }},{{ hostvars[item].ansible_host }}
+{% endfor %}
+{% for item in hostvars["herman"].docker %}
+dhcp-host={{ item }},{{ hostvars["herman"].docker[item].ip }}
+{% endfor %}

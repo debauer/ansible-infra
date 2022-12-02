@@ -6,7 +6,7 @@ ansible-galaxy install -r requirements.yml -p roles --ignore-errors
 ````
 ## Clone repo
 ```` bash
-git clone --recurse-submodules git@github.com:fablab-ka/ansible-flka.git
+git clone --recurse-submodules git@github.com:debauer/ansible-server.git
 ````
 ## list all available facts for a host
 ```` bash

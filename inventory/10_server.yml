@@ -1,0 +1,42 @@
+--- 
+all:
+  children:
+    blech:
+      hosts:
+        hermine:
+          ansible_host: 192.168.1.112
+        herbert:
+          ansible_host: 192.168.1.101
+          projects:
+            - name: hmtoinflux
+              user: hmtoinflux
+              url: https://github.com/debauer/HomematicToInflux
+              install_requirements_txt: yes
+              # branch: release-branch # master is default
+              # update: no # yes is default
+            - name: tasmotatoinflux
+              user: tasmotatoinflux
+              url: https://github.com/debauer/tasmotaToInflux
+              install_requirements_txt: yes
+          influx_databases:
+            - tasmotaToInflux
+            - homematicToInflux
+            - unifi
+            - telegraf
+            - tasmotaAggregated
+            - octoprint
+            - sensors
+          grafana_datasources:
+            - { db: tasmotaToInflux, name: tasmota}
+            - { db: homematicToInflux, name: homematic, default: true }
+            - { db: unifi }
+            - { db: telegraf }
+            - { db: tasmotaAggregated }
+            - { db: octoprint }
+            - { db: sensors }
+          grafana_admin_user: admin
+          backup_script: backup_herbert.sh
+        herman:
+          ansible_host: herman.debauer.net
+          ansible_user: debauer
+          lxc_host: 192.168.111.1

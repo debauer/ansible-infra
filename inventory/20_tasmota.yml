@@ -1,0 +1,136 @@
+all:
+  children:
+    tasmota:
+      children:
+        steckdosen:
+          hosts:
+            steckdose01:
+              friendly_name: Kämmerle
+              ip: 192.168.1.170
+              module: 45 #blitzwolf SHP / gosund SP111
+              mac: 4C:11:AE:04:2B:D3
+              version: v7
+            steckdose02:
+              friendly_name: Kuehlschrank
+              ip: 192.168.1.171
+              module: 45 #blitzwolf SHP / gosund SP111
+              mac: BC:DD:C2:30:2F:B1
+              version: v12
+            steckdose03:
+              friendly_name: Geschirrspueler
+              ip: 192.168.1.172
+              module: 45 #blitzwolf SHP / gosund SP111
+              version: v7
+            steckdose04:
+              friendly_name: Gefriertruhe
+              ip: 192.168.1.173
+              module: 45 #blitzwolf SHP / gosund SP111
+              mac: CC:50:E3:37:62:0A
+              #timer: ['{"Arm":1,"Mode":0,"Time":"08:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":1}',
+              #        '{"Arm":1,"Mode":0,"Time":"00:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":0}',
+              #        0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            steckdose05:
+              friendly_name: "Nachttisch Nadine"
+              ip: 192.168.1.174
+              module: 55 #gosund SP1
+              mac: 24:62:AB:30:A5:24
+            steckdose06:
+              friendly_name: Fernseher
+              ip: 192.168.1.175
+              module: 55 #gosund SP1
+              mac: D8:F1:5B:AB:44:BC
+            steckdose07:
+              friendly_name: "Arbeitsplatz David"
+              ip: 192.168.1.176
+              module: 55 #gosund SP1
+              mac: DC:4F:22:B6:B6:A5        
+              commands:
+              - command: CurrentCal
+                value: 3500
+            steckdose08:
+              friendly_name: "Nachtisch David"
+              ip: 192.168.1.177
+              module: 55 #gosund SP1
+              mac: D8:F1:5B:C0:48:29
+              version: v12
+            steckdose09:
+              friendly_name: Kühlbox
+              ip: 192.168.1.178
+              module: 52 #teckin
+              mac: C4:4F:33:80:AA:B8
+              #timer: ['{"Arm":1,"Mode":0,"Time":"08:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":1}',
+              #        '{"Arm":1,"Mode":0,"Time":"20:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":0}',
+              #        0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            steckdose10:
+              friendly_name: Klimanlage
+              ip: 192.168.1.179
+              module: 52 #teckin
+            steckdose11:
+              friendly_name: Gefrierschrank
+              ip: 192.168.1.180
+              module: 52 #teckin
+              mac: 60:01:94:A4:CC:E3
+            steckdose12:
+              friendly_name: Bad
+              ip: 192.168.1.181
+              module: 45 #blitzwolf
+              mac: 24:62:AB:41:9D:A4
+              version: v12
+            steckdose13:
+              ip: 192.168.1.184
+              friendly_name: "3D Drucker"
+              module: 45 #blitzwolf
+              version: v12
+            steckdose14:
+              ip: 192.168.1.189
+              module: 45 #blitzwolf
+              version: v12
+            steckdose15:
+              ip: 192.168.1.190
+              module: 45 #blitzwolf
+              version: v12
+            sonoff4ch:
+              ip: 192.168.1.183
+              module: 7 # sonoff 4ch
+              version: v12
+          vars:
+            full_topic: "ew/steckdosen/%prefix%/%hostname%/"
+        sensoren:
+          hosts:
+            feinstaub01:
+              ip: 192.168.1.182
+              mac: EC:FA:BC:C5:15:FF
+              gpio: [0,101,0,70,6, 5,0,0,0,0 ,0,0,0,0,0 ,0]
+              # "GPIO0":{"0":"None"}
+              # "GPIO1":{"101":"SDS0X1 Tx"}
+              # "GPIO2":{"0":"None"}
+              # "GPIO3":{"70":"SDS0X1 Rx"}
+              # "GPIO4":{"6":"I2C SDA"}
+              # "GPIO5":{"5":"I2C SCL"}
+            co201:
+              ip: 192.168.1.186
+              mac: A4:CF:12:D9:0E:2C
+              gpio: [0,60,0,61,6, 5,0,0,0,0 ,0,0,0,0,0 ,0]
+              # "GPIO1":{"60":"MHZ Tx"}
+              # "GPIO3":{"61":"MHZ Rx"}
+              # "GPIO4":{"6":"I2C SDA"}
+              # "GPIO5":{"5":"I2C SCL"
+              tele_period: 20
+            teich:
+              ip: 192.168.1.188
+              mac: A4:CF:12:D9:0E:2C
+              gpio: [4,0,0,0,0, 0,0,0,0,0 ,0,0,0,0,0 ,0]
+              # GPIO0":{"4":"DS18x20"}
+            heizung-temperatur:
+              full_topic: "ug/temperaturen/%prefix%/heizung/"
+              ip: 192.168.1.185
+              gpio: [0,0,4,0,0, 0,0,0,0,0 ,0,0,0,0,0 ,0]
+              # GPIO2":{"4":"DS18x20"}
+            kueche:
+              ip: 192.168.1.187
+              mac: EC:FA:BC:C5:15:31
+              gpio: [5,0,6,0,0, 0,0,0,0,0 ,0,0,0,0,0 ,0]
+              # "GPIO0":{"5":"I2C SCL"}
+              # "GPIO2":{"6":"I2C SDA"}
+
+

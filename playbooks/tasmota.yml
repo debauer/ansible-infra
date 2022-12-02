@@ -1,9 +1,9 @@
 ---
-- hosts: steckdose11
+- hosts: tasmota
   gather_facts: no
   vars_files:
-    - ./vars/secrets.yml
+    - ../vars/secrets.yml
 
   roles:
-    - iot/tasmota
+    - role: roles/iot/tasmota
 

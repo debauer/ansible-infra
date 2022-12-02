@@ -20,3 +20,6 @@ roles:
 
   - src: https://github.com/debauer/ansible-ssmtp
     name: basic/ansible-ssmtp
+
+  - src: https://github.com/ome/ansible-role-nginx-proxy
+    name: web/nginx-proxy

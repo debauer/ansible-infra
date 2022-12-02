@@ -1,0 +1,44 @@
+all:
+  children:
+    container:
+      hosts:
+        minecraft:
+          ansible_host: 192.168.111.2
+          lxc_group: "gameserver"
+          nat_ports: 
+            - 25565:25565:tcp
+        mqtt:
+          ansible_host: 192.168.111.3
+          nat_ports: 
+            - 1883:1883:tcp
+            - 8883:8883:tcp
+        automodal:
+          ansible_host: 192.168.111.4
+        web:
+          ansible_host: 192.168.111.5
+          block_create: True
+        mastodon:
+          ansible_host: 192.168.111.6
+          block_create: True
+        proxy:
+          ansible_host: 192.168.111.7
+          nat_ports: 
+            - 80:80:tcp
+            - 443:443:tcp
+        filebrowser:
+          ansible_host: 192.168.111.8
+        influxdb:
+          ansible_host: 192.168.111.9
+          lxc_backup_stopped: True
+        grafana:
+          ansible_host: 192.168.111.10
+      vars:
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q synyx.debauer.net"'
+        ansible_user: debauer
+        block_create: False
+        autostart: True
+        lxc_group: "service"
+        lxc_backup_before: ""
+        lxc_backup_after: ""
+        lxc_backup_stopped: False
+        nat_interface: eno2

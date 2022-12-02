@@ -1,0 +1,15 @@
+[Unit]
+Description=Automatic Update
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/yay -Syuq --noconfirm
+TimeoutStopSec=180
+KillMode=process
+KillSignal=SIGINT
+User=debauer
+Group=debauer
+
+[Install]
+WantedBy=multi-user.target

@@ -1,36 +1,43 @@
 ---
-- name: install packages
+- name: install apt packages
   apt:
     name: "{{ item }}"
     state: present
   with_items: "{{ project.apt_packages | d([]) }}"
 
+- name: install python packages
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ project.pip_packages | d([]) }}"
+
 - name: create user
   user:
-    name: "{{ project.name }}"
-    home: "/home/{{ project.name }}"
-    shell: /bin/false
+    name: "{{ project.user }}"
+    home: "/home/{{ project.user }}"
+    shell: /bin/bash
     system: yes
     state: present
 
 - name: setup git repo
   git:
     repo: '{{ project.url }}'
-    dest: "/home/{{ project.name }}/{{ project.name }}"
-    version: '{{ project.branch | d("master") }}'
+    dest: "/home/{{ project.user }}/{{ project.name }}"
+    version: '{{ project.branch | d("main") }}'
     #update: '{{ project.update | d(true) }}'
   when: project.url is defined
 
 - name: install python packages
   pip:
-    requirements: "/home/{{ project.name }}/{{ project.name }}/requirements.txt"
-    virtualenv: "/home/{{ project.name }}/venv"
+    requirements: "/home/{{ project.user }}/{{ project.name }}/requirements.txt"
+    virtualenv: "/home/{{ project.user }}/venv"
     virtualenv_python: python3
+  when: project.install_requirements_txt is defined
 
 - name: copy systemd service file
   copy:
     remote_src: yes
-    src: "/home/{{ project.name }}/{{ project.name }}/{{ project.name }}.service"
+    src: "/home/{{ project.user }}/{{ project.name }}/{{ project.name }}.service"
     dest: "/etc/systemd/system/{{ project.name }}.service"
 
 - name: enable service and start it

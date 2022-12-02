@@ -7,6 +7,6 @@
     - packages
     - role: ssh-key
       vars:
-         users: [root, raspberry]
+         users: [root, pi, debauer]
          key_files: [public_keys/bauer-bauer, public_keys/bauer-zerbrechlich]
 

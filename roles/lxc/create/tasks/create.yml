@@ -1,0 +1,13 @@
+---
+- name: "Check whether container exists: {{ container }}"
+  become: yes
+  shell: "lxc-ls --line | grep {{ container }}"
+  ignore_errors: true
+  register: lxc_list
+  changed_when: False
+ 
+- name: "Do thing if container does not exist: {{ container }}"
+  debug:
+    msg: "{{ container }} does not exist, now create it"
+  when: lxc_list.rc != 0
+  

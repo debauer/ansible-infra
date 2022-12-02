@@ -1,0 +1,10 @@
+---
+- hosts: synyx
+  gather_facts: yes
+  become: yes
+  tasks:
+  - name: update system
+    community.general.pacman:
+      update_cache: true
+      upgrade: true
+      

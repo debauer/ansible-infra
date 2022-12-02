@@ -1,0 +1,25 @@
+---
+- name: Forward ports
+  debug: 
+    msg: "{{ nat_port_item }} {{ container }}"
+  become: yes
+  with_items: "{{ hostvars[container].nat_ports }}"
+  loop_control:   
+    loop_var: nat_port_item
+
+
+- name: Forward ports
+  ansible.builtin.iptables:
+    table: nat
+    chain: PREROUTING
+    in_interface: hostvars[container].nat_interface
+    protocol: "{{ nat_port_item.split(':')[2] }}"
+    match: tcp
+    to_destination: "{{ hostvars[container].ansible_host }}:{{ nat_port_item.split(':')[0] }}"
+    jump: REDIRECT
+    destination_port: "{{ nat_port_item.split(':')[1] }}"
+    comment: Redirect web traffic to port 8600
+  become: yes
+  with_items: "{{ hostvars[container].nat_ports }}"
+  loop_control:   
+    loop_var: nat_port_item
