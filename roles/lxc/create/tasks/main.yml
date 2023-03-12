@@ -15,3 +15,9 @@
     state: restarted
     daemon_reload: true
     name: lxc-net
+    
+    
+- name: "start containers {{ containers }} if not exist"
+  include: start.yml container="{{ item }}" 
+  with_items: '{{ containers }}'
+  when: hostvars[item].lxc_container_state is defined

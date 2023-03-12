@@ -1,6 +1,7 @@
 ---          
 all:
   vars:
+    stdout_callback: full_skip
     ansible_python_interpreter: /usr/bin/python3
     ansible_user: root
     ssh_key_files:
@@ -11,6 +12,11 @@ all:
       keep_daily: 7
       keep_weekly: 4
       keep_monthly: 6
+    lxc_start_container: false
+    role_influxdb: no
+    influx_default_bucket: tasmota
+    influx_default_user: debauer
+    
   children:
     tasmota:
       children:

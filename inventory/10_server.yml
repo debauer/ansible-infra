@@ -13,7 +13,6 @@ all:
               url: https://github.com/debauer/HomematicToInflux
               install_requirements_txt: yes
               # branch: release-branch # master is default
-              # update: no # yes is default
             - name: tasmotatoinflux
               user: tasmotatoinflux
               url: https://github.com/debauer/tasmotaToInflux
@@ -40,3 +39,4 @@ all:
           ansible_host: herman.debauer.net
           ansible_user: debauer
           lxc_host: 192.168.111.1
+          

@@ -1,4 +1,6 @@
 ---
 - name: Set up project
-  include: setup.yml project="{{ item }}"
+  include: setup.yml project="{{ project_name }}"
   with_items: "{{ projects }}"
+  loop_control:
+    loop_var: project_name

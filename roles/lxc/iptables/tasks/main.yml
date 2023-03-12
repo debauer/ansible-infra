@@ -1,5 +1,5 @@
 ---
-- name: "create containers {{ containers }} if not exist"
+- name: "create iptable rules for {{ containers }}"
   include: forward.yml container="{{ item }}"
   with_items: '{{ containers }}'
   when: hostvars[item].nat_ports is defined

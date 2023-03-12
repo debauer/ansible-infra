@@ -1,27 +1,20 @@
----
-apt_upgrade: "no"
-apt_autoremove: true
-copy_keys_to_hosts: true
 
-apt_install_common: false
-
-pip_install: false
-
-apt_common:
+packages_common:
     - htop
     - iotop
-    - gcc 
     - make 
     - wget
-    - curl 
-    - g++
+    - curl
     - git
     - gzip
     - unzip
     - rsync
-    - 
-apt_additional: []
-apt_remove: []
+    - python-setuptools
+    - python-virtualenv
+packages_additional: []
+packages_remove: []
+
+pip_install: false
 
 pip_for_users: []
 pip_for_user_additional: []

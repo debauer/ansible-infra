@@ -1,13 +1,19 @@
 ---
 - name: "Check whether container exists: {{ container }}"
   become: yes
-  shell: "lxc-ls --line | grep {{ container }}"
-  ignore_errors: true
+  shell: "lxc-ls --line"
   register: lxc_list
+  ignore_errors: true
+  check_mode: false
   changed_when: False
  
 - name: "Do thing if container does not exist: {{ container }}"
   debug:
     msg: "{{ container }} does not exist, now create it"
-  when: lxc_list.rc != 0
+  when: container not in lxc_list.stdout
   
+- name: "Clone archbase and name it {{ container }}" 
+  lxc_container:
+    name: "archbase"
+    clone_name: "{{ container }}"
+  when: container not in lxc_list.stdout

@@ -1,30 +1,24 @@
 ---
 - name: APT Packages
   block:
-    - name: Update and upgrade apt packages
-      apt:
-        update_cache: yes
-        upgrade: "{{ apt_upgrade }}"
-        autoremove: yes
-      when: ansible_pkg_mgr == 'apt'
-
-    - name: Remove base packages
-      package:
-        name: "{{ apt_remove }}"
-        state: absent
+    #- name: Remove base packages
+    #  package:
+    #    name: "{{ packages_remove }}"
+    #    state: absent
 
     - name: Install common packages
       package:
-        name: "{{ apt_common }}"
+        name: "{{ packages_common }}"
         state: present
-      when: apt_install_common
+      when: packages_common
 
     - name: Install additinal packages
       package:
-        name: "{{ apt_additional }}"
+        name: "{{ packages_additional }}"
         state: present
+      when: packages_additional
   when:
-    - ansible_facts['os_family'] == "Debian" or ansible_facts['os_family'] == "Ubuntu"
+    - ansible_facts['os_family'] == "Archlinux"
 
 - name: PIP Packages
   block:

@@ -3,10 +3,6 @@ roles:
   - name: iot/ansible-tasmota
     src: https://github.com/tobias-richter/ansible-tasmota
     version: master
-    
-  - src: https://github.com/nickjj/ansible-docker
-    name: common/ansible-docker
-
 
   - src: https://github.com/debauer/ansible-grafana
     name: monitoring/ansible-grafana
@@ -15,11 +11,9 @@ roles:
     name: backup/ansible-borg
     version: multiple-configs-and-crons
 
-  - src: https://github.com/morbidick/ansible-role-nginx-vhosts
-    name: vms/ansible-nginx
-
   - src: https://github.com/debauer/ansible-ssmtp
     name: basic/ansible-ssmtp
 
-  - src: https://github.com/ome/ansible-role-nginx-proxy
-    name: web/nginx-proxy
+  - src: https://github.com/bodsch/ansible-influxdb
+    name: monitoring/ansible-influxdb
+    version: 1.1.0

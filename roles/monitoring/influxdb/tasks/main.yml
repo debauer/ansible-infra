@@ -1,35 +1,29 @@
 ---
-- name: install influxdb
-  block:
-    - name: Import InfluxDB GPG signing key
-      apt_key: url=https://repos.influxdata.com/influxdb.key state=present
+- name: Install influxdb
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: [influxdb, influx-cli]
 
-    - name: Add InfluxDB repository
-      apt_repository: repo='deb https://repos.influxdata.com/ubuntu trusty stable' state=present
+- name: ensure influxdb is enabled on boot
+  become: true
+  service:
+    name: influxdb
+    enabled: true
+    state: started
 
-    - name: Install InfluxDB packages
-      apt: name=influxdb state=present
+- name: get all configs
+  become: yes
+  shell: "influx config"
+  register: influx_config
+  ignore_errors: true
+  check_mode: false
+  changed_when: False
+  
+- name: Create default Org
+  shell: "influx config create -n default -u http://localhost:8086 -o main-org -t '{{ vault_influx_api_token }}' -a"
+  when: '"default" not in influx_config.stdout'
 
-    - name: Modify InfluxDB hostname
-      replace:
-        dest=/etc/influxdb/influxdb.conf
-        regexp='hostname = "localhost"'
-        replace='hostname = "{{ ansible_hostname }}"'
-        backup=yes
-
-    - name: Start the InfluxDB service
-      service: name=influxdb state=restarted
-  when: install_influx
-
-- name: add admin user
-  uri:
-    url: "http://{{ inventory_hostname }}:8086/query"
-    method: POST
-    body: "q=CREATE USER admin WITH PASSWORD '{{ influx_admin_password }}' WITH ALL PRIVILEGES"
-
-- name: create datebases
-  uri:
-    url: "http://{{ inventory_hostname }}:8086/query"
-    method: POST
-    body: "q=CREATE DATABASE {{ item }}"
-  with_items: "{{ influx_databases }}"
+- name: Create buckets
+  shell: "influx bucket create --name {{ item }} -o main-org --token '{{ vault_influx_api_token }}'"
+  with_items: "{{ influxdb.buckets }}"

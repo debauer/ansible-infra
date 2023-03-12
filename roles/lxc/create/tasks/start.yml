@@ -1,0 +1,5 @@
+---
+- name: "start Container {{ container }}"
+  lxc_container:
+    name: "{{container}}"
+    state: "{{hostvars[container].lxc_container_state}}"

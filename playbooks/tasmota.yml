@@ -1,9 +1,0 @@
----
-- hosts: tasmota
-  gather_facts: no
-  vars_files:
-    - ../vars/secrets.yml
-
-  roles:
-    - role: roles/iot/tasmota
-

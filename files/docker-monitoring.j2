@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+    influxdb:
+        image: influxdb:latest
+        container_name: cods_influxdb2
+        ports:
+            - "8083:8083"
+            - "8086:8086"
+            - "8090:8090"
+        volumes:
+            - /home/monitoring/influxdb2:/var/lib/influxdb2
+        environment: 
+           # Use these same configurations parameters in your telegraf configuration, mytelegraf.conf.
+          - DOCKER_INFLUXDB_INIT_MODE=setup
+          - DOCKER_INFLUXDB_INIT_USERNAME=debauer
+          - DOCKER_INFLUXDB_INIT_PASSWORD={{ vault_influx_admin_password }}
+          - DOCKER_INFLUXDB_INIT_ORG=debauer
+          - DOCKER_INFLUXDB_INIT_BUCKET=bucketmcbucketface
+          - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN={{ vault_influx_admin_token }}
+          - INFLUXDB_DATA_ENGINE=tsm1
+          - INFLUXDB_REPORTING_DISABLED=false
+          - INFLUXDB_LOGGING_LEVEL=debug
+          
+    grafana:
+        image: grafana/grafana:latest
+        container_name: cods_grafana
+        ports:
+            - "3000:3000"
+        environment:
+            - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+        user: "0"
+        links:
+            - influxdb
+        volumes:
+            - /home/monitoring/grafana/data:/var/lib/grafana
+              
+    telegraf:
+        image: telegraf
+        links:
+          - influxdb
+        volumes:
+          - home/monitoring/telegraf.conf:/etc/telegraf/telegraf.conf
+        environment: 
+          - DOCKER_INFLUXDB_INIT_ORG=debauer
+          - DOCKER_INFLUXDB_INIT_BUCKET=bucketmcbucketface
+          - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN={{ vault_influx_admin_token }}
+        depends_on:
+          - influxdb

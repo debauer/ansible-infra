@@ -1,8 +1,0 @@
-# ansible-playbook -v -i ~/ansible/raspberry /playbooks/setup-camera-motion.yml
----
-- hosts: pisdr
-  become: yes
-  gather_facts: yes
-
-  roles:
-  - role: roles/basic/projects

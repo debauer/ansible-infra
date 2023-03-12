@@ -1,5 +1,0 @@
----
-- import_playbook: herbert/base.yml
-- import_playbook: herbert/monitoring.yml
-- import_playbook: herbert/backup.yml
-#- import_playbook: herbert/ipcam.yml
