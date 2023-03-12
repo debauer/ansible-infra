@@ -1,9 +1,0 @@
----
-- name: copy docker compose file
-  template: src=files/docker-monitoring.j2 dest=/home/{{ docker_user }}//docker-compose.yml
-            owner={{ docker_user }} group={{ docker_user }} mode=0644
-
-- name: start the dockers!!!
-  become_user: '{{ docker_user }}'
-  docker_compose:
-    project_src: /home/{{ docker-user }}/

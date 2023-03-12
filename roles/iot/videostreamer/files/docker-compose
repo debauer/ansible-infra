@@ -1,9 +1,0 @@
-version: "2.3"
-
-services:
-  videostreamer:
-    container_name: videostreamer
-    image: videostreamer/videostreamer
-    restart: always
-    ports:
-      - "10001:8080"
