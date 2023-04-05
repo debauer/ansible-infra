@@ -7,6 +7,9 @@ all:
           lxc_group: "gameserver"
           nat_ports: 
             - 25565:25565:tcp
+          proxy:
+            - port: 80
+              target: mcmap.debauer.net
         mqtt:
           ansible_host: 192.168.111.3
           nat_ports: 
@@ -28,6 +31,9 @@ all:
               url: https://github.com/Contargo/automodal-tams
               user_need_sudo: yes
               install_requirements_txt: yes
+          proxy:
+            - port: 7000
+              target: automodal-tams.debauer.net
         web:
           ansible_host: 192.168.111.5
           block_create: True
@@ -39,8 +45,12 @@ all:
           nat_ports: 
             - 80:80:tcp
             - 443:443:tcp
+          role_proxy: true
         filebrowser:
           ansible_host: 192.168.111.8
+          proxy:
+            - port: 8080
+              target: filebrowser.debauer.net
         influxdb:
           ansible_host: 192.168.111.9
           lxc_container_state: started
@@ -48,19 +58,27 @@ all:
           role_influxdb: True
           influxdb:
             buckets:
-              - tasmota
-              - homematic
-              - camper 
+              - b_tasmota
+              - b_homematic
+              - b_camper 
             user:
-              - tasmota
-              - homematic
-              - popel 
-          
-            
-                
+              u_tasmota:
+                write: b_tasmota
+              u_homematic:
+                write: b_homematic
+              u_grafana:
+                read: all
+              u_popel:
+                write: b_camper
+          proxy:
+            - port: 8086
+              target: influx.debauer.net
         grafana:
           ansible_host: 192.168.111.10
           lxc_container_state: started
+          proxy:
+            - port: 3000
+              target: grafana.debauer.net
       vars:
         ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q synyx.debauer.net"'
         ansible_user: debauer

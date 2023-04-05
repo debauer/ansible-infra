@@ -38,6 +38,7 @@
   - role: roles/monitoring/influxdb
     when: influxdb is defined
     tags: influxdb
-    
   
-  
+  - role: roles/lxc/proxy
+    when: role_proxy is defined
+    tags: proxy

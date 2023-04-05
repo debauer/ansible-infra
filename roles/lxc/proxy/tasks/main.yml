@@ -1,0 +1,42 @@
+---
+
+- name: update system
+  community.general.pacman:
+    update_cache: true
+    upgrade: true
+  when:
+   - ansible_facts['os_family'] == "Archlinux"
+
+- name: install nginx
+  package:
+    name: [nginx, certbot-nginx]
+
+
+- name: get container list with proxy defined
+  set_fact: 
+    proxy_configs: "{{proxy_configs | default([]) + [
+                          { 'hostname': item, 
+                            'vars': hostvars[item].proxy }
+                        ]}}"
+  with_items: "{{ groups.container }}"
+  when: hostvars[item].proxy is defined
+
+
+#- name: Show connected esxi list information
+#  debug:
+#    var: proxy_configs
+
+- name: copy nginx.conf to server
+  template:
+    src: 'nginx.j2'
+    dest: '/etc/nginx/nginx_temp.conf'
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  
+- name: restart nginx.server
+  service:
+    name: nginx
+    state: restarted
+    

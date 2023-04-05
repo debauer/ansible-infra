@@ -16,6 +16,7 @@ all:
     role_influxdb: no
     influx_default_bucket: tasmota
     influx_default_user: debauer
+    influx_default_org: main
     
   children:
     tasmota:

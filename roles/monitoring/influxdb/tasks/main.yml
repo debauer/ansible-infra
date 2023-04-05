@@ -1,4 +1,11 @@
 ---
+- name: update system
+  pacman:
+    update_cache: true
+    upgrade: true
+  when:
+   - ansible_facts['os_family'] == "Archlinux"
+
 - name: Install influxdb
   package:
     name: "{{ item }}"
@@ -20,10 +27,26 @@
   check_mode: false
   changed_when: False
   
+  
 - name: Create default Org
-  shell: "influx config create -n default -u http://localhost:8086 -o main-org -t '{{ vault_influx_api_token }}' -a"
-  when: '"default" not in influx_config.stdout'
+  shell: "influx setup -u {{ influx_default_user }} -b default -p {{ vault_influx_admin_password }} -o '{{ influx_default_org }}' -t '{{ vault_influx_api_token }}' -f"
+  ignore_errors: true
+  check_mode: false
+  changed_when: False
 
-- name: Create buckets
-  shell: "influx bucket create --name {{ item }} -o main-org --token '{{ vault_influx_api_token }}'"
-  with_items: "{{ influxdb.buckets }}"
+- name: copy nginx.conf to server
+  template:
+    src: 'configs.j2'
+    dest: '/root/.influxdbv2/configs'
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+
+
+- name: "create containers {{ containers }} if not exist"
+  include: create.yml username="{{ influx_user }}"
+  with_items: '{{ influxdb.user }}'
+  loop_control:
+    loop_var: influx_user
+  when: not hostvars[item].block_create
