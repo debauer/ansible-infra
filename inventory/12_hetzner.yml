@@ -8,16 +8,6 @@ all:
       ansible_user: root
       ansible_host: mail.debauer.net
       backup_script: backup_mail.sh
-    storagebox:
-      ansible_user: u220998
-      ansible_host: u220998.your-storagebox.de
-      ansible_port: 23
-      ssh_key_files:
-        - public_keys/bauer-bauer
-        - public_keys/bauer-zerbrechlich
-        - public_keys/root-git
-        - public_keys/root-herbert
-        - public_keys/root-mail
   vars:
     ansible_user: root
     ssh_key_files:
