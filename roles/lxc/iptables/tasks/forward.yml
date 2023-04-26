@@ -1,4 +1,10 @@
 ---
+- debug:
+    var: inventory_hostname
+
+- debug:
+    var: "{{ hostvars[container].container_host }}"
+
 - name: Forward ports
   debug: 
     msg: "{{ nat_port_item }} {{ container }}"
@@ -6,7 +12,6 @@
   with_items: "{{ hostvars[container].nat_ports }}"
   loop_control:   
     loop_var: nat_port_item
-
 
 - name: Forward ports
   ansible.builtin.iptables:

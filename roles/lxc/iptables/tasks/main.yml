@@ -1,6 +1,13 @@
 ---
+- name: Forward ports
+  ansible.builtin.iptables:
+    table: nat
+    flush: yes
+
 - name: "create iptable rules for {{ containers }}"
   include: forward.yml container="{{ item }}"
   with_items: '{{ containers }}'
-  when: hostvars[item].nat_ports is defined
+  when: 
+    - hostvars[item].nat_ports is defined
+    - hostvars[item].container_host == inventory_hostname
     

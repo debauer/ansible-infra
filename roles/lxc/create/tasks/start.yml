@@ -1,5 +1,6 @@
 ---
-- name: "start Container {{ container }}"
+- name: "start Container {{hostvars[container].container_name}}"
+  become: "{{ container_as_root }}"
   lxc_container:
-    name: "{{container}}"
+    name: "{{hostvars[container].container_name}}"
     state: "{{hostvars[container].lxc_container_state}}"

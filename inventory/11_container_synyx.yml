@@ -1,0 +1,104 @@
+all:
+  children:
+    container:
+      children:
+        container-synyx:
+          hosts:
+            herman-minecraft:
+              container_name: "minecraft"
+              ansible_host: 192.168.111.2
+              lxc_group: "gameserver"
+              nat_ports: 
+                - 25565:25565:tcp
+              proxy:
+                - port: 80
+                  target: mcmap.debauer.net
+            herman-mqtt:
+              container_name: "mqtt"
+              ansible_host: 192.168.111.3
+              nat_ports: 
+                - 1883:1883:tcp
+                - 8883:8883:tcp
+            herman-automodal:
+              container_name: "automodal"
+              ansible_host: 192.168.111.4
+              projects:
+                - name: automodal-ccs-adapter
+                  user: automodal-ccs-adapter
+                  url: https://github.com/Contargo/automodal-ccs-adapter
+                  update_repo: yes
+                  user_need_sudo: yes
+                  install_requirements_txt: yes
+                - name: automodal-tams
+                  user: automodal-tams
+                  branch: new-gui
+                  update_repo: yes 
+                  url: https://github.com/Contargo/automodal-tams
+                  user_need_sudo: yes
+                  install_requirements_txt: yes
+              proxy:
+                - port: 7000
+                  target: automodal-tams.debauer.net
+            herman-web:
+              container_name: "web"
+              ansible_host: 192.168.111.5
+              block_create: True
+            herman-mastodon:
+              container_name: "mastodon"
+              ansible_host: 192.168.111.6
+              block_create: True
+            herman-proxy:
+              container_name: "proxy"
+              ansible_host: 192.168.111.7
+              nat_ports: 
+                - 80:80:tcp
+                - 443:443:tcp
+              role_proxy: true
+            herman-filebrowser:
+              container_name: "filebrowser"
+              ansible_host: 192.168.111.8
+              proxy:
+                - port: 8080
+                  target: filebrowser.debauer.net
+            herman-influxdb:
+              container_name: "influxdb"
+              ansible_host: 192.168.111.9
+              lxc_container_state: started
+              lxc_backup_stopped: True
+              role_influxdb: True
+              influxdb:
+                buckets:
+                  - b_tasmota
+                  - b_homematic
+                  - b_camper 
+                user:
+                  u_tasmota:
+                    write: b_tasmota
+                  u_homematic:
+                    write: b_homematic
+                  u_grafana:
+                    read: all
+                  u_popel:
+                    write: b_camper
+              proxy:
+                - port: 8086
+                  target: influx.debauer.net
+            herman-grafana:
+              container_name: "grafana"
+              ansible_host: 192.168.111.10
+              lxc_container_state: started
+              proxy:
+                - port: 3000
+                  target: grafana.debauer.net
+          vars:
+            ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q synyx.debauer.net"'
+            ansible_user: debauer
+            container_host: "herman"
+            block_create: False
+            autostart: True
+            lxc_group: "service"
+            lxc_backup_before: ""
+            lxc_backup_after: ""
+            lxc_backup_stopped: False
+            nat_interface: eno2
+            container_as_root: yes

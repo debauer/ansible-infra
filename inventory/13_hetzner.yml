@@ -1,9 +1,5 @@
 all:
   hosts:
-    web:
-      ansible_user: root
-      ansible_host: web.debauer.net
-      #backup_script: backup_web.sh
     mail:
       ansible_user: root
       ansible_host: mail.debauer.net

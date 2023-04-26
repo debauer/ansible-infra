@@ -1,5 +1,1 @@
 ---
-
-LXC_BACKUP_PATH: /mnt/backup/lxc/
-LXC_PATH: /var/lib/lxc
-LXC_DATE_COMMAND: "/bin/date +%y.%m.%d-%H:%M"

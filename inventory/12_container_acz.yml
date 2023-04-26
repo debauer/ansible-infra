@@ -1,0 +1,46 @@
+all:
+  children:
+    container:
+      children:
+        container-acz:
+          hosts:
+            acz-proxy:
+              container_name: "proxy"
+              ansible_host: 10.0.3.2
+              nat_ports: 
+                - 80:80:tcp
+                - 443:443:tcp
+              role_proxy: true
+              lxc_container_state: started
+            acz-web:
+              container_name: "web"
+              ansible_host: 10.0.3.3
+              block_create: True
+              proxy:
+                - port: 80
+                  target: acz.space
+            acz-paperless:
+              container_name: "paperless"
+              ansible_host: 10.0.3.4
+              block_create: True
+              proxy:
+                - port: 8010
+                  target: paperless.acz.space
+            acz-wekan:
+              container_name: "wekan"
+              ansible_host: 10.0.3.5
+              block_create: True              
+              proxy:
+                - port: 8080
+                  target: wekan.acz.space
+          vars:
+            ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q acz@acz.space"'
+            ansible_user: acz
+            container_host: "acz"
+            block_create: False
+            autostart: True
+            lxc_group: "service"
+            lxc_backup_before: ""
+            lxc_backup_after: ""
+            lxc_backup_stopped: False
+            nat_interface: enp1s0

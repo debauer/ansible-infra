@@ -1,6 +1,6 @@
 ---
 - name: "Check whether container exists: {{ container }}"
-  become: yes
+  become: "{{ container_as_root }}"
   shell: "lxc-ls --line"
   register: lxc_list
   ignore_errors: true
@@ -8,12 +8,14 @@
   changed_when: False
  
 - name: "Do thing if container does not exist: {{ container }}"
+  become: "{{ container_as_root }}"
   debug:
     msg: "{{ container }} does not exist, now create it"
   when: container not in lxc_list.stdout
   
-- name: "Clone archbase and name it {{ container }}" 
+- name: "Clone base container and name it {{ container }}" 
+  become: "{{ container_as_root }}"
   lxc_container:
-    name: "archbase"
-    clone_name: "{{ container }}"
+    name: "{{ container_base }}"
+    clone_name: "{{ hostvars[container].container_name }}"
   when: container not in lxc_list.stdout

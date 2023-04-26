@@ -11,6 +11,11 @@
   package:
     name: [nginx, certbot-nginx]
 
+- name: Enable service httpd and ensure it is not masked
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: true
+    state: started
 
 - name: get container list with proxy defined
   set_fact: 
@@ -19,7 +24,9 @@
                             'vars': hostvars[item].proxy }
                         ]}}"
   with_items: "{{ groups.container }}"
-  when: hostvars[item].proxy is defined
+  when: 
+    - hostvars[item].proxy is defined
+    - hostvars[item].container_host == inventory_hostname
 
 
 #- name: Show connected esxi list information

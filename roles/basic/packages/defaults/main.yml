@@ -9,8 +9,7 @@ packages_common:
     - gzip
     - unzip
     - rsync
-    - python-setuptools
-    - python-virtualenv
+    - zsh
 packages_additional: []
 packages_remove: []
 

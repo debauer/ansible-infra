@@ -30,7 +30,7 @@
   - role: roles/lxc/backup
     tags: lxc, backup
     when: lxc_host is defined
-    
+
   - role: roles/lxc/iptables
     tags: lxc, network
     when: lxc_host is defined
