@@ -15,35 +15,45 @@
   ansible.builtin.systemd:
     name: nginx
     enabled: true
-    state: started
 
 - name: get container list with proxy defined
   set_fact: 
     proxy_configs: "{{proxy_configs | default([]) + [
                           { 'hostname': item, 
+                            'container_name': hostvars[item].container_name,
+                            'container_ip': hostvars[item].ansible_host,
                             'vars': hostvars[item].proxy }
                         ]}}"
   with_items: "{{ groups.container }}"
   when: 
     - hostvars[item].proxy is defined
-    - hostvars[item].container_host == inventory_hostname
+    - hostvars[item].container_host == container_host
 
 
-#- name: Show connected esxi list information
-#  debug:
-#    var: proxy_configs
+- name: "create letsencrypt certs for proxy targets of container {{ container_key }}"
+  include: letsencrypt.yml container_key="{{ container_key }}"
+  with_items: '{{ containers }}'
+  loop_control:
+    loop_var: container_key
+  when: 
+    - hostvars[container_key].proxy is defined
+    - hostvars[container_key].container_host == container_host
+      
 
 - name: copy nginx.conf to server
   template:
     src: 'nginx.j2'
-    dest: '/etc/nginx/nginx_temp.conf'
+    dest: '/etc/nginx/nginx.conf'
     owner: root
     group: root
     mode: 0644
   become: yes
-  
+
+- name: killall nginx because of strange letsencrypt nginx zombie!
+  become: yes
+  command: killall nginx
+
 - name: restart nginx.server
   service:
     name: nginx
     state: restarted
-    
