@@ -9,5 +9,5 @@
 
 - name: Generate new certificate if one doesn't exist.
   become: yes
-  command: "certbot certonly --noninteractive --agree-tos  --email {{ proxy_config.certbot_email }} --nginx -d {{ proxy_config.target }}"
+  command: "certbot certonly --noninteractive --agree-tos  --email {{ certbot_email }} --nginx -d {{ proxy_config.target }}"
   when: not letsencrypt_cert.stat.exists

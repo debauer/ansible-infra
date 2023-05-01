@@ -12,7 +12,17 @@ all:
       keep_daily: 7
       keep_weekly: 4
       keep_monthly: 6
-    lxc_start_container: false
+    lxc_container:
+      host: ""
+      base: "archbase"
+      state: "undefined"
+      autostart: "0"
+      groups: "default"
+      privileged: false
+      backup_before: ""
+      backup_after: ""
+      backup_stopped: False
+      block_create: True
     role_influxdb: no
     influx_default_bucket: tasmota
     influx_default_user: debauer

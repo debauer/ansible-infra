@@ -4,17 +4,11 @@
 USERMAP_UID=1000
 USERMAP_GID=1000
 
-# All settings defined in the paperless.conf.example can be used here. The
-# Docker setup does not use the configuration file.
-# A few commonly adjusted settings are provided below.
 
-# Adjust this key if you plan to make paperless available publicly. It should
-# be a very long sequence of random characters. You don't need to remember it.
 PAPERLESS_SECRET_KEY={{ vault_paperless_secret_key }}
-
-# Use this variable to set a timezone for the Paperless Docker containers. If not specified, defaults to UTC.
 PAPERLESS_TIME_ZONE=Europe/Berlin
+PAPERLESS_OCR_LANGUAGE=deu
 
-# The default language to use for OCR. Set this to the language most of your
-# documents are written in.
-PAPERLESS_OCR_LANGUAGE=deu en
+PAPERLESS_URL=https://{{ paperless.url }}
+PAPERLESS_ALLOWED_HOSTS=localhost,{{ ansible_host }}
+PAPERLESS_CORS_ALLOWED_HOSTS=https://{{ paperless.url }}

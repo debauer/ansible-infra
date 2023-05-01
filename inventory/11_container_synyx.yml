@@ -2,25 +2,26 @@ all:
   children:
     container:
       children:
-        container-synyx:
+        container_synyx:
           hosts:
-            herman-minecraft:
-              container_name: "minecraft"
+            herman_minecraft:
               ansible_host: 192.168.111.2
-              lxc_group: "gameserver"
               nat_ports: 
                 - 25565:25565:tcp
               proxy:
                 - port: 80
                   target: mcmap.debauer.net
-            herman-mqtt:
-              container_name: "mqtt"
+              lxc_container:
+                name: "minecraft"
+                group: "gameserver"
+            herman_mqtt:
               ansible_host: 192.168.111.3
               nat_ports: 
                 - 1883:1883:tcp
                 - 8883:8883:tcp
-            herman-automodal:
-              container_name: "automodal"
+              lxc_container:
+                name: "mqtt"
+            herman_automodal:
               ansible_host: 192.168.111.4
               projects:
                 - name: automodal-ccs-adapter
@@ -39,32 +40,46 @@ all:
               proxy:
                 - port: 7000
                   target: automodal-tams.debauer.net
-            herman-web:
+              lxc_container:
+                name: "automodal"
+                
+            herman_web:
               container_name: "web"
-              ansible_host: 192.168.111.5
-              block_create: True
-            herman-mastodon:
-              container_name: "mastodon"
+              ansible_host: 192.168.111.5    
+              lxc_container:
+                name: "web"
+                block_create: True
+                
+            herman_paperless:
               ansible_host: 192.168.111.6
-              block_create: True
-            herman-proxy:
-              container_name: "proxy"
+              proxy:
+                - port: 8000
+                  target: paperless.debauer.net
+              lxc_container:
+                name: "paperless"
+                state: started
+                autostart: false
+                block_create: False
+              paperless:
+                url: paperless.debauer.net
+              
+            herman_proxy:
               ansible_host: 192.168.111.7
               nat_ports: 
                 - 80:80:tcp
                 - 443:443:tcp
               role_proxy: true
-            herman-filebrowser:
-              container_name: "filebrowser"
+              lxc_container:
+                name: "proxy"
+            herman_filebrowser:
               ansible_host: 192.168.111.8
               proxy:
                 - port: 8080
                   target: filebrowser.debauer.net
-            herman-influxdb:
-              container_name: "influxdb"
+              lxc_container:
+                name: "filebrowser"
+            herman_influxdb:
               ansible_host: 192.168.111.9
-              lxc_container_state: started
-              lxc_backup_stopped: True
               role_influxdb: True
               influxdb:
                 buckets:
@@ -83,22 +98,24 @@ all:
               proxy:
                 - port: 8086
                   target: influx.debauer.net
-            herman-grafana:
-              container_name: "grafana"
+              lxc_container:
+                name: "influxdb"
+            herman_grafana:
               ansible_host: 192.168.111.10
-              lxc_container_state: started
               proxy:
                 - port: 3000
                   target: grafana.debauer.net
+              lxc_container:
+                name: "grafana"
           vars:
             ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q synyx.debauer.net"'
             ansible_user: debauer
-            container_host: "herman"
-            block_create: False
-            autostart: True
-            lxc_group: "service"
-            lxc_backup_before: ""
-            lxc_backup_after: ""
-            lxc_backup_stopped: False
+            lxc_container:
+              host: "herman"
+              base: "archbase"
+              backup_before: ""
+              backup_after: ""
+              backup_stopped: False
+              privileged: true
             nat_interface: eno2
-            container_as_root: yes
+            certbot_email: admin@debauer.net

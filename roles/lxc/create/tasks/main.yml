@@ -3,8 +3,8 @@
   include: create.yml container="{{ item }}"
   with_items: '{{ containers }}'
   when: 
-    - not hostvars[item].block_create
-    - hostvars[item].container_host == inventory_hostname
+    - not hostvars[item].lxc_container.block_create
+    - hostvars[item].lxc_container.host == inventory_hostname
   
 - name: create dnsmasq config
   template: src=dnsmasq.j2 dest=/etc/lxc/dnsmasq.conf 
@@ -19,10 +19,10 @@
     name: lxc-net
     
     
-- name: "start containers {{ containers }} if not exist"
+- name: "start/stop containers {{ containers }} "
   include: start.yml container="{{ item }}" 
   with_items: '{{ containers }}'
   when: 
-    - hostvars[item].lxc_container_state is defined
-    - hostvars[item].container_host == inventory_hostname
+    - hostvars[item].lxc_container.state == "started" or hostvars[item].lxc_container.state == "stopped"
+    - hostvars[item].lxc_container.host == inventory_hostname
   

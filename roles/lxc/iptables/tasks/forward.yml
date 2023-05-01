@@ -3,7 +3,7 @@
     var: inventory_hostname
 
 - debug:
-    var: "{{ hostvars[container].container_host }}"
+    var: "{{ hostvars[container].lxc_container.host }}"
 
 - name: Forward ports
   debug: 

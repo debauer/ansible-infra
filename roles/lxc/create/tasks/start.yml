@@ -1,6 +1,14 @@
 ---
-- name: "start Container {{hostvars[container].container_name}}"
-  become: "{{ container_as_root }}"
+- ansible.builtin.debug:
+    msg: "{{ hostvars[container].lxc_container }}"
+  tags: debug
+
+
+- name: "start Container {{hostvars[container].lxc_container.name}}"
+  become: "{{ hostvars[container].lxc_container.privileged }}"
   lxc_container:
-    name: "{{hostvars[container].container_name}}"
-    state: "{{hostvars[container].lxc_container_state}}"
+    name: "{{hostvars[container].lxc_container.name}}"
+    state: "{{hostvars[container].lxc_container.state}}"
+    container_config: 
+      - "lxc.start.auto = {{ hostvars[container].lxc_container.autostart|int  }}"
+      - "lxc.group = {{hostvars[container].lxc_container.groups}}"

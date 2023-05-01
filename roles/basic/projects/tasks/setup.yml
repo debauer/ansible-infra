@@ -1,4 +1,8 @@
 ---
+- ansible.builtin.debug:
+    msg: "{{ project }}"
+  tags: debug
+
 - name: "install apt packages [{{ project.name }}]"
   apt:
     name: "{{ item }}"
@@ -19,7 +23,7 @@
     shell: /bin/bash
     system: yes
     state: present
-  when: user_need_sudo
+  when: project.user_need_sudo
 
 - name: "create user [{{ project.name }}]"
   user:
@@ -28,7 +32,7 @@
     shell: /bin/bash
     system: yes
     state: present  
-  when: not user_need_sudo
+  when: not project.user_need_sudo
 
 - name: "setup git repo [{{ project.name }}]"
   git:

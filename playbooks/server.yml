@@ -12,6 +12,7 @@
       password: "{{ vault_influx_admin_password }}"
       token: "{{ vault_influx_admin_token }}"
     containers: "{{ groups['container'] }}"
+    
   roles:
   - role: roles/basic/update
     tags: basic, update
@@ -48,5 +49,5 @@
     tags: wekan
     
   - role: roles/services/paperless
-    when: role_paperless is defined
+    when: paperless is defined
     tags: paperless

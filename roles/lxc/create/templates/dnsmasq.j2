@@ -1,6 +1,6 @@
-dhcp-host=host,{{ hostvars["herman"].lxc_host }}
+dhcp-host=host,{{ lxc_host }}
 {% for item in container_list %}
-{% if hostvars[item].container_host == inventory_hostname %}
-dhcp-host={{ hostvars[item].container_name }},{{ hostvars[item].ansible_host }}
+{% if hostvars[item].lxc_container.host == inventory_hostname %}
+dhcp-host={{ hostvars[item].lxc_container.name }},{{ hostvars[item].ansible_host }}
 {% endif %}
 {% endfor %}
