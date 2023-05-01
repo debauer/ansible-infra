@@ -1,0 +1,43 @@
+---
+    
+- name: install docker
+  pacman:
+    update_cache: true
+    name: 
+      - docker
+      - docker-compose
+    state: present
+    
+- name: install general pip dependencies
+  pip:
+    name: 
+      - docker
+      - docker-compose
+      - requests
+    state: present
+    executable: /usr/bin/pip3
+
+- name: Enable docker service and ensure it is not masked
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started    
+
+- name: copy docker-compose.yml to server
+  template:
+    src: 'docker-compose.j2'
+    dest: '/home/{{ ansible_user }}/docker-compose.yml'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: 0
+  become: yes
+
+- name: Run `docker-compose up` again
+  community.docker.docker_compose:
+    project_src: '/home/{{ ansible_user }}'
+    build: false
+  register: output
+
+- ansible.builtin.debug:
+    var: output
+  tags: debug

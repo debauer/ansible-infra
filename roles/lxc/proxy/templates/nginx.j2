@@ -32,9 +32,9 @@ http {
     }
 
     server {
-	listen 80 default_server;
+	    listen 80 default_server;
         server_name _;
-	root /usr/share/nginx/html;
+	    return 301 https://$host$request_uri;
     }
         
 {% for config in proxy_configs %}

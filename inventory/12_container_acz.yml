@@ -22,10 +22,11 @@ all:
             acz-paperless:
               container_name: "paperless"
               ansible_host: 10.0.3.4
-              block_create: True
               proxy:
-                - port: 8010
+                - port: 8000
                   target: paperless.acz.space
+              lxc_container_state: started
+              role_paperless: true
             acz-wekan:
               container_name: "wekan"
               ansible_host: 10.0.3.5
@@ -33,6 +34,7 @@ all:
                 - port: 80
                   target: wekan.acz.space
               lxc_container_state: started
+              role_wekan: true
           vars:
             ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q acz@acz.space"'
             ansible_user: acz
