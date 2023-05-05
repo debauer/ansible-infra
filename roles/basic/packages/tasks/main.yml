@@ -23,8 +23,8 @@
 - name: PIP Packages
   block:
     - name: install general pip dependencies
-      become: yes
-      become_user: '{{ item }}'
+      become: true
+      become_user: "{{ item }}"
       pip:
         name: "{{ pip_for_users + pip_for_user_additional }}"
         state: present
@@ -32,8 +32,8 @@
       with_items: "{{ users }}"
 
     - name: install general pip dependencies for default python3
-      become: yes
-      become_user: 'root'
+      become: true
+      become_user: root
       pip:
         name: "{{ pip_for_root + pip_for_root_additional }}"
         state: present

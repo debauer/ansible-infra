@@ -1,4 +1,4 @@
---- 
+---
 all:
   children:
     blech:
@@ -11,12 +11,12 @@ all:
             - name: hmtoinflux
               user: hmtoinflux
               url: https://github.com/debauer/HomematicToInflux
-              install_requirements_txt: yes
+              install_requirements_txt: true
               # branch: release-branch # master is default
             - name: tasmotatoinflux
               user: tasmotatoinflux
               url: https://github.com/debauer/tasmotaToInflux
-              install_requirements_txt: yes
+              install_requirements_txt: true
           influx_databases:
             - tasmotaToInflux
             - homematicToInflux
@@ -26,7 +26,7 @@ all:
             - octoprint
             - sensors
           grafana_datasources:
-            - { db: tasmotaToInflux, name: tasmota}
+            - { db: tasmotaToInflux, name: tasmota }
             - { db: homematicToInflux, name: homematic, default: true }
             - { db: unifi }
             - { db: telegraf }
@@ -43,4 +43,3 @@ all:
           ansible_host: acz.space
           ansible_user: acz
           lxc_host: 10.0.3.1
-          

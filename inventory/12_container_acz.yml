@@ -1,3 +1,4 @@
+---
 all:
   children:
     container:
@@ -6,53 +7,53 @@ all:
           hosts:
             acz_proxy:
               ansible_host: 10.0.3.2
-              nat_ports: 
+              nat_ports:
                 - 80:80:tcp
                 - 443:443:tcp
               role_proxy: true
               lxc_container:
-                name: "proxy"
-                state: started 
-                
+                name: proxy
+                state: started
+
             acz_web:
               ansible_host: 10.0.3.3
-              block_create: True
+              block_create: true
               proxy:
                 - port: 80
                   target: acz.space
               lxc_container:
-                name: "web"
-                
+                name: web
+
             acz_paperless:
               ansible_host: 10.0.3.4
               proxy:
                 - port: 8000
                   target: paperless.acz.space
               lxc_container:
-                name: "paperless"
+                name: paperless
                 state: started
                 autostart: false
               paperless:
                 url: paperless.debauer.net
-              
+
             acz_wekan:
               ansible_host: 10.0.3.5
               proxy:
                 - port: 80
                   target: wekan.acz.space
               lxc_container:
-                name: "wekan"
+                name: wekan
                 state: started
               role_wekan: true
-              
+
           vars:
-            ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q acz@acz.space"'
+            ansible_ssh_common_args: -o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q acz@acz.space"
             ansible_user: acz
             lxc_container:
-              host: "acz"
-              base: "base"
+              host: acz
+              base: base
               backup_before: ""
               backup_after: ""
-              backup_stopped: False
+              backup_stopped: false
             nat_interface: enp1s0
             certbot_email: admin@acz.com

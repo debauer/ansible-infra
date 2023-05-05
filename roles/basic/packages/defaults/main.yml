@@ -1,18 +1,17 @@
-
+---
 packages_common:
-    - htop
-    - iotop
-    - make 
-    - wget
-    - curl
-    - git
-    - gzip
-    - unzip
-    - rsync
-    - zsh
+  - htop
+  - iotop
+  - make
+  - wget
+  - curl
+  - git
+  - gzip
+  - unzip
+  - rsync
+  - zsh
 packages_additional: []
 packages_remove: []
-
 pip_install: false
 
 pip_for_users: []

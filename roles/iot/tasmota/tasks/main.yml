@@ -3,7 +3,6 @@
   set_fact:
     tasmota_host: "{{ ip }}"
 
-
 - name: set some basic settings
   include_role:
     name: roles/iot/ansible-tasmota
@@ -37,7 +36,7 @@
     name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands:
-      - command: "Timer{{ timer_id + 1 }}"
+      - command: Timer{{ timer_id + 1 }}
         value: "{{ timer_value }}"
   loop: "{{ timer }}"
   loop_control:
@@ -50,10 +49,8 @@
   vars:
     tasmota_commands:
       - command: Backlog
-        value: "mqttuser {{ mqtt_user }}; mqttpassword {{ mqtt_pass }};
-                mqttport {{ mqtt_port }}; mqtthost {{ mqtt_host }};
-                MqttClient {{ inventory_hostname }};
-                FullTopic {{ full_topic }}"
+        value: mqttuser {{ mqtt_user }}; mqttpassword {{ mqtt_pass }}; mqttport {{ mqtt_port }}; mqtthost {{ mqtt_host }}; MqttClient {{ inventory_hostname }}; FullTopic
+          {{ full_topic }}
   when: set_mqtt
 
 - name: set the network settings
@@ -62,8 +59,7 @@
   vars:
     tasmota_commands:
       - command: Backlog
-        value: "IPAddress1 {{ ip }}; IPAddress2 {{ gateway }};
-                IPAddress2 {{ netmask }}; IPAddress4 {{ dns }};"
+        value: IPAddress1 {{ ip }}; IPAddress2 {{ gateway }}; IPAddress2 {{ netmask }}; IPAddress4 {{ dns }};
   when: set_fixed_ip and ip is defined
 
 - name: set the wifi1 settings
@@ -72,7 +68,7 @@
   vars:
     tasmota_commands:
       - command: Backlog
-        value: "Ssid1 {{ wlan1_ssid }}; Password1 {{ vault_wlan1_password }};"
+        value: Ssid1 {{ wlan1_ssid }}; Password1 {{ vault_wlan1_password }};
   when: set_wifi1 and wlan1_ssid is defined and vault_wlan1_password is defined
 
 - name: set the wifi2 settings
@@ -81,7 +77,7 @@
   vars:
     tasmota_commands:
       - command: Backlog
-        value: "Ssid2 {{ wlan2_ssid }}; Password2 {{ vault_wlan2_password }};"
+        value: Ssid2 {{ wlan2_ssid }}; Password2 {{ vault_wlan2_password }};
   when: set_wifi2 and wlan1_ssid is defined and vault_wlan2_password is defined
 
 - name: restart the device
@@ -92,4 +88,3 @@
       - command: restart
         value: 1
   when: restart
-

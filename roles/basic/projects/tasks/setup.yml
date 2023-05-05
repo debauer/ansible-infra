@@ -3,70 +3,69 @@
     msg: "{{ project }}"
   tags: debug
 
-- name: "install apt packages [{{ project.name }}]"
+- name: install apt packages [{{ project.name }}]
   apt:
     name: "{{ item }}"
     state: present
   with_items: "{{ project.system_packages | d([]) }}"
 
-- name: "install python packages [{{ project.name }}]"
+- name: install python packages [{{ project.name }}]
   pip:
     name: "{{ item }}"
     state: present
   with_items: "{{ project.pip_packages | d([]) }}"
 
-- name: "create user with sudo [{{ project.name }}]"
+- name: create user with sudo [{{ project.name }}]
   user:
     name: "{{ project.user }}"
-    home: "/home/{{ project.user }}"
+    home: /home/{{ project.user }}
     groups: wheel
     shell: /bin/bash
-    system: yes
+    system: true
     state: present
   when: project.user_need_sudo
 
-- name: "create user [{{ project.name }}]"
+- name: create user [{{ project.name }}]
   user:
     name: "{{ project.user }}"
-    home: "/home/{{ project.user }}"
+    home: /home/{{ project.user }}
     shell: /bin/bash
-    system: yes
-    state: present  
+    system: true
+    state: present
   when: not project.user_need_sudo
 
-- name: "setup git repo [{{ project.name }}]"
+- name: setup git repo [{{ project.name }}]
   git:
-    repo: '{{ project.url }}'
-    dest: "/home/{{ project.user }}/{{ project.name }}"
+    repo: "{{ project.url }}"
+    dest: /home/{{ project.user }}/{{ project.name }}
     version: '{{ project.branch | d("main") }}'
-    update: '{{ project.update_repo | d(true) }}' 
+    update: "{{ project.update_repo | d(true) }}"
   when: project.url is defined
-  become: yes
+  become: true
   become_user: "{{ project.user }}"
-  
-- name: "install poetry [{{ project.name }}]"
+
+- name: install poetry [{{ project.name }}]
   include: poetry.yml user="{{ project_user }}"
   with_items: "{{ project.user  }}"
   loop_control:
     loop_var: project_user
-  
-- name: "run poetry install [{{ project.name }}]"
-  shell: "/home/{{ project.user }}/.local/bin/poetry install"
+
+- name: run poetry install [{{ project.name }}]
+  shell: /home/{{ project.user }}/.local/bin/poetry install
   args:
-    chdir: "/home/{{ project.user }}/{{ project.name }}"
-  become: yes
-  become_user: '{{ project.user }}'
+    chdir: /home/{{ project.user }}/{{ project.name }}
+  become: true
+  become_user: "{{ project.user }}"
 
-- name: "copy systemd service file [{{ project.name }}]"
+- name: copy systemd service file [{{ project.name }}]
   copy:
-    remote_src: yes
-    src: "/home/{{ project.user }}/{{ project.name }}/{{ project.name }}.service"
-    dest: "/etc/systemd/system/{{ project.name }}.service"
+    remote_src: true
+    src: /home/{{ project.user }}/{{ project.name }}/{{ project.name }}.service
+    dest: /etc/systemd/system/{{ project.name }}.service
 
-- name: "enable service and start it [{{ project.name }}]"
+- name: enable service and start it [{{ project.name }}]
   systemd:
     name: "{{ project.name }}"
     state: restarted
-    enabled: yes
-    daemon_reload: yes
-    
+    enabled: true
+    daemon_reload: true

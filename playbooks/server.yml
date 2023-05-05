@@ -1,7 +1,7 @@
 ---
 - hosts: all
-  gather_facts: yes
-  become: yes
+  gather_facts: true
+  become: true
   vars_files:
     - ../vars/secrets.yml
   vars:
@@ -12,42 +12,42 @@
       password: "{{ vault_influx_admin_password }}"
       token: "{{ vault_influx_admin_token }}"
     containers: "{{ groups['container'] }}"
-    
-  roles:
-  - role: roles/basic/update
-    tags: basic, update
-    
-  - role: roles/basic/packages
-    tags: basic, packages
-    
-  - role: roles/basic/projects
-    tags: basic, projects
-    when: projects is defined
-    
-  - role: roles/lxc/create
-    tags: lxc, create
-    when: lxc_host is defined
-    
-#  - role: roles/lxc/backup
-#    tags: lxc, backup
-#    when: lxc_host is defined
 
-  - role: roles/lxc/iptables
-    tags: lxc, network
-    when: lxc_host is defined
-    
-  - role: roles/monitoring/influxdb
-    when: influxdb is defined
-    tags: influxdb
-  
-  - role: roles/lxc/proxy
-    when: role_proxy is defined
-    tags: proxy
-  
-  - role: roles/services/wekan
-    when: role_wekan is defined
-    tags: wekan
-    
-  - role: roles/services/paperless
-    when: paperless is defined
-    tags: paperless
+  roles:
+    - role: roles/basic/update
+      tags: basic, update
+
+    - role: roles/basic/packages
+      tags: basic, packages
+
+    - role: roles/basic/projects
+      tags: basic, projects
+      when: projects is defined
+
+    - role: roles/lxc/create
+      tags: lxc, create
+      when: lxc_host is defined
+
+    #  - role: roles/lxc/backup
+    #    tags: lxc, backup
+    #    when: lxc_host is defined
+
+    - role: roles/lxc/iptables
+      tags: lxc, network
+      when: lxc_host is defined
+
+    - role: roles/monitoring/influxdb
+      when: influxdb is defined
+      tags: influxdb
+
+    - role: roles/lxc/proxy
+      when: role_proxy is defined
+      tags: proxy
+
+    - role: roles/services/wekan
+      when: role_wekan is defined
+      tags: wekan
+
+    - role: roles/services/paperless
+      when: paperless is defined
+      tags: paperless

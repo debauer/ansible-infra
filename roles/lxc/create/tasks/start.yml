@@ -3,12 +3,11 @@
     msg: "{{ hostvars[container].lxc_container }}"
   tags: debug
 
-
-- name: "start Container {{hostvars[container].lxc_container.name}}"
+- name: start Container {{hostvars[container].lxc_container.name}}
   become: "{{ hostvars[container].lxc_container.privileged }}"
   lxc_container:
     name: "{{hostvars[container].lxc_container.name}}"
     state: "{{hostvars[container].lxc_container.state}}"
-    container_config: 
-      - "lxc.start.auto = {{ hostvars[container].lxc_container.autostart|int  }}"
-      - "lxc.group = {{hostvars[container].lxc_container.groups}}"
+    container_config:
+      - lxc.start.auto = {{ hostvars[container].lxc_container.autostart|int  }}
+      - lxc.group = {{hostvars[container].lxc_container.groups}}

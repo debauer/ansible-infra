@@ -14,25 +14,25 @@ all:
                 vlanid: 100
                 lease_time: "00:01:00"
                 # pool: "pool-iot" # we set after the dhcp name pool-iot
-                range: "192.168.20.100-192.168.20.254"
+                range: 192.168.20.100-192.168.20.254
                 network:
                   address: 192.168.20.0/24
-                  dns: "192.168.1.1,192.168.20.1,8.8.8.8,8.8.4.4"
+                  dns: 192.168.1.1,192.168.20.1,8.8.8.8,8.8.4.4
                   gateway: 192.168.20.1
             - ew: # we set dhcp-david
                 vlanid: 200
                 lease_time: "00:01:00"
                 # pool: "pool-iot" # we set after the dhcp name pool-iot
-                range: "192.168.21.100-192.168.21.254"
+                range: 192.168.21.100-192.168.21.254
                 network:
                   address: 192.168.21.0/24
-                  dns: "192.168.1.1,192.168.21.1,8.8.8.8,8.8.4.4"
+                  dns: 192.168.1.1,192.168.21.1,8.8.8.8,8.8.4.4
                   gateway: 192.168.21.1
             - default: # we set dhcp-david
                 lease_time: "00:01:00"
                 # pool: "pool-iot" # we set after the dhcp name pool-iot
-                range: "192.168.1.2-192.168.1.100"
+                range: 192.168.1.2-192.168.1.100
                 network:
                   address: 192.168.1.0/24
-                  dns: "192.168.1.1,8.8.8.8,8.8.4.4"
+                  dns: 192.168.1.1,8.8.8.8,8.8.4.4
                   gateway: 192.168.1.1

@@ -1,17 +1,16 @@
 ---
 - name: update system
-  pacman:
+  community.general.pacman:
     update_cache: true
     upgrade: true
   when:
-   - ansible_facts['os_family'] == "Archlinux"
+    - ansible_facts['os_family'] == "Archlinux"
 
 - name: Install influxdb
   package:
     name: "{{ item }}"
     state: present
   with_items: [influxdb, influx-cli]
-
 - name: ensure influxdb is enabled on boot
   become: true
   service:
@@ -20,33 +19,32 @@
     state: started
 
 - name: get all configs
-  become: yes
-  shell: "influx config"
+  become: true
+  shell: influx config
   register: influx_config
   ignore_errors: true
   check_mode: false
-  changed_when: False
-  
-  
+  changed_when: false
+
 - name: Create default Org
-  shell: "influx setup -u {{ influx_default_user }} -b default -p {{ vault_influx_admin_password }} -o '{{ influx_default_org }}' -t '{{ vault_influx_api_token }}' -f"
+  shell: influx setup -u {{ influx_default_user }} -b default -p {{ vault_influx_admin_password }} -o '{{ influx_default_org }}' -t '{{ vault_influx_api_token }}'
+    -f
   ignore_errors: true
   check_mode: false
-  changed_when: False
+  changed_when: false
 
 - name: copy nginx.conf to server
   template:
-    src: 'configs.j2'
-    dest: '/root/.influxdbv2/configs'
+    src: configs.j2
+    dest: /root/.influxdbv2/configs
     owner: root
     group: root
-    mode: 0644
-  become: yes
+    mode: "0644"
+  become: true
 
-
-- name: "create containers {{ containers }} if not exist"
+- name: create containers {{ containers }} if not exist
   include: create.yml username="{{ influx_user }}"
-  with_items: '{{ influxdb.user }}'
+  with_items: "{{ influxdb.user }}"
   loop_control:
     loop_var: influx_user
   when: not hostvars[item].block_create

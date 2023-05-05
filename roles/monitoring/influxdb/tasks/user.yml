@@ -7,36 +7,19 @@
 
 - name: get bucket list
   register: bucket_list_output
-  shell: "influx bucket list --json"
+  shell: influx bucket list --json
   ignore_errors: true
   changed_when: "'422 Unprocessable Entity' not in bucket_list_output.stderr"
   failed_when: "'401 Unauthorized' in bucket_list_output.stderr"
 
 - name: Create Auths
   register: user_auth_output
-  shell: "influx auth create --user {{ username }} 
-          {% if influxdb.user[username].read is defined %}
-            {% for bucket in bucket_list_output.stdout | from_json  %}
-              {% if bucket.name == influxdb.user[username].read %}
-                  {{ '--read-bucket ' + bucket.id }} 
-              {% endif %}
-            {% endfor %}
-            {% if influxdb.user[username].read == 'all' %} 
-            --read-buckets 
-            {% endif %}
-          {% endif %}
-          {% if influxdb.user[username].write is defined %}
-            {% for bucket in bucket_list_output.stdout | from_json  %}
-              {% if bucket.name == influxdb.user[username].write %}
-                  {{ '--write-bucket ' + bucket.id }} 
-              {% endif %}
-            {% endfor %}            
-            {% if influxdb.user[username].write == 'all' %} 
-            --write-buckets 
-            {% endif %}
-          {% endif %}"
+  shell: influx auth create --user {{ username }} {% if influxdb.user[username].read is defined %} {% for bucket in bucket_list_output.stdout | from_json  %} {% if
+    bucket.name == influxdb.user[username].read %} {{ '--read-bucket ' + bucket.id }} {% endif %} {% endfor %} {% if influxdb.user[username].read == 'all' %} --read-buckets
+    {% endif %} {% endif %} {% if influxdb.user[username].write is defined %} {% for bucket in bucket_list_output.stdout | from_json  %} {% if bucket.name == influxdb.user[username].write
+    %} {{ '--write-bucket ' + bucket.id }} {% endif %} {% endfor %} {% if influxdb.user[username].write == 'all' %} --write-buckets {% endif %} {% endif %}
 
-  when: influxdb.user is defined  
+  when: influxdb.user is defined
   ignore_errors: true
   changed_when: "'422 Unprocessable Entity' not in user_auth_output.stderr"
   failed_when: "'401 Unauthorized' in user_auth_output.stderr"

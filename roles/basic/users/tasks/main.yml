@@ -1,21 +1,13 @@
 ---
-
 - name: add users
   include: user.yml user="{{ loop_user }}"
-  with_items: '{{ users }}'
+  with_items: "{{ users }}"
   loop_control:
     loop_var: loop_user
   when: not "{{ loop_user }}" == "root"
 
 - name: Disable Password Authentication
-  lineinfile:
-    dest=/etc/ssh/sshd_config
-    regexp='^PasswordAuthentication'
-    line="PasswordAuthentication no"
-    state=present
-    backup=yes
+  lineinfile: dest=/etc/ssh/sshd_config regexp='^PasswordAuthentication' line="PasswordAuthentication no" state=present backup=yes
 
 - name: restart ssh
-  service:
-    name=sshd
-    state=restarted
+  service: name=sshd state=restarted

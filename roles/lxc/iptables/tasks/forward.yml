@@ -6,11 +6,11 @@
     var: "{{ hostvars[container].lxc_container.host }}"
 
 - name: Forward ports
-  debug: 
+  debug:
     msg: "{{ nat_port_item }} {{ container }}"
-  become: yes
+  become: true
   with_items: "{{ hostvars[container].nat_ports }}"
-  loop_control:   
+  loop_control:
     loop_var: nat_port_item
 
 - name: Forward ports
@@ -24,7 +24,7 @@
     jump: DNAT
     destination_port: "{{ nat_port_item.split(':')[1] }}"
     # comment: Redirect web traffic to port 8600
-  become: yes
+  become: true
   with_items: "{{ hostvars[container].nat_ports }}"
-  loop_control:   
+  loop_control:
     loop_var: nat_port_item

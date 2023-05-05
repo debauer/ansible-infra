@@ -1,16 +1,15 @@
 ---
-    
-- name: install docker
-  pacman:
+- name: Install docker
+  community.general.pacman:
     update_cache: true
-    name: 
+    name:
       - docker
       - docker-compose
     state: present
-    
-- name: install general pip dependencies
-  pip:
-    name: 
+
+- name: Install general pip dependencies
+  ansible.builtin.pip:
+    name:
       - docker
       - docker-compose
       - requests
@@ -21,23 +20,24 @@
   ansible.builtin.systemd:
     name: docker
     enabled: true
-    state: started    
+    state: started
 
-- name: copy docker-compose.yml to server
-  template:
-    src: 'docker-compose.j2'
-    dest: '/home/{{ ansible_user }}/docker-compose.yml'
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
+- name: Copy docker-compose.yml to server
+  ansible.builtin.template:
+    src: docker-compose.j2
+    dest: /home/{{ ansible_user }}/docker-compose.yml
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0
-  become: yes
+  become: true
 
 - name: Run `docker-compose up` again
   community.docker.docker_compose:
-    project_src: '/home/{{ ansible_user }}'
+    project_src: /home/{{ ansible_user }}
     build: false
   register: output
 
-- ansible.builtin.debug:
+- name: Docker-compose output
+  ansible.builtin.debug:
     var: output
   tags: debug

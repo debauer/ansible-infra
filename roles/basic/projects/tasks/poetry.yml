@@ -1,24 +1,24 @@
 ---
 - name: "Download poetry install script for user {{ user }} "
-  get_url: 
+  get_url:
     url: https://install.python-poetry.org
     dest: /tmp/install_poetry
     force: true
-    owner: '{{ user }}'
-    
+    owner: "{{ user }}"
+
 - name: "uninstall poetry for user {{ user }} "
   become: true
-  become_user: '{{ user }}'
+  become_user: "{{ user }}"
   shell: "{{ poetry_interpreter }} /tmp/install_poetry --uninstall"
-  ignore_errors: yes
+  ignore_errors: true
   when: poetry_reinstall
-    
+
 - name: "install poetry for user {{ user }} "
   become: true
-  become_user: '{{ user }}'
+  become_user: "{{ user }}"
   shell: "{{ poetry_interpreter }} /tmp/install_poetry"
 
 - name: "Remove install script for user {{ user }} "
-  file: 
+  file:
     path: /tmp/install_poetry
     state: absent

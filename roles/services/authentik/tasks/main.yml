@@ -1,3 +1,3 @@
 ---
-- name: Run install paperless task
+- name: Run install authentik task
   ansible.builtin.import_tasks: install.yml

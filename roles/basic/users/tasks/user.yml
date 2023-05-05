@@ -1,32 +1,31 @@
 ---
-
 - name: Ensure group "somegroup" exists
   group:
-    name: '{{ item }}'
+    name: "{{ item }}"
     state: present
-  with_items: '{{ user_default_groups + user_groups }}'
+  with_items: "{{ user_default_groups + user_groups }}"
 
 - name: Add the user with a bash shell
   user:
-    name: '{{ user }}'
+    name: "{{ user }}"
     shell: /bin/bash
-    groups: '{{ user_default_groups + user_groups }}'
-    append: yes
+    groups: "{{ user_default_groups + user_groups }}"
+    append: true
 
 - name: make dir .ssh
   file:
     path: /home/{{ user }}/.ssh
     state: directory
-    owner: '{{ user }}'
-    group: '{{ user }}'
-    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: "0755"
 
 - name: Set up ssh keys
   authorized_key:
-    user: '{{ user }}'
+    user: "{{ user }}"
     state: present
-    key: '{{ loop_file }}'
-  with_file: '{{ ssh_key_files }}'
+    key: "{{ loop_file }}"
+  with_file: "{{ ssh_key_files }}"
   loop_control:
     loop_var: loop_file
-  when: '{{ copy_keys }}'
+  when: "{{ copy_keys }}"

@@ -1,53 +1,50 @@
 ---
-- name: set dhcp range
-  routeros_command:
-    commands: /ip pool set [find name={{ hostvars[inventory_hostname].dhcp.pool }}]
-      range={{ hostvars[inventory_hostname].dhcp.range }}
+- name: Set dhcp range
+  community.routeros.command:
+    commands: /ip pool set [find name={{ hostvars[inventory_hostname].dhcp.pool }}] range={{ hostvars[inventory_hostname].dhcp.range }}
 
-- name: set dns servers
-  routeros_command:
-    commands: /ip dhcp-server network set [find] dns-server={{ hostvars[inventory_hostname].dhcp.network.dns
-      }}
+- name: Set dns servers
+  community.routeros.command:
+    commands: /ip dhcp-server network set [find] dns-server={{ hostvars[inventory_hostname].dhcp.network.dns }}
 
-- name: dns setup
-  block:
-  - name: remove all static dns entries
-    routeros_command:
-      commands: /ip dns static remove [find]
-  - name: add static dns entries
-    routeros_command:
-      commands:
-      - /ip dns static add address={{ hostvars[loop_host].ip }} name={{loop_host}}.automodal.de
-    with_items: "{{ groups['all'] }}"
-    loop_control:
-      loop_var: loop_host
-    when: hostvars[loop_host].ip is defined
-    
-  - name: add static dns entries
-    routeros_command:
-      commands:
-      - /ip dns static add address={{ hostvars[loop_host].ip }} name={{hostvars[loop_host].fqdn}}
-    with_items: "{{ groups['all'] }}"
-    loop_control:
-      loop_var: loop_host
-    when: hostvars[loop_host].fqdn is defined and hostvars[loop_host].ip is defined
+- name: DNS setup
   when: update_dns
-
-- name: dhcp setup
   block:
-  - name: remove all static dhcp leases
-    routeros_command:
-      commands: /ip dhcp-server lease remove [find]
-  - name: add static dhcp lease
-    routeros_command:
-      commands:
-      - /ip dhcp-server lease add address={{ hostvars[loop_host].ip }} mac-address={{hostvars[loop_host].mac}}
-        server=dhcpautomodal use-src-mac=yes
-    with_items: "{{ groups['all'] }}"
-    loop_control:
-      loop_var: loop_host
-    when: hostvars[loop_host].ip is defined and hostvars[loop_host].mac is defined
-  - name: remove all static dhcp leases
-    routeros_command:
-      commands: /ip dhcp-server lease remove [find dynamic]
+    - name: Remove all static dns entries
+      community.routeros.command:
+        commands: /ip dns static remove [find]
+    - name: Add static dns entries
+      community.routeros.command:
+        commands:
+          - /ip dns static add address={{ hostvars[loop_host].ip }} name={{ loop_host }}.automodal.de
+      with_items: "{{ groups['all'] }}"
+      loop_control:
+        loop_var: loop_host
+      when: hostvars[loop_host].ip is defined
+
+    - name: Add static dns entries
+      community.routeros.command:
+        commands:
+          - /ip dns static add address={{ hostvars[loop_host].ip }} name={{ hostvars[loop_host].fqdn }}
+      with_items: "{{ groups['all'] }}"
+      loop_control:
+        loop_var: loop_host
+      when: hostvars[loop_host].fqdn is defined and hostvars[loop_host].ip is defined
+
+- name: DHCP setup
   when: update_dhcp_leases
+  block:
+    - name: Remove all static dhcp leases
+      community.routeros.command:
+        commands: /ip dhcp-server lease remove [find]
+    - name: Add static dhcp lease
+      community.routeros.command:
+        commands:
+          - /ip dhcp-server lease add address={{ hostvars[loop_host].ip }} mac-address={{ hostvars[loop_host].mac }} server=dhcpautomodal use-src-mac=yes
+      with_items: "{{ groups['all'] }}"
+      loop_control:
+        loop_var: loop_host
+      when: hostvars[loop_host].ip is defined and hostvars[loop_host].mac is defined
+    - name: Remove all static dhcp leases
+      community.routeros.command:
+        commands: /ip dhcp-server lease remove [find dynamic]

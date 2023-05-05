@@ -1,18 +1,18 @@
 ---
 msmtp_accounts:
-  - account  : "systeminfo"
-    host     : "mail.kaltmacher.de"
-    port     : 587
-    auth     : "on"
-    user     : "example@gmail.example"
-    password : "some password"
+  - account: systeminfo
+    host: mail.kaltmacher.de
+    port: 587
+    auth: "on"
+    user: example@gmail.example
+    password: some password
 
-msmtp_default_account: "systeminfo"
-msmtp_from           : "default"
+msmtp_default_account: systeminfo
+msmtp_from: default
 
-msmtp_log           : "file" # oder "syslog"
-msmtp_logfile       : /var/log/msmtp.log
+msmtp_log: file # oder "syslog"
+msmtp_logfile: /var/log/msmtp.log
 
-msmtp_alias_default : server.herbert@debauer.net
-msmtp_alias_root    : server.herbert@debauer.net
-msmtp_alias_cron    : server.herbert@debauer.net
+msmtp_alias_default: server.herbert@debauer.net
+msmtp_alias_root: server.herbert@debauer.net
+msmtp_alias_cron: server.herbert@debauer.net

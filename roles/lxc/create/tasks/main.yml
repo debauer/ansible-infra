@@ -1,28 +1,25 @@
 ---
-- name: "create containers {{ containers }} if not exist"
+- name: create containers {{ containers }} if not exist
   include: create.yml container="{{ item }}"
-  with_items: '{{ containers }}'
-  when: 
+  with_items: "{{ containers }}"
+  when:
     - not hostvars[item].lxc_container.block_create
     - hostvars[item].lxc_container.host == inventory_hostname
-  
+
 - name: create dnsmasq config
-  template: src=dnsmasq.j2 dest=/etc/lxc/dnsmasq.conf 
-            owner=root group=root mode=0644
-  vars: 
+  template: src=dnsmasq.j2 dest=/etc/lxc/dnsmasq.conf owner=root group=root mode=0644
+  vars:
     container_list: "{{ containers }}"
 
-- name: restart lxc-net 
+- name: restart lxc-net
   ansible.builtin.systemd:
     state: restarted
     daemon_reload: true
     name: lxc-net
-    
-    
+
 - name: "start/stop containers {{ containers }} "
-  include: start.yml container="{{ item }}" 
-  with_items: '{{ containers }}'
-  when: 
+  include: start.yml container="{{ item }}"
+  with_items: "{{ containers }}"
+  when:
     - hostvars[item].lxc_container.state == "started" or hostvars[item].lxc_container.state == "stopped"
     - hostvars[item].lxc_container.host == inventory_hostname
-  

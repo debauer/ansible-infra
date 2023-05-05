@@ -1,6 +1,5 @@
 ---
 - name: create backup script
-  template: src=backup.j2 dest=/home/debauer/backup.sh
-            owner=debauer group=debauer mode=0775
-  vars: 
+  template: src=backup.j2 dest=/home/debauer/backup.sh owner=debauer group=debauer mode=0775
+  vars:
     container_list: "{{ containers }}"

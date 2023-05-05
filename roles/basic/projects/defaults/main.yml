@@ -1,3 +1,3 @@
 ---
 poetry_interpreter: /usr/bin/python3
-poetry_reinstall: no
+poetry_reinstall: false

@@ -1,19 +1,19 @@
 ---
 - name: "Check whether container exists: {{ container }}"
   become: "{{ hostvars[container].lxc_container.privileged }}"
-  shell: "lxc-ls --line"
+  shell: lxc-ls --line
   register: lxc_list
   ignore_errors: true
   check_mode: false
-  changed_when: False
- 
+  changed_when: false
+
 - name: "Do thing if container does not exist: {{ container }}"
   become: "{{ hostvars[container].lxc_container.privileged }}"
   debug:
     msg: "{{ container }} does not exist, now create it"
   when: container not in lxc_list.stdout
-  
-- name: "Clone base container and name it {{ container }}" 
+
+- name: Clone base container and name it {{ container }}
   become: "{{ hostvars[container].lxc_container.privileged }}"
   lxc_container:
     name: "{{ hostvars[container].lxc_container.base }}"

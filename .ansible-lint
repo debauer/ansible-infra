@@ -1,0 +1,8 @@
+---
+# .ansible-lint
+
+profile: # min, basic, moderate,safety, shared, production
+
+exclude_paths:
+  - .cache/ # implicit unless exclude_paths is defined in config
+  - playbooks/depricated/
