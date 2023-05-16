@@ -1,0 +1,9 @@
+---
+- name: Copy docker-compose.yml to server
+  ansible.builtin.template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces.d/{{ network.interface }}
+    owner: "root"
+    group: "root"
+    mode: 0
+  become: true

@@ -1,3 +1,4 @@
+---
 # from GitHub, overriding the name and specifying a specific tag
 roles:
   - name: iot/ansible-tasmota
@@ -17,8 +18,6 @@ roles:
   - src: https://github.com/bodsch/ansible-influxdb
     name: monitoring/ansible-influxdb
     version: 1.1.0
-    
 
   - src: https://github.com/geerlingguy/ansible-role-certbot
     name: monitoring/ansible-influxdb
-

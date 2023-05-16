@@ -1,0 +1,28 @@
+---
+- hosts: all
+  gather_facts: true
+  become: true
+  vars_files:
+    - ../vars/secrets.yml
+  vars:
+    influxdb_primary:
+      organization: main-org
+      bucket: "{{ influx_default_bucket }}"
+      username: "{{ influx_default_user }}"
+      password: "{{ vault_influx_admin_password }}"
+      token: "{{ vault_influx_admin_token }}"
+    containers: "{{ groups['container'] }}"
+
+  roles:
+    - role: roles/network/raspbian
+      tags: network, raspbian
+      
+    - role: roles/basic/update
+      tags: basic, update
+
+    - role: roles/basic/packages
+      tags: basic, packages
+
+    - role: roles/basic/projects
+      tags: basic, projects
+      when: projects is defined

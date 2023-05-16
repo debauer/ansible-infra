@@ -46,6 +46,17 @@ all:
                 state: started
               role_wekan: true
 
+            acz_authentik:
+              ansible_host: 10.0.3.6
+              proxy:
+                - port: 9000
+                  target: authentik.acz.space
+              lxc_container:
+                name: authentik
+                state: started
+                block_create: false
+              role_authentik: true
+
           vars:
             ansible_ssh_common_args: -o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q acz@acz.space"
             ansible_user: acz

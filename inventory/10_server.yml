@@ -3,20 +3,29 @@ all:
   children:
     blech:
       hosts:
-        hermine:
-          ansible_host: 192.168.1.112
-        herbert:
-          ansible_host: 192.168.1.101
+        bauer_service_pi:
+          ansible_host: 192.168.1.114
+          ansible_user: debauer
+          raspberry_network:
+            - interface: eth0
+              address: 192.168.1.114
+            - interface: wlan0
+              address: 192.168.1.113
           projects:
             - name: hmtoinflux
               user: hmtoinflux
               url: https://github.com/debauer/HomematicToInflux
               install_requirements_txt: true
-              # branch: release-branch # master is default
+              branch:  refactoring
             - name: tasmotatoinflux
               user: tasmotatoinflux
               url: https://github.com/debauer/tasmotaToInflux
               install_requirements_txt: true
+              branch: master
+        hermine:
+          ansible_host: 192.168.1.112
+        herbert:
+          ansible_host: 192.168.1.101
           influx_databases:
             - tasmotaToInflux
             - homematicToInflux

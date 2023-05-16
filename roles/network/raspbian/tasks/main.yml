@@ -1,0 +1,13 @@
+---
+- name: setup raspberry network
+  include: setup.yml network="{{ network_var }}"
+  with_items: "{{ raspberry_network }}"
+  loop_control:
+    loop_var: network_var
+    
+    
+- name: disable dhcpd
+  ansible.builtin.systemd:
+    name: dhcpcd
+    enabled: false
+    state: stopped

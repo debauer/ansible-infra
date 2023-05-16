@@ -1,5 +1,5 @@
 ---
-- name: APT Packages
+- name: install Packages
   block:
     #- name: Remove base packages
     #  package:
@@ -18,7 +18,7 @@
         state: present
       when: packages_additional
   when:
-    - ansible_facts['os_family'] == "Archlinux"
+    - ansible_facts['os_family'] == "Archlinux" or ansible_facts['os_family'] == "Debian"
 
 - name: PIP Packages
   block:

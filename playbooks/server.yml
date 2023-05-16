@@ -51,3 +51,7 @@
     - role: roles/services/paperless
       when: paperless is defined
       tags: paperless
+
+    - role: roles/services/authentik
+      when: role_authentik is defined
+      tags: authentik

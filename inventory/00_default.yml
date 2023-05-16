@@ -27,6 +27,8 @@ all:
     influx_default_bucket: tasmota
     influx_default_user: debauer
     influx_default_org: main
+    project:
+      user_need_sudo: false
 
   children:
     tasmota:

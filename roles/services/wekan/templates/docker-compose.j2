@@ -186,9 +186,9 @@ services:
       #   For SSL in email, change smtp:// to smtps://
       # NOTE: Special characters need to be url-encoded in MAIL_URL.
       #       You can encode those characters for example at: https://www.urlencoder.org
-      - MAIL_URL=smtp://admin%40acz.space:{{vault_wekan_email_pw}}@mail.madways.de:587/
+      - MAIL_URL=smtp://{{lookup('vars', 'vault_' + lxc_container.host + '_wekan_email_user')}}:{{lookup('vars', 'vault_' + lxc_container.host + '_wekan_email_pw')}}@{{lookup('vars', 'vault_' + lxc_container.host + '_wekan_email_server')}}:587/
       #- MAIL_URL=smtp://<mail_url>:25/?ignoreTLS=true&tls={rejectUnauthorized:false}
-      - MAIL_FROM=Wekan Notifications <admin@acz.space>
+      - MAIL_FROM={{lookup('vars', 'vault_' + lxc_container.host + '_wekan_email_from')}}
       # Currently MAIL_SERVICE is not in use.
       #- MAIL_SERVICE=Outlook365
       #- MAIL_SERVICE_USER=firstname.lastname@hotmail.com

@@ -1,0 +1,7 @@
+auto {{ network.interface }}
+allow-hotplug {{ network.interface }}
+iface {{ network.interface }} inet static
+address {{ network.address }}
+netmask {{ network_netmask }}
+gateway {{ network_gateway }}
+dns-nameservers {{ network_dns }}

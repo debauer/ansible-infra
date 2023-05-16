@@ -5,7 +5,7 @@ USERMAP_UID=1000
 USERMAP_GID=1000
 
 
-PAPERLESS_SECRET_KEY={{ vault_paperless_secret_key }}
+PAPERLESS_SECRET_KEY={{ lookup('vars', 'vault_' + lxc_container.host + '_paperless_secret_key') }}
 PAPERLESS_TIME_ZONE=Europe/Berlin
 PAPERLESS_OCR_LANGUAGE=deu
 
