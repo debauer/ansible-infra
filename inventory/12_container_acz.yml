@@ -50,12 +50,21 @@ all:
               ansible_host: 10.0.3.6
               proxy:
                 - port: 9000
-                  target: authentik.acz.space
+                  target: sso.acz.space
               lxc_container:
                 name: authentik
                 state: started
-                block_create: false
               role_authentik: true
+
+            acz_snipeit:
+              ansible_host: 10.0.3.7
+              proxy:
+                - port: 80
+                  target: inventory.acz.space
+              lxc_container:
+                name: snipeit
+                state: started
+              role_snipeit: true
 
           vars:
             ansible_ssh_common_args: -o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q acz@acz.space"

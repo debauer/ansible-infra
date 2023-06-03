@@ -318,11 +318,11 @@ services:
       # the watchers and if any card is due, about due or past due.
       #
       # Notify due days, default is None, 2 days before and on the event day
-      #- NOTIFY_DUE_DAYS_BEFORE_AND_AFTER=2,0
+      - NOTIFY_DUE_DAYS_BEFORE_AND_AFTER=2,0
       #
       # Notify due at hour of day. Default every morning at 8am. Can be 0-23.
       # If env variable has parsing error, use default. Notification sent to watchers.
-      #- NOTIFY_DUE_AT_HOUR_OF_DAY=8
+      - NOTIFY_DUE_AT_HOUR_OF_DAY=8
       #-----------------------------------------------------------------
       # ==== EMAIL NOTIFICATION TIMEOUT, ms =====
       # Default: 30000 ms = 30s

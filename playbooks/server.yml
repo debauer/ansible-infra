@@ -55,3 +55,7 @@
     - role: roles/services/authentik
       when: role_authentik is defined
       tags: authentik
+
+    - role: roles/services/snipeit
+      when: role_snipeit is defined
+      tags: snipeit
