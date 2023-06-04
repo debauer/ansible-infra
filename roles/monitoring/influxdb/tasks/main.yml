@@ -11,6 +11,7 @@
     name: "{{ item }}"
     state: present
   with_items: [influxdb, influx-cli]
+  
 - name: ensure influxdb is enabled on boot
   become: true
   service:
@@ -33,7 +34,7 @@
   check_mode: false
   changed_when: false
 
-- name: copy nginx.conf to server
+- name: copy influxdb config to server
   template:
     src: configs.j2
     dest: /root/.influxdbv2/configs
@@ -42,9 +43,8 @@
     mode: "0644"
   become: true
 
-- name: create containers {{ containers }} if not exist
-  include: create.yml username="{{ influx_user }}"
+- name: create influx users  if not exist
+  include: user.yml username="{{ influx_user }}"
   with_items: "{{ influxdb.user }}"
   loop_control:
     loop_var: influx_user
-  when: not hostvars[item].block_create

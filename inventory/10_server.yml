@@ -3,29 +3,11 @@ all:
   children:
     blech:
       hosts:
-        bauer_service_pi:
-          ansible_host: 192.168.1.114
-          ansible_user: debauer
-          raspberry_network:
-            - interface: eth0
-              address: 192.168.1.114
-            - interface: wlan0
-              address: 192.168.1.113
-          projects:
-            - name: hmtoinflux
-              user: hmtoinflux
-              url: https://github.com/debauer/HomematicToInflux
-              install_requirements_txt: true
-              branch:  refactoring
-            - name: tasmotatoinflux
-              user: tasmotatoinflux
-              url: https://github.com/debauer/tasmotaToInflux
-              install_requirements_txt: true
-              branch: master
         hermine:
           ansible_host: 192.168.1.112
         herbert:
           ansible_host: 192.168.1.101
+          ansible_user: debauer
           influx_databases:
             - tasmotaToInflux
             - homematicToInflux
@@ -44,6 +26,7 @@ all:
             - { db: sensors }
           grafana_admin_user: admin
           backup_script: backup_herbert.sh
+          sway_role: true
         herman:
           ansible_host: herman.debauer.net
           ansible_user: debauer

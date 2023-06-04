@@ -1,0 +1,12 @@
+- name: Install Sway
+  package:
+    name: "sway waybar alacritty polkit sway-launcher-desktop ttf-font-awesome"
+    state: present
+    
+# update dotfiles
+
+# user group
+#    video
+#    audio
+#    input
+

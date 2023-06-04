@@ -22,6 +22,9 @@ all:
                 - 8883:8883:tcp
               lxc_container:
                 name: mqtt
+              mosquitto:
+                bridge: false
+                tls: true
             herman_automodal:
               ansible_host: 192.168.111.4
               projects:
@@ -89,18 +92,19 @@ all:
                   - b_camper
                 user:
                   u_tasmota:
-                    write: b_tasmota
+                    write: [b_tasmota]
                   u_homematic:
-                    write: b_homematic
+                    write: [b_homematic]
                   u_grafana:
                     read: all
                   u_popel:
-                    write: b_camper
+                    write: [b_camper]
               proxy:
                 - port: 8086
                   target: influx.debauer.net
               lxc_container:
                 name: influxdb
+                block_create: false
             herman_grafana:
               ansible_host: 192.168.111.10
               proxy:

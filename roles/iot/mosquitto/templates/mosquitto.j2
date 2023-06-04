@@ -1,0 +1,94 @@
+
+
+listener 8883
+#socket_domain
+#bind_interface
+#http_dir
+#max_connections -1
+#mount_point
+protocol mqtt
+use_username_as_clientid false
+#websockets_headers_size
+
+# =================================================================
+# Certificate based SSL/TLS support
+# =================================================================
+
+{% if mosquitto.bridge == false %}
+{% if mosquitto.tls == true %}
+certfile /etc/mosquitto/certs/server.crt
+keyfile /etc/mosquitto/certs/server.pem
+cafile /etc/mosquitto/ca_certificates/ca.crt
+# ciphers AES128-GCM-SHA256
+# tls_version tlsv1.2
+# ciphers_tls1.3
+# crlfile
+# dhparamfile
+use_identity_as_username true
+require_certificate true
+{% else %}
+require_certificate false
+{% endif %}
+{% endif %}
+
+# =================================================================
+# Logging
+# =================================================================
+
+#log_type debug
+#log_type error
+#log_type warning
+#log_type notice
+#log_type information
+
+#connection_messages true
+#log_facility
+#log_timestamp true
+# log_timestamp_format %Y-%m-%dT%H:%M:%S
+#log_timestamp_format
+#websockets_log_level 0
+
+
+# =================================================================
+# Security
+# =================================================================
+
+#clientid_prefixes
+allow_anonymous false
+
+# =================================================================
+# Default authentication and topic access control
+# =================================================================
+
+password_file /etc/mosquitto/passwd
+#psk_file
+#acl_file
+
+
+{% if mosquitto.bridge == True %}
+# =========================================================
+# Bridges
+# =========================================================
+
+connection br-me-to-broker0
+address mqtt.debauer.net:8883
+topic # both 0
+cleansession false
+notifications false
+remote_clientid {{ inventory_hostname }}
+remote_password {{ lookup('vars', 'vault_' + inventory_hostname + '_mqtt_password') }}
+remote_username {{ inventory_hostname | replace('_','-') }}
+start_type automatic
+try_private true
+bridge_cafile /etc/mosquitto/ca_certificates/ca.crt
+bridge_insecure false
+bridge_certfile /etc/mosquitto/certs/{{ inventory_hostname | replace('_','-') }}.crt
+bridge_keyfile /etc/mosquitto/certs/{{ inventory_hostname | replace('_','-') }}.key
+
+{% endif %}
+
+# =================================================================
+# Include Dir
+# =================================================================
+
+#include_dir

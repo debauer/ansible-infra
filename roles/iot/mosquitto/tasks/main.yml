@@ -1,0 +1,52 @@
+---
+- name: Install mosquitto
+  ansible.builtin.package:
+    name:
+      - mosquitto
+    state: present
+    
+- name: Touch a file, using symbolic modes to set the permissions (equivalent to 0644)
+  ansible.builtin.file:
+    path: /etc/mosquitto/passwd
+    state: touch
+
+
+- name: Copy private key to mosquitto server
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../iot/pki/private/{{ inventory_hostname | replace('_','-') }}.key"
+    dest: "/etc/mosquitto/certs/{{ inventory_hostname | replace('_','-') }}.key"
+    owner: mosquitto
+    group: mosquitto
+    mode: '0644'
+
+
+- name: Copy cert to mosquitto server
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../iot/pki/issued/{{ inventory_hostname | replace('_','-') }}.crt"
+    dest: "/etc/mosquitto/certs/{{ inventory_hostname | replace('_','-') }}.crt"
+    owner: mosquitto
+    group: mosquitto
+    mode: '0644'
+
+- name: Copy ca.crt to mosquitto server
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../iot/pki/ca.crt"
+    dest: "/etc/mosquitto/certs/ca.crt"
+    owner: mosquitto
+    group: mosquitto
+    mode: '0644'
+    
+- name: Copy mosquitto.conf to server
+  ansible.builtin.template:
+    src: mosquitto.j2
+    dest: /etc/mosquitto/mosquitto.conf
+    owner: "root"
+    group: "root"
+    mode: 0
+  become: true
+
+- name: Enable and (re)start mosquitto
+  ansible.builtin.systemd:
+    name: mosquitto
+    enabled: true
+    state: restarted

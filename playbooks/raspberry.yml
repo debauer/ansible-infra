@@ -16,6 +16,9 @@
   roles:
     - role: roles/network/raspbian
       tags: network, raspbian
+   
+    - role: roles/iot/mosquitto
+      tags: iot, mqtt   
       
     - role: roles/basic/update
       tags: basic, update
