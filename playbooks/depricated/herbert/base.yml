@@ -1,0 +1,29 @@
+---
+- hosts: herbert
+  become: yes
+  vars_files:
+    - ../../vars/secrets.yml
+  vars:
+    msmtp_accounts:
+      - account: "noreply"
+        host: mail.debauer.net
+        port: 587
+        auth: "on"
+        user: "{{ vault_system_mail_address }}"
+        password: "{{ vault_system_mail_pass }}"
+    apt_additional:
+      - mosquitto
+      - mosquitto-clients
+    update_apt: false
+    users:
+      - { name: keya }
+      - { name: debauer }
+      - { name: iobroker, groups: [docker] }
+
+  roles:
+  - role: roles/basic/users
+  - role: roles/basic/msmtp
+  - role: roles/basic/packages
+  - role: roles/basic/projects
+     
+

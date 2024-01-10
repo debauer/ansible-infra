@@ -1,32 +1,111 @@
 ---
 all:
   children:
-    blech:
+    homeserver:
       hosts:
-        hermine:
-          ansible_host: 192.168.1.112
-        herbert:
-          ansible_host: 192.168.1.101
+        wireguard-laptop:
+          ip: 192.168.1.102
+        fritz-box:
+          freigabe:
+            - export: 8000
+              port: 22
+              host: herbert
+            - export: 8001
+              port: 22
+              host: mikrotik
+            - export: 8002
+              port: 22
+              host: karl
+        karl:
+          ansible_host: karl.lan
           ansible_user: debauer
-          influx_databases:
-            - tasmotaToInflux
-            - homematicToInflux
-            - unifi
-            - telegraf
-            - tasmotaAggregated
-            - octoprint
-            - sensors
-          grafana_datasources:
-            - { db: tasmotaToInflux, name: tasmota }
-            - { db: homematicToInflux, name: homematic, default: true }
-            - { db: unifi }
-            - { db: telegraf }
-            - { db: tasmotaAggregated }
-            - { db: octoprint }
-            - { db: sensors }
-          grafana_admin_user: admin
+          ip: 192.168.1.231
+          mac: D0:50:99:7C:28:8B
+          role_proxy: true
+          heimdall: 
+          hass:
+          unifi:
+          unpoller:
+          nginx:
+            proxy:
+              - name: grafana
+                src_address: "127.0.0.1"
+                src_port: 3000
+                target_fqdn: "grafana.lan"
+              - name: portal
+                src_address: "127.0.0.1"
+                src_port: 3089
+                target_fqdn: "portal.lan"
+              - name: unifi
+                src_address: "127.0.0.1"
+                src_port: 8443
+                target_fqdn: "unifi.lan"
+                proxy_ssl: yes
+              - name: hass
+                src_address: "127.0.0.1"
+                src_port: 8123
+                target_fqdn: "hass.lan"
+            vhost: 
+              - name: infopage
+                root: "/home/debauer/infopage"
+                target_fqdn: "infopage.lan"
+                
+            #  - root: "/home/heimdall/heimdall/public" 
+            #    target_fqdn: "portal.lan"
+          
+          proxy_ssl_only: false
+          fqdn: 
+           - medien.lan
+           - backup.lan
+           - influxdb.lan
+           - grafana.lan
+           - mqtt.lan
+           - portal.lan
+           - unifi.lan
+           - hass.lan
+           - infopage.lan
+          projects:
+            - name: hmtoinflux
+              user: hmtoinflux
+              url: https://github.com/debauer/HomematicToInflux
+              install_requirements_txt: yes
+              branch: main
+              # branch: release-branch # master is default
+              # update: no # yes is default
+            - name: tasmotatoinflux
+              user: tasmotatoinflux
+              url: https://github.com/debauer/tasmotaToInflux
+              install_requirements_txt: yes
+              branch: main
+            - name: iotakkumulator
+              user: iotakkumulator
+              url: https://github.com/debauer/iotAkkumulator
+              install_requirements_txt: yes
+              branch: main
+          #grafana:
+          #  admin_user: admin
+          #  datasources:
+          #  - { db: tasmotaToInflux, name: tasmota }
+          #  - { db: homematicToInflux, name: homematic, default: true }
+          #prometheus:
+          #influxdb:
+          #  databases:
+          #    - tasmotaToInflux
+          #    - homematicToInflux
+        hermine:
+          ansible_host: hermine.lan
+          ip: 192.168.1.232
+          mac: 00:11:32:cb:d2:e1
+        herbert:
+          ansible_host: herbert.lan
+          ansible_user: debauer
+          ip: 192.168.1.233
+          mac: D0:50:99:29:2E:91
+          fqdn: 
+           - backup-server.lan
           backup_script: backup_herbert.sh
-          sway_role: true
+    server_extern:
+      hosts:
         herman:
           ansible_host: herman.debauer.net
           ansible_user: debauer

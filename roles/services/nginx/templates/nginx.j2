@@ -1,0 +1,122 @@
+#user http;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+    client_max_body_size 1000M;
+
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        ''      close;
+    }
+    
+{% for config in nginx.proxy %}
+
+{% if "proxy_ssl" in config and config.proxy_ssl %}
+    server {
+        listen 80;
+        server_name {{ config.target_fqdn }};
+        return 301 https://$host$request_uri;
+    }
+{% endif %}
+
+    server {
+        {% if "proxy_ssl_letsencrypt" not in config and "proxy_ssl" not in config %}
+        set $source http://{{ config.src_address }}:{{ config.src_port }};
+        {% else %}
+        set $source https://{{ config.src_address }}:{{ config.src_port }};
+        {% endif %}
+        
+        server_name {{ config.target_fqdn }};
+        location / {
+            proxy_pass       $source;
+            proxy_set_header Upgrade $http_upgrade; # allow websockets
+            proxy_set_header Connection $connection_upgrade;
+            proxy_set_header X-Forwarded-For $remote_addr; # preserve client IP
+            proxy_set_header Host $server_name; #LH: Probably FIX CSRF Error when adding groups?
+            proxy_set_header X-Real-IP $remote_addr; #LH: Probably FIX CSRF Error when adding groups?
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; #LH: Probably FIX CSRF Error when adding groups?
+            proxy_set_header X-Forwarded-Proto $scheme; #LH: Probably FIX CSRF Error when adding groups?
+            proxy_http_version 1.1;
+            client_body_buffer_size 10M;
+            client_max_body_size 10M;
+        }
+        {% if "proxy_ssl" in config and config.proxy_ssl %}
+        listen 443;
+        {% endif %}
+        
+        {% if "proxy_ssl_letsencrypt" in config and config.proxy_ssl_letsencrypt %}
+        listen 443 ssl;
+        ssl_certificate /etc/letsencrypt/live/{{ vars.target }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ vars.target }}/privkey.pem;
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+        {% endif %}
+        
+        {% if "proxy_ssl_letsencrypt" not in config and "proxy_ssl" not in config %}
+        listen 80;
+        {% endif %}
+    } 
+{% endfor %}
+
+{% for config in nginx.vhost %}
+    server {
+         listen 80;
+         server_name {{ config.target_fqdn }};
+         root {{ config.root }};
+         index index.php index.html index.htm index.nginx-debian.html;
+         location / {
+             try_files $uri $uri/ =404;
+         }
+         location ~ \.php$ {
+             fastcgi_pass unix:/run/php-fpm/php-fpm.sock;
+             include fastcgi_params;
+             fastcgi_index index.php;
+             fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+             fastcgi_param    PATH_INFO          $fastcgi_path_info;
+             fastcgi_param    PATH_TRANSLATED    $document_root$fastcgi_path_info;
+         }
+         location ~ /\.ht {
+             deny all;
+         }
+    }
+     
+{% endfor %}
+
+    server {
+        listen       80;
+        server_name  localhost;
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+        }
+    
+    
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+    
+    }
+}

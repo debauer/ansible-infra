@@ -10,7 +10,7 @@ all:
               nat_ports:
                 - 80:80:tcp
                 - 443:443:tcp
-              role_proxy: true
+              role_lxc_proxy: true
               lxc_container:
                 name: proxy
                 state: started

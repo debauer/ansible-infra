@@ -3,4 +3,4 @@ set_mqtt: false
 restart: false
 set_wifi1: false
 set_wifi2: false
-set_fixed_ip: false
+dhcp: true

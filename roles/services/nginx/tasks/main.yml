@@ -1,0 +1,32 @@
+---
+- name: update system
+  community.general.pacman:
+    update_cache: true
+    upgrade: true
+  when:
+    - ansible_facts['os_family'] == "Archlinux"
+    - upgrade_system is defined
+    - upgrade_system
+
+- name: install nginx
+  package:
+    name: [nginx, certbot-nginx ]
+
+- name: Enable service httpd and ensure it is not masked
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: true
+
+- name: copy nginx.conf to server
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+
+- name: restart nginx.server
+  service:
+    name: nginx
+    state: restarted

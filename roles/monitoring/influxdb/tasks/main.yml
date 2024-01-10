@@ -43,8 +43,9 @@
     mode: "0644"
   become: true
 
-- name: create influx users  if not exist
-  include: user.yml username="{{ influx_user }}"
-  with_items: "{{ influxdb.user }}"
-  loop_control:
-    loop_var: influx_user
+#- name: create influx users  if not exist
+#  include: user.yml username="{{ influx_user }}"
+#  with_items: "{{ influxdb.user }}"
+#  loop_control:
+#    loop_var: influx_user
+#  when: influx.create_users exists

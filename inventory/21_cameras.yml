@@ -1,8 +1,0 @@
----
-all:
-  children:
-    cameras:
-      hosts: 192.168.1.108 192.168.1.126
-      vars:
-        telnet_user: root
-        telnet_pw: xmhdipc

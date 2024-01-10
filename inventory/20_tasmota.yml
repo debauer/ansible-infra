@@ -6,98 +6,158 @@ all:
         steckdosen:
           hosts:
             steckdose01:
-              friendly_name: Kämmerle
+              friendly_name: Laserdrucker
+              module: 45 #blitzwolf SHP / gosund SP111
               ip: 192.168.1.170
-              module: 45 #blitzwolf SHP / gosund SP111
               mac: 4C:11:AE:04:2B:D3
-              version: v7
+              version: v12
+              calibriert: 24.12.2023
+              fqdn: [ Laserdrucker-relai.lan ]
             steckdose02:
-              friendly_name: Kuehlschrank
+              friendly_name: lampe_david_blumen
               ip: 192.168.1.171
-              module: 45 #blitzwolf SHP / gosund SP111
               mac: BC:DD:C2:30:2F:B1
+              module: 45 #blitzwolf SHP / gosund SP111
               version: v12
             steckdose03:
-              friendly_name: Geschirrspueler
+              friendly_name: Camera_Kueche
               ip: 192.168.1.172
+              mac: B4:E6:2D:6C:94:D5
               module: 45 #blitzwolf SHP / gosund SP111
               version: v7
+              calibriert: 24.12.2023
             steckdose04:
-              friendly_name: Gefriertruhe
+              friendly_name: Camera_Nadine
               ip: 192.168.1.173
-              module: 45 #blitzwolf SHP / gosund SP111
               mac: CC:50:E3:37:62:0A
+              module: 45 #blitzwolf SHP / gosund SP111
+              calibriert: 24.12.2023
               #timer: ['{"Arm":1,"Mode":0,"Time":"08:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":1}',
               #        '{"Arm":1,"Mode":0,"Time":"00:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":0}',
               #        0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-            steckdose05:
-              friendly_name: Nachttisch Nadine
-              ip: 192.168.1.174
-              module: 55 #gosund SP1
-              mac: 24:62:AB:30:A5:24
-            steckdose06:
-              friendly_name: Fernseher
-              ip: 192.168.1.175
-              module: 55 #gosund SP1
-              mac: D8:F1:5B:AB:44:BC
-            steckdose07:
-              friendly_name: Arbeitsplatz David
-              ip: 192.168.1.176
-              module: 55 #gosund SP1
-              mac: DC:4F:22:B6:B6:A5
-              commands:
-                - command: CurrentCal
-                  value: 3500
-            steckdose08:
-              friendly_name: Nachtisch David
-              ip: 192.168.1.177
-              module: 55 #gosund SP1
-              mac: D8:F1:5B:C0:48:29
-              version: v12
-            steckdose09:
-              friendly_name: Kühlbox
-              ip: 192.168.1.178
-              module: 52 #teckin
-              mac: C4:4F:33:80:AA:B8
-              #timer: ['{"Arm":1,"Mode":0,"Time":"08:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":1}',
-              #        '{"Arm":1,"Mode":0,"Time":"20:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":0}',
-              #        0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-            steckdose10:
-              friendly_name: Klimanlage
-              ip: 192.168.1.179
-              module: 52 #teckin
+            #steckdose05:
+            #  friendly_name: Nachttisch Nadine
+            #  ip: 192.168.1.174
+            #  module: 55 #gosund SP1
+            #  mac: 24:62:AB:30:A5:24
+            #steckdose06:
+            #  friendly_name: Fernseher
+            #  ip: 192.168.1.175
+            #  module: 55 #gosund SP1
+            #  mac: D8:F1:5B:AB:44:BC
+            #steckdose07:
+            #  friendly_name: Arbeitsplatz David
+            #  ip: 192.168.1.176
+            #  module: 55 #gosund SP1
+            #  mac: DC:4F:22:B6:B6:A5
+            #  commands:
+            #    - command: CurrentCal
+            #      value: 3500
+            #steckdose08:
+            #  friendly_name: Nachtisch David
+            #  ip: 192.168.1.177
+            #  module: 55 #gosund SP1
+            #  mac: D8:F1:5B:C0:48:29
+            #  version: v12
+            #steckdose09:
+            #  friendly_name: Kühlbox
+            #  ip: 192.168.1.178
+            #  module: 52 #teckin
+            #  mac: C4:4F:33:80:AA:B8
+            #  #timer: ['{"Arm":1,"Mode":0,"Time":"08:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":1}',
+            #  #        '{"Arm":1,"Mode":0,"Time":"20:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":0}',
+            #  #        0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            #steckdose10:
+            #  friendly_name: Klimanlage
+            #  ip: 192.168.1.179
+            #  module: 52 #teckin
             steckdose11:
-              friendly_name: Gefrierschrank
+              friendly_name: uvlampe_david_blumen
               ip: 192.168.1.180
               module: 52 #teckin
               mac: 60:01:94:A4:CC:E3
+              timer: ['{"Enable":1,"Arm":1,"Mode":0,"Time":"10:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":1}',
+                      '{"Enable":1,"Arm":1,"Mode":0,"Time":"18:00","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":0}']
             steckdose12:
-              friendly_name: Bad
+              friendly_name: schreibtisch
               ip: 192.168.1.181
               module: 45 #blitzwolf
               mac: 24:62:AB:41:9D:A4
               version: v12
+              calibriert: 24.12.2023
             steckdose13:
+              friendly_name: 3ddrucker
               ip: 192.168.1.184
-              friendly_name: 3D Drucker
+              mac: C4:4F:33:B9:AC:9E
               module: 45 #blitzwolf
               version: v12
+              calibriert: 24.12.2023
             steckdose14:
+              friendly_name: server
               ip: 192.168.1.189
+              mac: 24:62:AB:2F:79:56
               module: 45 #blitzwolf
               version: v12
+              calibriert: 24.12.2023
             steckdose15:
               ip: 192.168.1.190
+              mac: E0:98:06:C0:E6:67
               module: 45 #blitzwolf
               version: v12
+              calibriert: 24.12.2023
             sonoff4ch:
               ip: 192.168.1.183
               module: 7 # sonoff 4ch
               version: v12
+            switch01:
+              ip: 192.168.1.162
+              mac: 60:01:94:C1:E0:1E
+            switch02:
+              ip: 192.168.1.163
+              # mac: 24:62:AB:56:C9:28
+            switch03: # 4ch sonoff
+              friendly_name: 3D Drucker
+              ip: 192.168.1.164
+              mac: 60:01:94:A3:4A:66
+              fqdn: [ 3ddrucker-relai.lan ]
+              tasmota_custom:
+                - command: WebButton1
+                  value: "CR6"
+                - command: WebButton2
+                  value: "Ender3"
+                - command: WebButton3
+                  value: "Licht"
+                - command: WebButton4
+                  value: "PI"
+            switch04:
+              ip: 192.168.1.165
+              mac: 24:62:AB:56:CA:6A
+            switch05:
+              ip: 192.168.1.166
+              mac: 24:62:AB:56:C9:F1
+            switch06:
+              ip: 192.168.1.167
+              mac: 24:62:AB:56:C9:28
+            schalter01:
+              ip: 192.168.1.168
+              mac: 98:F4:AB:BB:A1:3A
           vars:
             full_topic: ew/steckdosen/%prefix%/%hostname%/
+        strom:
+          hosts:
+            strom01:
+              ip: 192.168.1.159
+              mac: 24:4C:AB:41:F9:B6
         sensoren:
           hosts:
+            soil01:
+              ip: 192.168.1.160
+              mac: EC:FA:BC:C5:BB:76
+              gpio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+            soil02:
+              ip: 192.168.1.161
+              mac: 60:01:94:23:B4:8A
+              gpio: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
             feinstaub01:
               ip: 192.168.1.182
               mac: EC:FA:BC:C5:15:FF
@@ -125,6 +185,7 @@ all:
             heizung-temperatur:
               full_topic: ug/temperaturen/%prefix%/heizung/
               ip: 192.168.1.185
+              mac: 84:F3:EB:59:E9:E7
               gpio: [0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
               # GPIO2":{"4":"DS18x20"}
             kueche:
@@ -133,3 +194,17 @@ all:
               gpio: [5, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
               # "GPIO0":{"5":"I2C SCL"}
               # "GPIO2":{"6":"I2C SDA"}
+            espcam01:
+              mac: 94:B9:7E:F9:3E:F8
+              ip: 192.168.1.192
+            espcam02:
+              mac: 94:B9:7E:F9:46:DC
+              ip: 192.168.1.193
+            espir01:
+              description: "1 sender, 1 recv"
+              mac: 48:3F:DA:4E:62:DA
+              ip: 192.168.1.194
+            espir02:
+              description: "3 sender"
+              mac: 48:3F:DA:50:30:A5
+              ip: 192.168.1.195

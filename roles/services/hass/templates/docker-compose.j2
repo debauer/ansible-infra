@@ -1,0 +1,29 @@
+---
+version: '3'
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - /home/{{ ansible_user }}/hass/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    
+  mariadb:
+    container_name: mariadb
+    image: 'mariadb:latest'
+    user: '99'
+    ports:
+      - '127.0.0.1:3306:3306' # Expose localhost only for Home Assistant
+    volumes:
+      - /opt/mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=homeassistant
+      - MYSQL_USER=homeassistant
+      - MYSQL_PASSWORD=homeassistant
+      - MYSQL_DATABASE=homeassistant
+      - TZ=America/Chicago
+    restart: always

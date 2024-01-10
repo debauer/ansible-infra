@@ -1,0 +1,48 @@
+---
+- name: update system
+  community.general.pacman:
+    update_cache: true
+    upgrade: true
+  when:
+    - ansible_facts['os_family'] == "Archlinux"
+
+- name: Enable forward
+  command:
+    cmd: 'sysctl -w net.ipv4.ip_forward=1'
+
+- name: Forward ports
+  ansible.builtin.iptables:
+    table: nat
+    chain: PREROUTING
+    in_interface: eth0
+    protocol: "{{ nat_port_item.split(':')[2] }}"
+    match: tcp
+    to_destination: "{{ ansible_host }}:{{ nat_port_item.split(':')[0] }}"
+    jump: DNAT
+    destination_port: "{{ nat_port_item.split(':')[1] }}"
+  become: true
+  with_items:
+    - 80:80:tcp
+    - 443:443:tcp
+  loop_control:
+    loop_var: nat_port_item
+
+# - name: remove nftables
+#   package:
+#     name: nftables
+#     state: "absent"
+#     
+# - name: install firewalld
+#   package:
+#     name: firewalld
+#     state: "absent"
+#     
+# - name: Enable forward
+#   command:
+#     cmd: 'sed -i 's/FirewallBackend=.*/FirewallBackend=iptables/g' /etc/firewalld/firewalld.conf'
+#       
+# - name: restart firewalld
+#   service:
+#     name: firewalld
+#     state: restarted
+#     enabled: true

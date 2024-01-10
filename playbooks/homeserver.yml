@@ -1,0 +1,49 @@
+---
+- hosts: homeserver
+  gather_facts: true
+  become: true
+  vars_files:
+    - ../vars/secrets.yml
+
+  roles:
+    - role: roles/basic/update
+      tags: basic, update
+
+    - role: roles/basic/packages
+      tags: basic, packages
+
+    - role: roles/basic/projects
+      tags: basic, projects
+      when: projects is defined
+
+    - role: roles/services/unifi
+      when: unifi is defined
+      tags: unifi
+
+    - role: roles/services/unpoller
+      when: unpoller is defined
+      tags: unpoller
+
+    - role: roles/services/hass
+      when: hass is defined
+      tags: hass
+      
+    - role: roles/services/heimdall
+      when: heimdall is defined
+      tags: heimdall
+      
+    - role: roles/services/nginx
+      when: nginx is defined
+      tags: nginx
+      
+#    - role: roles/monitoring/influxdb
+#      tags: basic, influxdb
+#      when: influxdb is defined
+#      
+#    - role: roles/monitoring/prometheus
+#      tags: basic, prometheus
+#      when: prometheus is defined
+#      
+#    - role: roles/monitoring/grafana
+#      tags: basic, grafana
+#      when: grafana is defined

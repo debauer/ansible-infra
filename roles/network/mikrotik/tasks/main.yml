@@ -1,50 +1,49 @@
 ---
-- name: Set dhcp range
-  community.routeros.command:
-    commands: /ip pool set [find name={{ hostvars[inventory_hostname].dhcp.pool }}] range={{ hostvars[inventory_hostname].dhcp.range }}
+#- name: set dhcp range
+#  routeros_command:
+#    commands: /ip pool set [find name={{ hostvars[inventory_hostname].dhcp.pool }}]
+#      range={{ hostvars[inventory_hostname].dhcp.range }}
+#
+#
+#- name: set dhcp networks
+#  routeros_command:
+#    commands: :if ([:put [:len [/ip dhcp-server network find address="{{ item.address }}"]]] >0) do={/ip dhcp-server network set [find address="{{ item.address }}"] address={{ item.address }} dns-server={{ item.dns }} gateway={{ item.gateway }} domain={{ item.domain }}} else={/ip dhcp-server network add address={{ item.address }} dns-server={{ item.dns }} gateway={{ item.gateway }} domain={{ item.domain }}}
+#  with_items: "{{ hostvars[inventory_hostname].dhcp.networks }}"
 
-- name: Set dns servers
-  community.routeros.command:
-    commands: /ip dhcp-server network set [find] dns-server={{ hostvars[inventory_hostname].dhcp.network.dns }}
+- name: create dns commands
+  mikrotik_dns_commands:
+    hostvars: "{{ hostvars }}"
+    hosts: "{{ groups['all'] }}"
+  register: dns_list
+  tags: dns
 
-- name: DNS setup
+- debug:
+    var: dns_list["list"]
+  tags: dns
+
+- name: dns setup
+  block:
+  - name: remove all static dns entries
+    routeros_command:
+      commands: /ip dns static remove [find]
+  - name: add static dns entries
+    routeros_command:
+      commands: "{{ dns_list['list'] }}"
+  - name: add additional dns entry's
+    include_tasks: fqdn.yml 
+    vars:
+      hostname: "{{ hostname_str }}"
+    with_items: "{{ groups['all'] }}"
+    loop_control:
+      loop_var: hostname_str
+    when: hostvars[hostname_str].fqdn is defined
   when: update_dns
-  block:
-    - name: Remove all static dns entries
-      community.routeros.command:
-        commands: /ip dns static remove [find]
-    - name: Add static dns entries
-      community.routeros.command:
-        commands:
-          - /ip dns static add address={{ hostvars[loop_host].ip }} name={{ loop_host }}.automodal.de
-      with_items: "{{ groups['all'] }}"
-      loop_control:
-        loop_var: loop_host
-      when: hostvars[loop_host].ip is defined
+  tags: dns
 
-    - name: Add static dns entries
-      community.routeros.command:
-        commands:
-          - /ip dns static add address={{ hostvars[loop_host].ip }} name={{ hostvars[loop_host].fqdn }}
-      with_items: "{{ groups['all'] }}"
-      loop_control:
-        loop_var: loop_host
-      when: hostvars[loop_host].fqdn is defined and hostvars[loop_host].ip is defined
 
-- name: DHCP setup
-  when: update_dhcp_leases
-  block:
-    - name: Remove all static dhcp leases
-      community.routeros.command:
-        commands: /ip dhcp-server lease remove [find]
-    - name: Add static dhcp lease
-      community.routeros.command:
-        commands:
-          - /ip dhcp-server lease add address={{ hostvars[loop_host].ip }} mac-address={{ hostvars[loop_host].mac }} server=dhcpautomodal use-src-mac=yes
-      with_items: "{{ groups['all'] }}"
-      loop_control:
-        loop_var: loop_host
-      when: hostvars[loop_host].ip is defined and hostvars[loop_host].mac is defined
-    - name: Remove all static dhcp leases
-      community.routeros.command:
-        commands: /ip dhcp-server lease remove [find dynamic]
+- name: add static dhcp lease
+  routeros_command: 
+    commands: :if ([:put [:len [/ip dhcp-server lease find mac-address="{{hostvars[item].mac}}" dynamic=no]]] >0) do={/ip dhcp-server lease set [find mac-address="{{hostvars[item].mac}}"] address={{ hostvars[item].ip }}} else={/ip dhcp-server lease add address={{ hostvars[item].ip }} mac-address={{hostvars[item].mac}} server={{hostvars[inventory_hostname].dhcp.name }} use-src-mac=yes}
+  with_items: "{{ groups['all'] }}"
+  when: hostvars[item].ip is defined and hostvars[item].mac is defined and update_dhcp_leases
+  tags: dhcp

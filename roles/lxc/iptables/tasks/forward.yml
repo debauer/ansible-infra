@@ -23,7 +23,6 @@
     to_destination: "{{ hostvars[container].ansible_host }}:{{ nat_port_item.split(':')[0] }}"
     jump: DNAT
     destination_port: "{{ nat_port_item.split(':')[1] }}"
-    # comment: Redirect web traffic to port 8600
   become: true
   with_items: "{{ hostvars[container].nat_ports }}"
   loop_control:

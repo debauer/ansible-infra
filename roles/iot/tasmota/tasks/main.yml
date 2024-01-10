@@ -1,7 +1,7 @@
 ---
-- name: set tasmota_host to ip
-  set_fact:
-    tasmota_host: "{{ ip }}"
+#- name: set tasmota_host to ip
+#  set_fact:
+#    tasmota_host: "{{ ip }}"
 
 - name: set some basic settings
   include_role:
@@ -24,12 +24,35 @@
         value: 1
       - command: Timers
         value: "{{ timers_active }}"
+        
+- name: set custom settings
+  include_role:
+    name: roles/iot/ansible-tasmota
+  vars:
+    tasmota_commands: "{{ tasmota_custom }}"
+  when:
+    - tasmota_custom is defined
+    
+        
+- name: calibrate
+  include_role:
+    name: roles/iot/ansible-tasmota
+  vars:
+    tasmota_commands:
+      - command: VoltageSet
+        value: "{{ calibration.voltage }}"
+      - command: PowerSet
+        value: "{{ calibration.power }}"
+      - command: CurrentSet
+        value: "{{ calibration.current }}"
+  when: calibrate is defined
 
 - name: set some more settings
   include_role:
     name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands: "{{ commands }}"
+  when: commands is defined
 
 - name: set timer
   include_role:
@@ -43,25 +66,25 @@
     index_var: timer_id
     loop_var: timer_value
 
-- name: set the mqtt settings
-  include_role:
-    name: roles/iot/ansible-tasmota
-  vars:
-    tasmota_commands:
-      - command: Backlog
-        value: mqttuser {{ mqtt_user }}; mqttpassword {{ mqtt_pass }}; mqttport {{ mqtt_port }}; mqtthost {{ mqtt_host }}; MqttClient {{ inventory_hostname }}; FullTopic
-          {{ full_topic }}
-  when: set_mqtt
-
-- name: set the network settings
+- name: set network to fixed ip
   include_role:
     name: roles/iot/ansible-tasmota
   vars:
     tasmota_commands:
       - command: Backlog
         value: IPAddress1 {{ ip }}; IPAddress2 {{ gateway }}; IPAddress2 {{ netmask }}; IPAddress4 {{ dns }};
-  when: set_fixed_ip and ip is defined
-
+  when: not dhcp and ip is defined
+  
+- name: set network to dhcp
+  include_role:
+    name: roles/iot/ansible-tasmota
+  vars:
+    tasmota_commands:
+      - command: Backlog
+        value: IPAddress1 0.0.0.0; IPAddress2 0.0.0.0; IPAddress2 0.0.0.0; IPAddress4 0.0.0.0;
+  when: dhcp
+  
+  
 - name: set the wifi1 settings
   include_role:
     name: roles/iot/ansible-tasmota

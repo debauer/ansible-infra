@@ -1,0 +1,9 @@
+---
+- hosts: mikrotik
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+  vars:
+    update_dhcp_leases: true
+    update_dns: true
+  roles:
+  - role: roles/network/mikrotik

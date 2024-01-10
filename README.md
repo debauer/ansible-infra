@@ -37,6 +37,11 @@ avault edit secrets.yml
 aplaybook tasmota.yml
 ````
 
+## .lan in firefox without stupid google search
+
+open ```about:config```
+add ```browser.fixup.domainsuffixwhitelist.lan``` with value ```true```
+
 ## todo
 
 minidlna (obsolete?)

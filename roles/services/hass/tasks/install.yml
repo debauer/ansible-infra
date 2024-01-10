@@ -1,0 +1,61 @@
+---
+- name: Install docker
+  community.general.pacman:
+    update_cache: true
+    name:
+      - docker
+      - docker-compose
+      - python-pip
+      - python-setuptools
+      - python-docker
+    state: present
+
+- name: Enable docker service and ensure it is not masked
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started
+    
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/hass
+    state: directory
+    mode: '0755'
+    
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/hass/config
+    state: directory
+    mode: '0755'        
+    
+- name: Copy docker-compose.yml to server
+  ansible.builtin.template:
+    src: docker-compose.j2
+    dest: /home/{{ ansible_user }}/hass/docker-compose.yml
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0700
+  become: true
+
+#- name: Copy docker-compose.env to server
+#  ansible.builtin.template:
+#    src: docker-compose_env.j2
+#    dest: /home/{{ ansible_user }}/.env
+#    owner: "{{ ansible_user }}"
+#    group: "{{ ansible_user }}"
+#    mode: 0700
+#  become: true
+
+
+
+- name: Run `docker-compose up` again
+  command:
+    cmd: docker-compose up -d
+    chdir: /home/{{ ansible_user }}/hass
+  register: output
+  become: true
+
+- name: Docker-compose output
+  ansible.builtin.debug:
+    var: output
+  tags: debug

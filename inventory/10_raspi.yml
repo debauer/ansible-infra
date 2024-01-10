@@ -1,0 +1,16 @@
+---
+all:
+  children:
+    homeserver:
+      hosts:
+        homematic:
+          mac: b8:27:eb:00:36:26
+          ip: 192.168.1.105
+        heizungpi-lan:
+          mac: B8:27:EB:FE:5A:40
+          ip: 192.168.1.157
+        heizungpi:
+          mac: 00:e0:5d:01:e3:61
+          ip: 192.168.1.191
+        nanopi:
+          mac: 02:81:8A:47:FF:B5

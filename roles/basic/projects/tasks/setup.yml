@@ -2,16 +2,8 @@
 - ansible.builtin.debug:
     msg: "{{ project }}"
   tags: debug
-
-- name: install needed apt packages [{{ project.name }}]
-  apt:
-    name: 
-      - python3-distutils
-    state: present
-
-
-- name: install apt packages [{{ project.name }}]
-  apt:
+- name: install packages [{{ project.name }}]
+  package:
     name: "{{ item }}"
     state: present
   with_items: "{{ project.system_packages | d([]) }}"
@@ -41,6 +33,10 @@
     state: present
   when: not project.user_need_sudo is defined 
 
+- ansible.builtin.debug:
+    msg: "{{ project }}"
+  tags: debug
+
 - name: setup git repo [{{ project.name }}]
   git:
     repo: "{{ project.url }}"
@@ -51,8 +47,27 @@
   become: true
   become_user: "{{ project.user }}"
 
+- name: make dir .config/pypoetry
+  file:
+    path: /home/{{ project.user }}/.config/pypoetry
+    state: directory
+    owner: "{{ project.user }}"
+    group: "{{ project.user }}"
+    mode: "0755"
+
+- name: Copy poetry config to server
+  ansible.builtin.template:
+    src: pypoetry.j2
+    dest: /home/{{ project.user }}/.config/pypoetry/config.toml
+    owner: "{{ project.user }}"
+    group: "{{ project.user }}"
+    mode: "0755"
+  become: true
+
 - name: install poetry [{{ project.name }}]
-  include: poetry.yml user="{{ project_user }}"
+  include_tasks: poetry.yml 
+  vars:
+    user: "{{ project_user }}"
   with_items: "{{ project.user  }}"
   loop_control:
     loop_var: project_user

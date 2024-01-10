@@ -41,7 +41,7 @@
       tags: influxdb
 
     - role: roles/lxc/proxy
-      when: role_proxy is defined
+      when: role_lxc_proxy is defined
       tags: proxy
 
     - role: roles/services/wekan

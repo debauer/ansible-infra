@@ -1,0 +1,10 @@
+---
+- hosts: homeserver
+  gather_facts: true
+  become: true
+  vars_files:
+    - ../vars/secrets.yml
+
+  roles:
+    - role: roles/network/infopage
+      tags: network, infopage
