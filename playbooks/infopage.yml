@@ -1,5 +1,5 @@
 ---
-- hosts: homeserver
+- hosts: homeserver, localhost
   gather_facts: true
   become: true
   vars_files:
@@ -8,3 +8,4 @@
   roles:
     - role: roles/network/infopage
       tags: network, infopage
+      

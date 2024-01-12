@@ -1,8 +1,9 @@
 #!/usr/bin/python
 from __future__ import annotations
 
-from ansible.module_utils.basic import AnsibleModule
+from collections import OrderedDict
 
+from ansible.module_utils.basic import AnsibleModule
 
 
 def main():
@@ -14,14 +15,25 @@ def main():
 
     hostvars = module.params["hostvars"]
     hosts = module.params["hosts"]
-    mikrotik = hostvars['mikrotik']
-    ttl = hostvars['mikrotik']['dns']['ttl']
-    domain = hostvars['mikrotik']['dns']['domain']
 
-    html = ""
+    html = ("<table >"
+            "<tr>"
+            "<th>NAME</th>"
+            "<th>IP</th>"
+            "<th>MAC</th>"
+            "</tr>")
+    data = {}
     for h in hosts:
-        html += f"{h}, {hostvars[h]['ip'] if 'ip' in hostvars[h] else 'no ip'}, {hostvars[h]['mac'] if 'mac' in hostvars[h] else 'no mac'}"
+        if "ip" in hostvars[h] and 'mac' in hostvars[h]:
+            data[hostvars[h]['ip'].split(".")[3]] = f"<tr><td>{h}</td><td>{hostvars[h]['ip']}</td><td>{hostvars[h]['mac']}</td></<tr>"
+    data = OrderedDict(sorted(data.items()))
+    for nr in range(100,255):
+        if str(nr) in data:
+            html += data[str(nr)]
+        else: 
+            html += f"<tr><td></td><td>192.168.1.{nr}</td><td></td></<tr>"
 
+    html += "</table>"
     module.exit_json(
         changed=True, html=html
     )

@@ -18,7 +18,7 @@
 - name: Copy infopage to server
   ansible.builtin.template:
     src: index.j2
-    dest: /home/{{ ansible_user }}/infopage/index.html
+    dest: "{{ infopage_target_folder }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: 0755
