@@ -1,0 +1,8 @@
+---
+all:
+  children:
+    iot:
+      hosts:
+        dishwasher:
+          ip: 192.168.1.156
+          mac: C8:D7:78:AA:C7:C3

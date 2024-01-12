@@ -6,3 +6,20 @@ all:
         guse-laptop:
           ip: 192.168.1.199
           mac: 4C:1D:96:10:B8:73
+          ansible_user: david.bauer
+        zerbrechlich:
+          ip: 192.168.1.196
+          mac: 5C:E0:C5:48:2D:B2
+        bauer-t14s:
+          ip: 192.168.1.197
+          mac: 3C:E1:A1:B7:D8:11
+        bauer-t14s-wifi:
+          ip: 192.168.1.198
+          mac: 04:7B:CB:B7:3C:9E
+        nadine-rechner:
+          ip: 192.168.1.200
+          mac: E0:2B:E9:D8:91:81
+        localhost:
+          ansible_connection: local
+          ansible_python_interpreter: "{{ansible_playbook_python}}"
+          infopage_target_folder: /home/debauer/projects/privat/infopage.html

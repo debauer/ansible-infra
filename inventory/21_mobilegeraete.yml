@@ -1,0 +1,11 @@
+---
+all:
+  children:
+    blech:
+      hosts:
+        david-handy:
+          ip: 192.168.1.140
+          mac: E0:CC:F8:E5:9A:5A
+        nadine-handy:
+          ip: 192.168.1.141
+          mac: 2E:6F:50:CE:28:7C

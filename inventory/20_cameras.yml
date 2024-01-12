@@ -1,0 +1,11 @@
+---
+all:
+  children:
+    cameras:
+      hosts:
+        camera-doggos:
+          ip: 192.168.1.150
+          mac: 5C:E9:31:C5:49:04
+        camera-kueche:
+          ip: 192.168.1.152
+          mac: 5C:E9:31:7D:06:B1

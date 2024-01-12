@@ -1,0 +1,18 @@
+---
+all:
+  children:
+    blech:
+      hosts:
+        samsung-geraet:
+          mac: 94:b9:7e:f9:46:dc
+          ip: 192.168.1.109
+        xiaomi-stick:
+          ip: 192.168.1.128
+          #ip: 192.168.1.151
+          mac: EC:FA:5C:7B:7A:3D
+        firetv1:
+          ip: 192.168.1.154
+          mac: EC:0D:E4:9A:98:F0
+        firetv2:
+          ip: 192.168.1.155
+          mac: 24:CE:33:25:1A:F6

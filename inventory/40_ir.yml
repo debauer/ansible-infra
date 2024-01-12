@@ -1,0 +1,38 @@
+---
+all:
+  vars:
+    ir_commands:
+      deckenleuchte:
+        protocoll: NEC
+        commands:
+          - button: "on"
+            data: 0xFFA25D
+            datalsb: 0xFF45BA
+          - button: "off"
+            data: 0xFFE21D
+            datalsb: 0xFF47B8
+          - button: "night"
+            data: 0xFFA857
+            datalsb: 0xFF15EA
+          - button: "full"
+            data: 0xFF5AA5
+            datalsb: 0xFF5AA5
+          - button: "cooler"
+            data: 0xFF906F
+            datalsb: 0xFF09F6
+          - button: "warmer"
+            data: 0xFFE01F
+            datalsb: 0xFF07F8
+          - button: "brighter"
+            data: 0xFF02FD
+            datalsb: 0xFF40BF
+          - button: "darker"
+            data: 0xFF9867
+            datalsb: 0xFF19E6
+          - button: "time"
+            data: 0xFF42BD
+            datalsb: 0xFF42BD
+          - button: "next_color"
+            data: 0xFF4AB5
+            datalsb: 0xFF52AD
+        

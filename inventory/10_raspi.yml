@@ -14,3 +14,10 @@ all:
           ip: 192.168.1.191
         nanopi:
           mac: 02:81:8A:47:FF:B5
+        octopi:
+          ip: 192.168.1.169
+          mac: b8:27:eb:78:3b:f6
+          fqdn:
+            - 3ddrucker.lan
+            - ender3.lan
+            - cr6.lan

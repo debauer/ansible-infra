@@ -27,3 +27,25 @@ all:
                 dns: 192.168.1.2
                 gateway: 192.168.1.1
                 domain: lan
+        fritzbox:
+          ip: 192.168.1.1
+        mainswitch:
+          ip: 192.168.1.103
+          mac: D8:0D:17:D6:59:B7
+        davidswitch:
+          ip: 192.168.1.158
+          mac: 6C:CD:D6:A2:91:B1
+        ap1:
+          ip: 192.168.1.120
+          mac: F0:9F:C2:A9:A2:1F
+        ap2:
+          description: kueche
+          ip: 192.168.1.121
+          mac: 78:8A:20:29:7E:25
+        ap3:
+          ip: 192.168.1.122
+          mac: 80:2A:A8:C6:A7:9E
+        ap4:
+          description: David Buero
+          ip: 192.168.1.123
+          mac: 18:e8:29:ec:14:6a

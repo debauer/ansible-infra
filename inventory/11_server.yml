@@ -47,7 +47,7 @@ all:
                 target_fqdn: "hass.lan"
             vhost: 
               - name: infopage
-                root: "/home/debauer/infopage"
+                root: "/usr/share/nginx/infopage"
                 target_fqdn: "infopage.lan"
                 
             #  - root: "/home/heimdall/heimdall/public" 
@@ -110,7 +110,3 @@ all:
           ansible_host: herman.debauer.net
           ansible_user: debauer
           lxc_host: 192.168.111.1
-        acz:
-          ansible_host: acz.space
-          ansible_user: acz
-          lxc_host: 10.0.3.1
