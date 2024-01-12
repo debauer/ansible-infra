@@ -1,0 +1,5 @@
+---
+  - name: add static dns entries
+    routeros_command:
+      commands: "/ip dns static add address={{ hostvars[hostname].ip }} ttl=1h name={{ item }}"
+    with_items: "{{ hostvars[hostname].fqdn }}"
