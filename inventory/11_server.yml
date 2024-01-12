@@ -21,7 +21,6 @@ all:
           ansible_user: debauer
           ip: 192.168.1.231
           mac: D0:50:99:7C:28:8B
-          role_proxy: true
           heimdall: 
           hass:
           unifi:
@@ -53,7 +52,6 @@ all:
             #  - root: "/home/heimdall/heimdall/public" 
             #    target_fqdn: "portal.lan"
           
-          proxy_ssl_only: false
           fqdn: 
            - medien.lan
            - backup.lan

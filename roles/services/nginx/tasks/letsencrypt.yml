@@ -1,9 +1,6 @@
 ---
 - debug:
-    msg: container_key {{ container_key }}
-
-- debug:
-    msg: "proxy config: {{ hostvars[container_key].proxy }}"
+    msg: "proxy config: {{ proxy_config }}"
 
 - name: create letsencrypt certs {{ proxy_item.target }}
   include_tasks: create_cert.yml 

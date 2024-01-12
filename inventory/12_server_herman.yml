@@ -9,25 +9,21 @@ all:
           lxc_host: 192.168.111.1
           zsh_user: 
             - debauer
+          nginx:
+              proxy:
+                - src_port: 80
+                  src_address: 192.168.111.2
+                  target_fqdn: mcmap.debauer.net
+                  ssl: true
+              
     container:
       children:
         container_synyx:
           hosts:
-            herman_proxy:
-              ansible_host: 192.168.111.7
-              nat_ports:
-                - 80:80:tcp
-                - 443:443:tcp
-              lxc_container:
-                name: proxy
-              nginx:
             herman_minecraft:
               ansible_host: 192.168.111.2
               nat_ports:
                 - 25565:25565:tcp
-              proxy:
-                - port: 80
-                  target: mcmap.debauer.net
               lxc_container:
                 name: minecraft
                 group: gameserver
@@ -41,13 +37,13 @@ all:
               mosquitto:
                 bridge: false
                 tls: true
-                
             herman_web:
               container_name: web
               ansible_host: 192.168.111.5
               lxc_container:
                 name: web
                 block_create: true
+                
 #            herman_automodal:
 #              ansible_host: 192.168.111.4
 #              projects:

@@ -30,10 +30,10 @@ http {
         default upgrade;
         ''      close;
     }
-    
+
 {% for config in nginx.proxy %}
 
-{% if "proxy_ssl" in config and config.proxy_ssl %}
+{% if "ssl" in config and config.ssl %}
     server {
         listen 80;
         server_name {{ config.target_fqdn }};
@@ -66,10 +66,10 @@ http {
         listen 443;
         {% endif %}
         
-        {% if "proxy_ssl_letsencrypt" in config and config.proxy_ssl_letsencrypt %}
+        {% if "ssl" in config and config.ssl %}
         listen 443 ssl;
-        ssl_certificate /etc/letsencrypt/live/{{ vars.target }}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/{{ vars.target }}/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/{{ vars.target_fqdn }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ vars.target_fqdn }}/privkey.pem;
         include /etc/letsencrypt/options-ssl-nginx.conf;
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
         {% endif %}

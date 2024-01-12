@@ -4,10 +4,10 @@
 
 - name: Check if certificate already exists.
   stat:
-    path: /etc/letsencrypt/live/{{ proxy_config.target }}/cert.pem
+    path: /etc/letsencrypt/live/{{ proxy_config.target_fqdn }}/cert.pem
   register: letsencrypt_cert
 
 - name: Generate new certificate if one doesn't exist.
   become: true
-  command: certbot certonly --noninteractive --agree-tos  --email {{ certbot_email }} --nginx -d {{ proxy_config.target }}
+  command: certbot certonly --noninteractive --agree-tos  --email {{ certbot_email }} --nginx -d {{ proxy_config.target_fqdn }}
   when: not letsencrypt_cert.stat.exists

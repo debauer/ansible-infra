@@ -17,25 +17,16 @@
     name: nginx
     enabled: true
 
-- name: get container list with proxy defined
-  set_fact:
-    proxy_configs: "{{proxy_configs | default([]) + [ { 'hostname': item, 'container_name': hostvars[item].lxc_container.name, 'container_ip': hostvars[item].ansible_host,\
-      \ 'vars': hostvars[item].proxy } ]}}"
-  with_items: "{{ groups.container }}"
-  when:
-    - hostvars[item].proxy is defined
-    - hostvars[item].lxc_container.host == lxc_container.host
-
 - name: create letsencrypt certs for proxy targets of container {{ container_key }}
-  include_tasks: letsencrypt.yml 
+  include_tasks: create_cert.yml 
   vars: 
-    container_key: "{{ container_key }}"
-  with_items: "{{ containers }}"
+    proxy_config: "{{ proxy_config }}"
+  with_items: "{{ nginx.proxy }}"
   loop_control:
-    loop_var: container_key
+    loop_var: proxy_config
   when:
-    - hostvars[container_key].proxy is defined
-    - hostvars[container_key].lxc_container.host == lxc_container.host
+    - proxy_config.ssl is defined
+    - proxy_config.ssl
 
 - name: copy nginx.conf to server
   template:
