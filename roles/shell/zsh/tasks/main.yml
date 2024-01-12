@@ -1,0 +1,13 @@
+---
+- name: install zsh
+  package:
+    name: [zsh, stow, atuin]
+
+
+- name: include_tasks install_for_user
+  include_tasks: install_for_user.yml
+  vars:  
+    user: "{{ user_name }}"
+  loop_control:
+    loop_var: user_name
+  with_items: "{{ zsh_user }}"

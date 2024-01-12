@@ -1,6 +1,8 @@
 ---
 - name: add users
-  include: user.yml user="{{ loop_user }}"
+  include_tasks: user.yml 
+  vars:
+    user: "{{ loop_user }}"
   with_items: "{{ users }}"
   loop_control:
     loop_var: loop_user

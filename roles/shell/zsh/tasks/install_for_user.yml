@@ -1,0 +1,87 @@
+---    
+
+#function install_zsh {
+#    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+#    git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+#    git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+#    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+#    git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+#    git clone https://github.com/debauer/dotfiles .dotfiles
+#    bash <(curl https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh)
+#    rm .config/htop/htoprc
+#    rm .bashrc
+#    rm .bash_profile
+#    rm .zshrc
+#    rm .profile
+#    cd .dotfiles
+#    stow shell
+#}
+- name: create user {{ user }}
+  user:
+    name: "{{ user }}"
+    home: /home/{{ user }}
+    shell: /bin/zsh
+    system: true
+    state: present
+  
+- name: setup git repo 
+  git:
+    repo: https://github.com/debauer/dotfiles 
+    dest: /home/{{ user }}/.dotfiles
+    force: true
+    version: main
+  become: true
+  become_user: "{{ user }}"
+  
+- name: install oh-my-zsh
+  shell: 
+    cmd: 'bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || /bin/true'
+  become: true
+  become_user: "{{ user }}"
+  
+
+- name: setup oh-my-zsh plugins
+  git:
+    repo: "{{ item }}"
+    dest: /home/{{ user }}/.oh-my-zsh/custom/plugins/{{ item | split('/') | last }}
+    force: true
+  become: true
+  become_user: "{{ user }}"
+  with_items:
+    - https://github.com/zsh-users/zsh-history-substring-search
+    - https://github.com/zsh-users/zsh-syntax-highlighting
+    - https://github.com/zsh-users/zsh-autosuggestions
+    - https://github.com/MichaelAquilina/zsh-you-should-use
+    - https://github.com/marlonrichert/zsh-autocomplete
+
+- name: setup powerlevel10k
+  git:
+    repo: https://github.com/romkatv/powerlevel10k
+    dest: /home/{{ user }}/.oh-my-zsh/custom/themes/powerlevel10k
+    force: true
+  become: true
+  become_user: "{{ user }}"
+
+- name: Remove .zshrc
+  ansible.builtin.file:
+    path: /home/{{ user }}/.zshrc
+    state: absent
+
+- name: Remove .zshrc
+  ansible.builtin.file:
+    path: /home/{{ user }}/.config/atuin
+    state: absent
+
+- name: install oh-my-zsh
+  shell: 
+    cmd: 'stow shell'
+    chdir: /home/{{ user }}/.dotfiles
+  become: true
+  become_user: "{{ user }}"
+
+#- name: Create a directory if it does not exist
+#  ansible.builtin.file:
+#    path: /home/{{ user }}/unpoller
+#    state: directory
+#    mode: '0755'
+    

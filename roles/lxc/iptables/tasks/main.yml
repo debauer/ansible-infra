@@ -5,7 +5,9 @@
     flush: true
 
 - name: create iptable rules for {{ containers }}
-  include: forward.yml container="{{ item }}"
+  include_tasks: forward.yml 
+  vars: 
+    container: "{{ item }}"
   with_items: "{{ containers }}"
   when:
     - hostvars[item].nat_ports is defined

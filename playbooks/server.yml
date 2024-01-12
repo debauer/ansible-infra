@@ -40,9 +40,9 @@
       when: influxdb is defined
       tags: influxdb
 
-    - role: roles/lxc/proxy
-      when: role_lxc_proxy is defined
-      tags: proxy
+    - role: roles/services/nginx
+      when: nginx is defined
+      tags: nginx
 
     - role: roles/services/wekan
       when: role_wekan is defined

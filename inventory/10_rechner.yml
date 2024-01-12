@@ -23,3 +23,5 @@ all:
           ansible_connection: local
           ansible_python_interpreter: "{{ansible_playbook_python}}"
           infopage_target_folder: /home/debauer/projects/privat/infopage.html
+          zsh_user: 
+            - shelltest

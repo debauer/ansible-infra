@@ -7,10 +7,20 @@ all:
           ansible_host: herman.debauer.net
           ansible_user: debauer
           lxc_host: 192.168.111.1
+          zsh_user: 
+            - debauer
     container:
       children:
         container_synyx:
           hosts:
+            herman_proxy:
+              ansible_host: 192.168.111.7
+              nat_ports:
+                - 80:80:tcp
+                - 443:443:tcp
+              lxc_container:
+                name: proxy
+              nginx:
             herman_minecraft:
               ansible_host: 192.168.111.2
               nat_ports:
@@ -19,7 +29,6 @@ all:
                 - port: 80
                   target: mcmap.debauer.net
               lxc_container:
-                block_create: true
                 name: minecraft
                 group: gameserver
             herman_mqtt:
@@ -29,10 +38,16 @@ all:
                 - 8883:8883:tcp
               lxc_container:
                 name: mqtt
-                block_create: true
               mosquitto:
                 bridge: false
                 tls: true
+                
+            herman_web:
+              container_name: web
+              ansible_host: 192.168.111.5
+              lxc_container:
+                name: web
+                block_create: true
 #            herman_automodal:
 #              ansible_host: 192.168.111.4
 #              projects:
@@ -56,12 +71,7 @@ all:
 #                name: automodal
 #                block_create: true
 
-            herman_web:
-              container_name: web
-              ansible_host: 192.168.111.5
-              lxc_container:
-                name: web
-                block_create: true
+
 
 #            herman_paperless:
 #              ansible_host: 192.168.111.6
@@ -76,14 +86,7 @@ all:
 #              paperless:
 #                url: paperless.debauer.net
 
-            herman_proxy:
-              ansible_host: 192.168.111.7
-              nat_ports:
-                - 80:80:tcp
-                - 443:443:tcp
-              role_lxc_proxy: true
-              lxc_container:
-                name: proxy
+
 #            herman_filebrowser:
 #              ansible_host: 192.168.111.8
 #              proxy:
@@ -94,7 +97,6 @@ all:
 #                block_create: true
 #            herman_influxdb:
 #              ansible_host: 192.168.111.9
-#              role_influxdb: true
 #              influxdb:
 #                buckets:
 #                  - b_tasmota
@@ -115,22 +117,22 @@ all:
 #              lxc_container:
 #                name: influxdb
 #                block_create: true
-            herman_grafana:
-              ansible_host: 192.168.111.10
-              proxy:
-                - port: 3000
-                  target: grafana.debauer.net
-              lxc_container:
-                name: grafana
-                block_create: true
-              block_create: true
-            herman_k3s:
-              ansible_host: 192.168.111.11
-              lxc_container:
-                block_create: false
-                name: k3s
-              nat_ports:
-                - 6443:6443:tcp
+#            herman_grafana:
+#              ansible_host: 192.168.111.10
+#              proxy:
+#                - port: 3000
+#                  target: grafana.debauer.net
+#              lxc_container:
+#                name: grafana
+#                block_create: true
+#              block_create: true
+#            herman_k3s:
+#              ansible_host: 192.168.111.11
+#              lxc_container:
+#                block_create: false
+#                name: k3s
+#              nat_ports:
+#                - 6443:6443:tcp
           vars:
             ansible_ssh_common_args: -o StrictHostKeyChecking=accept-new -o ProxyCommand="ssh -W %h:%p -q synyx.debauer.net"
             ansible_user: debauer

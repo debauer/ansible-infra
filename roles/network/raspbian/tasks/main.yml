@@ -1,6 +1,8 @@
 ---
 - name: setup raspberry network
-  include: setup.yml network="{{ network_var }}"
+  include_tasks: setup.yml 
+  vars:
+    network: "{{ network_var }}"
   with_items: "{{ raspberry_network }}"
   loop_control:
     loop_var: network_var

@@ -1,6 +1,13 @@
 ---
+- name: Install common packages
+  package:
+    name: python-lxc
+    state: present
+
 - name: create containers {{ containers }} if not exist
-  include: create.yml container="{{ item }}"
+  include_tasks: create.yml 
+  vars: 
+    container: "{{ item }}"
   with_items: "{{ containers }}"
   when:
     - not hostvars[item].lxc_container.block_create
@@ -18,7 +25,9 @@
     name: lxc-net
 
 - name: "start/stop containers {{ containers }} "
-  include: start.yml container="{{ item }}"
+  include_tasks: start.yml 
+  vars: 
+    container: "{{ item }}"
   with_items: "{{ containers }}"
   when:
     - hostvars[item].lxc_container.state == "started" or hostvars[item].lxc_container.state == "stopped"

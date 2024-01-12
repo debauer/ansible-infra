@@ -6,7 +6,9 @@
     msg: "proxy config: {{ hostvars[container_key].proxy }}"
 
 - name: create letsencrypt certs {{ proxy_item.target }}
-  include: create_cert.yml proxy_config="{{ proxy_item }}"
+  include_tasks: create_cert.yml 
+  vars:  
+    proxy_config: "{{ proxy_item }}"
   with_items: "{{ hostvars[container_key].proxy }}"
   loop_control:
     loop_var: proxy_item

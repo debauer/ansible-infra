@@ -44,7 +44,9 @@
   become: true
 
 #- name: create influx users  if not exist
-#  include: user.yml username="{{ influx_user }}"
+#  include_tasks: user.yml 
+#  vars:
+#    username: "{{ influx_user }}"
 #  with_items: "{{ influxdb.user }}"
 #  loop_control:
 #    loop_var: influx_user
