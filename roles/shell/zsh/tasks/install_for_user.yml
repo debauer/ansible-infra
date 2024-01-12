@@ -32,12 +32,18 @@
     version: main
   become: true
   become_user: "{{ user }}"
-  
+
+- name: Check if oh-my-zsh is installed
+  stat:
+    path: /home/{{ user }}/.oh-my-zsh
+  register: ohmyzsh_stat  
+
 - name: install oh-my-zsh
   shell: 
-    cmd: 'bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || /bin/true'
+    cmd: 'bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
   become: true
   become_user: "{{ user }}"
+  when: not ohmyzsh_stat.stat.exists
   
 
 - name: setup oh-my-zsh plugins
@@ -62,26 +68,24 @@
   become: true
   become_user: "{{ user }}"
 
-- name: Remove .zshrc
-  ansible.builtin.file:
-    path: /home/{{ user }}/.zshrc
-    state: absent
+- name: include_tasks install_for_user
+  include_tasks: remove_files.yml
+  vars:  
+    user: "{{ file_name }}"
+  loop_control:
+    loop_var: file_name
+  with_items:
+    - .config/atuin
+    - .zshrc
+    - .profile
+    - .bashrc
 
-- name: Remove .zshrc
-  ansible.builtin.file:
-    path: /home/{{ user }}/.config/atuin
-    state: absent
-
-- name: install oh-my-zsh
+- name: stow shell configs
   shell: 
     cmd: 'stow shell'
     chdir: /home/{{ user }}/.dotfiles
   become: true
   become_user: "{{ user }}"
-
-#- name: Create a directory if it does not exist
-#  ansible.builtin.file:
-#    path: /home/{{ user }}/unpoller
-#    state: directory
-#    mode: '0755'
+  register: stowout
+  changed_when: "'LINK' in stowout.stderr"
     

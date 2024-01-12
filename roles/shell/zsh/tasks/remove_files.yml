@@ -1,0 +1,12 @@
+---
+
+- name: Check if file exist
+  stat:
+    path: /home/{{ user }}/{{file_name}}
+  register: sym  
+
+- name: Remove default config files
+  ansible.builtin.file:
+    path: /home/{{ user }}/{{file_name}}
+    state: absent
+  when: sym.stat.islnk is defined and not sym.stat.islnk
